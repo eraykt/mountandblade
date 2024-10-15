@@ -3,12 +3,6 @@ using UnityEngine;
 
 public class CameraRaycast : MonoBehaviour
 {
-    [Header("Camera Bounds")]
-    public Transform panLim_LeftDown;
-    public Transform panLim_RightDown;
-    public Transform panLim_LeftTop;
-    public Transform panLim_RightTop;
-
 
     public float panSpeed = 20f;              // Kamera hareket hýzý (WASD)
     public Vector2 panLimit;                  // Kamera için sýnýrlar (bound)
