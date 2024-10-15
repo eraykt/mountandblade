@@ -19,5 +19,6 @@ public class PlayerController : MonoBehaviour
                 agent.SetDestination(hit.point);
             }
         }
+        agent.speed = Input.GetKey(KeyCode.LeftShift) ? 10 : 5;
     }
 }
