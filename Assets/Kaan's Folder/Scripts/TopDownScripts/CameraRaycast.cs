@@ -62,7 +62,6 @@ public class CameraRaycast : MonoBehaviour
 
         canMoveOnMap = (horizontal != 0);
         canMoveOnMap = (vertical != 0);
-        Debug.Log(canMoveOnMap);
 
         while (canMoveOnMap)
         {
@@ -87,34 +86,6 @@ public class CameraRaycast : MonoBehaviour
     }
 
 
-    //void HandleZoom123()
-    //{
-    //    float scroll = Input.GetAxis("Mouse ScrollWheel");
-
-    //    Vector3 pos = transform.position;
-
-    //    // Fare ekranýn üst kýsmýna yakýnsa zoom in
-    //    if (Input.mousePosition.y >= Screen.height - 10)
-    //    {
-    //        pos.y -= scrollSpeed * Time.deltaTime;
-    //    }
-    //    // Fare ekranýn alt kýsmýna yakýnsa zoom out
-    //    else if (Input.mousePosition.y <= 10)
-    //    {
-    //        pos.y += scrollSpeed * Time.deltaTime;
-    //    }
-    //    // Fare tekerleði ile zoom kontrolü
-    //    else if (scroll != 0)
-    //    {
-    //        pos.y -= scroll * scrollSpeed * 100f * Time.deltaTime;
-    //    }
-
-    //    // Zoom mesafesini sýnýrla
-    //    pos.y = Mathf.Clamp(pos.y, minY, maxY);
-
-    //    // Kamerayý yeni pozisyona taþý
-    //    transform.position = pos;
-    //}
 
 
    
