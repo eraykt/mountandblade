@@ -40,22 +40,22 @@ public class AttackController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
-            // IK ağırlığını azaltırken kavisli hareket yap
-            twoBoneIK.weight = 1f; // Kol hedefteyken hareket etmeli
-            
-            var seq = DOTween.Sequence();
-            
-            // İlk olarak pozisyonu kavisli yolda hareket ettir
-            seq.Append(target.DOLocalPath(pathPoints, curveDuration, PathType.CatmullRom)
-                .SetEase(Ease.InOutSine) // Kavisli hareket için yumuşak geçiş
-                .SetOptions(true));
-
-            // Rotasyonu kavisli hareketle birlikte senkronize et
-            seq.Join(target.DOLocalRotateQuaternion(endPoint.rotation, curveDuration)
-                .SetEase(Ease.InOutSine)); // Rotasyonu da yumuşak bir şekilde gerçekleştir
-
-            // Sonraki hareketi başlat
-            seq.Append(DOVirtual.Float(twoBoneIK.weight, 0f, weightSpeed, val => twoBoneIK.weight = val)).Play();
+            // // IK ağırlığını azaltırken kavisli hareket yap
+            // twoBoneIK.weight = 1f; // Kol hedefteyken hareket etmeli
+            //
+            // var seq = DOTween.Sequence();
+            //
+            // // İlk olarak pozisyonu kavisli yolda hareket ettir
+            // seq.Append(target.DOLocalPath(pathPoints, curveDuration, PathType.CatmullRom)
+            //     .SetEase(Ease.InOutSine) // Kavisli hareket için yumuşak geçiş
+            //     .SetOptions(true));
+            //
+            // // Rotasyonu kavisli hareketle birlikte senkronize et
+            // seq.Join(target.DOLocalRotateQuaternion(endPoint.rotation, curveDuration)
+            //     .SetEase(Ease.InOutSine)); // Rotasyonu da yumuşak bir şekilde gerçekleştir
+            //
+            // // Sonraki hareketi başlat
+            // seq.Append(DOVirtual.Float(twoBoneIK.weight, 0f, weightSpeed, val => twoBoneIK.weight = val)).Play();
         }
     }
 }
