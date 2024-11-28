@@ -8,15 +8,17 @@ public class AttackController : MonoBehaviour
     public Transform target;                 // Elin kalkacağı hedef pozisyon
     public Transform curvePoint;             // Kavisin ara noktası
     public Transform endPoint;               // Nihai hedef pozisyon
-    public float weightSpeed = 0.5f;         // IK ağırlık değişim süresi (saniye)
-    public float curveDuration = 1f;         // Kavisin süresi
 
     private Quaternion startRotation;
 
     private Vector3[] pathPoints;            // Yol noktaları
-
+    
+    private Animator _animator;
+    
     void Start()
     {
+        _animator = GetComponent<Animator>();
+        
         startRotation = target.rotation;
         // Kavis yolunu belirle (başlangıç, kavis ve nihai hedef)
         pathPoints = new Vector3[] 
@@ -40,6 +42,9 @@ public class AttackController : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
         {
+            _animator.SetTrigger("attack");
+            DOVirtual.Float(twoBoneIK.weight, 0f, 0.5f, val => twoBoneIK.weight = val);
+
             // // IK ağırlığını azaltırken kavisli hareket yap
             // twoBoneIK.weight = 1f; // Kol hedefteyken hareket etmeli
             //
@@ -58,4 +63,10 @@ public class AttackController : MonoBehaviour
             // seq.Append(DOVirtual.Float(twoBoneIK.weight, 0f, weightSpeed, val => twoBoneIK.weight = val)).Play();
         }
     }
+    public void Hit()
+    {
+        Debug.Log("Hit animation event triggered!");
+        // Add your hit logic here
+    }
+
 }
