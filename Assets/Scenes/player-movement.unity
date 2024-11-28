@@ -3750,8 +3750,6 @@ MonoBehaviour:
   target: {fileID: 603231346}
   curvePoint: {fileID: 179522365}
   endPoint: {fileID: 951743628}
-  weightSpeed: 0.5
-  curveDuration: 0.5
 --- !u!4 &8568919409990499969
 Transform:
   m_ObjectHideFlags: 0
