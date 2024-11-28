@@ -1,0 +1,24 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+[CreateAssetMenu(fileName = "newWeapon", menuName = "Inventory/Weapon")]
+public class Weapon : Item
+{
+    public int attackDamage;
+    public float attackSpeed;
+    public WeaponType weaponType;
+
+    public enum WeaponType 
+    {
+        OneHanded,
+        TwoHanded,
+        TwoAndOneHanded,
+        Polearm,
+        PolearmTwoHanded,
+        Bow,
+        Crossbow,
+        ThrownWeapon,
+        Firearm
+    }
+}
