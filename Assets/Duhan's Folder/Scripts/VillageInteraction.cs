@@ -73,8 +73,8 @@ namespace MountAndBlade
 
             float distance = Vector3.Distance(player.position, transform.position);
 
-            Debug.Log(distance);
-            Debug.Log(isPlayerNearby);
+            //Debug.Log(distance);
+            //Debug.Log(isPlayerNearby);
             if (distance <= interactionDistance)
             {
                 if (!isPlayerNearby)
@@ -104,8 +104,6 @@ namespace MountAndBlade
                     
                 
                 }
-
-
 
             }
 
@@ -143,7 +141,7 @@ namespace MountAndBlade
             // Köy týklandýðýnda UI'yi etkinleþtir
             if (villageUI != null && isClicked == true)
             {
-                Debug.Log("acmaya calisiyom");
+               
                 villageUI.SetActive(true);
                 isClicked = false;  
                 PlayerController.instance.SetCanMove(false);
