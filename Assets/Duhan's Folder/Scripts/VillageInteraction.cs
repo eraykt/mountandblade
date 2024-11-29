@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -16,9 +17,17 @@ namespace MountAndBlade
         public Button getVounteers;
         private GameObject volunteerGatheringPanel;
         private GameObject mainVillagePanel;
-        
+
+        //handling distance check
+        public Transform player;
+        public float interactionDistance = 10f; // Etkileþim mesafesi
+        private bool isPlayerNearby = false; // Oyuncunun yakýnlýk durumu
+
+        private bool isClicked = false; // Oyuncunun týklama durumu
+
         private void Awake()
         {
+            
             openVolunteerPanel.onClick.AddListener(() =>
             {
                 if (volunteerGatheringPanel != null)
@@ -55,6 +64,33 @@ namespace MountAndBlade
 
         }
 
+        private void Update()
+        {
+
+            float distance = Vector3.Distance(player.position, transform.position);
+
+            Debug.Log(distance);
+
+            if (distance <= interactionDistance)
+            {
+                
+                if (!isPlayerNearby)
+                {
+                    isPlayerNearby = true;
+                    //EnableUI(true); // UI eriþilebilir hale gelir
+                }
+            }
+            else
+            {
+                if (isPlayerNearby)
+                {
+                    isPlayerNearby = false;
+                    //EnableUI(false); // UI eriþilemez hale gelir
+                }
+            }
+
+
+        }
         private void Start()
         {
             originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
@@ -77,6 +113,12 @@ namespace MountAndBlade
 
         private void OnMouseDown()
         {
+            
+            isClicked = true;
+
+            if (isPlayerNearby == false)
+                return;
+
             // Köy týklandýðýnda UI'yi etkinleþtir
             if (villageUI != null)
             {
