@@ -17,7 +17,8 @@ namespace MountAndBlade
         public Button getVounteers;
         private GameObject volunteerGatheringPanel;
         private GameObject mainVillagePanel;
-
+      
+    
         //handling distance check
         public Transform player;
         public float interactionDistance = 10f; // Etkileþim mesafesi
@@ -34,6 +35,7 @@ namespace MountAndBlade
                 {
 
                     volunteerGatheringPanel.SetActive(true);
+                    PlayerController.instance.SetCanMove(false);
                     mainVillagePanel.SetActive(false);
                     
                 }
@@ -45,6 +47,7 @@ namespace MountAndBlade
                 {
                     volunteerGatheringPanel.SetActive(false);
                     mainVillagePanel.SetActive(true);
+                    PlayerController.instance.SetCanMove(true);
                     villageUI.SetActive(false);
 
                 }
@@ -58,6 +61,7 @@ namespace MountAndBlade
 
                     //mainVillagePanel.SetActive(false);
                     villageUI.SetActive(false);
+                    PlayerController.instance.SetCanMove(true);
                     
                 }
             });
@@ -70,25 +74,40 @@ namespace MountAndBlade
             float distance = Vector3.Distance(player.position, transform.position);
 
             Debug.Log(distance);
-
+            Debug.Log(isPlayerNearby);
             if (distance <= interactionDistance)
             {
-                
                 if (!isPlayerNearby)
                 {
                     isPlayerNearby = true;
-                    //EnableUI(true); // UI eriþilebilir hale gelir
+                    EnableGlow(true); // Parlama baþlar
+                    //OpenUI(); // UI açýlýr
                 }
             }
-            else
+            else if (distance > interactionDistance)
             {
                 if (isPlayerNearby)
                 {
                     isPlayerNearby = false;
-                    //EnableUI(false); // UI eriþilemez hale gelir
+                    EnableGlow(false); // Parlama biter
                 }
             }
 
+            if (isClicked)
+            {
+                if (isPlayerNearby) { 
+                    
+                    
+                    villageUI.SetActive(true);
+                    PlayerController.instance.SetCanMove(false);
+                    isClicked = false;
+                    
+                
+                }
+
+
+
+            }
 
         }
         private void Start()
@@ -107,6 +126,8 @@ namespace MountAndBlade
 
         private void OnMouseExit()
         {
+            if (isPlayerNearby == true)
+                return;
             // Mouse köyden ayrýldýðýnda orijinal malzemeyi geri yükle
             GetComponent<Renderer>().material = originalMaterial;
         }
@@ -120,14 +141,27 @@ namespace MountAndBlade
                 return;
 
             // Köy týklandýðýnda UI'yi etkinleþtir
-            if (villageUI != null)
+            if (villageUI != null && isClicked == true)
             {
                 Debug.Log("acmaya calisiyom");
                 villageUI.SetActive(true);
+                isClicked = false;  
+                PlayerController.instance.SetCanMove(false);
             }
         }
 
-     
+        private void EnableGlow(bool enable)
+        {
+            Renderer renderer = GetComponent<Renderer>();
+            if (enable)
+            {
+                renderer.material = glowMaterial;
+            }
+            else
+            {
+                renderer.material = originalMaterial;
+            }
+        }
 
 
 

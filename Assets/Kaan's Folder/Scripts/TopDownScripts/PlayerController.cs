@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
     public Camera cam;
     public NavMeshAgent agent;
 
+    private bool canMove = true;
     private void Awake()
     {
         instance = this;
@@ -17,6 +18,10 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+
+        if (!canMove)
+            return;
+
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
@@ -29,9 +34,11 @@ public class PlayerController : MonoBehaviour
             
         }
 
+    }
 
-
-
+    public void SetCanMove(bool value)
+    {
+        canMove = value;
     }
 
     public float GetSpeed() => agent.speed;

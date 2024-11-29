@@ -462,7 +462,7 @@ GameObject:
   - component: {fileID: 34972069}
   m_Layer: 0
   m_Name: Village
-  m_TagString: Untagged
+  m_TagString: Village
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -571,6 +571,8 @@ MonoBehaviour:
   closeVolunteerPanel: {fileID: 1716535389}
   closeMainPanel: {fileID: 1939843343}
   getVounteers: {fileID: 163695887}
+  player: {fileID: 1721357524}
+  interactionDistance: 10
 --- !u!65 &34972069
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -7715,6 +7717,12 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1716535387}
   m_CullTransparentMesh: 1
+--- !u!4 &1721357524 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6103496727190756065, guid: 9074b9e65da5f344284ac15654e7a7ce,
+    type: 3}
+  m_PrefabInstance: {fileID: 3950391848135001895}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1733029648
 PrefabInstance:
   m_ObjectHideFlags: 0
