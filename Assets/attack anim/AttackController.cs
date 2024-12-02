@@ -1,72 +1,101 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using DG.Tweening;
+using UnityEngine.InputSystem;
+using UnityEngine.UI;
 
 public class AttackController : MonoBehaviour
 {
-    public TwoBoneIKConstraint twoBoneIK;    // Two Bone IK Constraint bileşeni
-    public Transform target;                 // Elin kalkacağı hedef pozisyon
-    public Transform curvePoint;             // Kavisin ara noktası
-    public Transform endPoint;               // Nihai hedef pozisyon
-
-    private Quaternion startRotation;
-
-    private Vector3[] pathPoints;            // Yol noktaları
-    
+    public TwoBoneIKConstraint _twoBoneIK; // Two Bone IK Constraint bileşeni
     private Animator _animator;
-    
+
+    [SerializeField] private List<Image> _attackWays;
+
+    private Vector2 _mouseDelta;
+    private string _currentWay = "";
+    public float _threshold;
+
+    private Vector2 _accumulatedDelta = Vector2.zero;
+
     void Start()
     {
         _animator = GetComponent<Animator>();
-        
-        startRotation = target.rotation;
-        // Kavis yolunu belirle (başlangıç, kavis ve nihai hedef)
-        pathPoints = new Vector3[] 
-        {
-            target.localPosition,       // Başlangıç pozisyonu
-            curvePoint.localPosition,   // Ara nokta (kavis)
-            endPoint.localPosition      // Nihai hedef
-        };
     }
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButton(0))
         {
-            target.localPosition = pathPoints[0];
-            target.localRotation = startRotation;
+            // Mouse delta değerini oku
+            _mouseDelta = Mouse.current.delta.ReadValue() * 0.01f; // Çok küçük hareketleri küçültmek için çarpan
+            if (_mouseDelta.magnitude < 0.05f) return; // Küçük hareketleri yok say
+        
+            _accumulatedDelta += _mouseDelta;
 
+            Debug.Log($"Accumulated Delta: {_accumulatedDelta}");
+
+            // Yön tayini
+            if (Mathf.Abs(_accumulatedDelta.x) > Mathf.Abs(_accumulatedDelta.y))
+            {
+                if (_accumulatedDelta.x > _threshold) AttackWay("right");
+                else if (_accumulatedDelta.x < -_threshold) AttackWay("left");
+            }
+            else
+            {
+                if (_accumulatedDelta.y > _threshold/3f) AttackWay("up");
+                else if (_accumulatedDelta.y < -_threshold/3f) AttackWay("down");
+            }
+
+            // Birikimi yavaşça sıfırla (yumuşak sıfırlama)
+            _accumulatedDelta = Vector2.Lerp(_accumulatedDelta, Vector2.zero, Time.deltaTime * 2);
+            
+            
+            
             // IK ağırlığını artır (kol kalksın)
-            DOVirtual.Float(twoBoneIK.weight, 1f, 0.5f, val => twoBoneIK.weight = val);
+            DOVirtual.Float(_twoBoneIK.weight, 1f, 0.5f, val => _twoBoneIK.weight = val);
         }
 
-        if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
+            _accumulatedDelta = Vector2.zero;
             _animator.SetTrigger("attack");
-            DOVirtual.Float(twoBoneIK.weight, 0f, 0.5f, val => twoBoneIK.weight = val);
+            DOVirtual.Float(_twoBoneIK.weight, 0f, 0.5f, val => _twoBoneIK.weight = val);
+        }
 
-            // // IK ağırlığını azaltırken kavisli hareket yap
-            // twoBoneIK.weight = 1f; // Kol hedefteyken hareket etmeli
-            //
-            // var seq = DOTween.Sequence();
-            //
-            // // İlk olarak pozisyonu kavisli yolda hareket ettir
-            // seq.Append(target.DOLocalPath(pathPoints, curveDuration, PathType.CatmullRom)
-            //     .SetEase(Ease.InOutSine) // Kavisli hareket için yumuşak geçiş
-            //     .SetOptions(true));
-            //
-            // // Rotasyonu kavisli hareketle birlikte senkronize et
-            // seq.Join(target.DOLocalRotateQuaternion(endPoint.rotation, curveDuration)
-            //     .SetEase(Ease.InOutSine)); // Rotasyonu da yumuşak bir şekilde gerçekleştir
-            //
-            // // Sonraki hareketi başlat
-            // seq.Append(DOVirtual.Float(twoBoneIK.weight, 0f, weightSpeed, val => twoBoneIK.weight = val)).Play();
+           
+    }
+
+    private void AttackWay(string way)
+    {
+        if (_currentWay.Equals(way)) return;
+        _attackWays.ForEach(x => x.gameObject.SetActive(false));
+        _currentWay = way;
+
+        switch (way)
+        {
+            case "right":
+                _attackWays[1].gameObject.SetActive(true);
+
+                break;
+
+            case "left":
+                _attackWays[0].gameObject.SetActive(true);
+
+                break;
+            case "up":
+                _attackWays[2].gameObject.SetActive(true);
+
+                break;
+            case "down":
+                _attackWays[3].gameObject.SetActive(true);
+
+                break;
         }
     }
+
     public void Hit()
     {
         Debug.Log("Hit animation event triggered!");
-        // Add your hit logic here
     }
-
 }
