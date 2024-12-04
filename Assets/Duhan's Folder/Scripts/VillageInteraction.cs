@@ -8,27 +8,58 @@ namespace MountAndBlade
 {
     public class VillageInteraction : MonoBehaviour
     {
-        private Material originalMaterial;
-        public Material glowMaterial; // Parlama için kullanýlacak malzeme
-        public GameObject villageUI; // Açýlacak UI
+
+
+        [Header("Buttons")]
         public Button openVolunteerPanel;
         public Button closeVolunteerPanel;
         public Button closeMainPanel;
         public Button getVounteers;
+
+        [Space]
+
+        [Header("Materials")]
+        public Material glowMaterial; // Parlama için kullanýlacak malzeme
+        private Material originalMaterial;
+
+        [Space]
+
+        [Header("UI")]
+        public GameObject villageUI; // Açýlacak UI
         private GameObject volunteerGatheringPanel;
         private GameObject mainVillagePanel;
       
+        [Space]
     
-        //handling distance check
+        [Header("Player Info")]
         public Transform player;
         public float interactionDistance = 10f; // Etkileþim mesafesi
-        private bool isPlayerNearby = false; // Oyuncunun yakýnlýk durumu
 
+        private bool isPlayerNearby = false; // Oyuncunun yakýnlýk durumu
         private bool isClicked = false; // Oyuncunun týklama durumu
 
         private void Awake()
         {
+            HandleButtonInteraction();
+
+        }
+
+        private void Update()
+        {
+            HandleDistance();
+
+        }
+
+        private void Start()
+        {
+            originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
+            volunteerGatheringPanel = villageUI.transform.Find("GatheringPanelParent").gameObject;
+            mainVillagePanel = villageUI.transform.Find("VillageMainPanel").gameObject;
             
+        }
+
+        private void HandleButtonInteraction()
+        {
             openVolunteerPanel.onClick.AddListener(() =>
             {
                 if (volunteerGatheringPanel != null)
@@ -66,15 +97,12 @@ namespace MountAndBlade
                 }
             });
 
+
         }
-
-        private void Update()
+        private void HandleDistance()
         {
-
             float distance = Vector3.Distance(player.position, transform.position);
-
-            //Debug.Log(distance);
-            //Debug.Log(isPlayerNearby);
+      
             if (distance <= interactionDistance)
             {
                 if (!isPlayerNearby)
@@ -107,15 +135,10 @@ namespace MountAndBlade
 
             }
 
-        }
-        private void Start()
-        {
-            originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
-            volunteerGatheringPanel = villageUI.transform.Find("GatheringPanelParent").gameObject;
-            mainVillagePanel = villageUI.transform.Find("VillageMainPanel").gameObject;
-            
-        }
 
+
+
+        }
         private void OnMouseEnter()
         {
             // Mouse köy üzerine geldiðinde malzemeyi parlama malzemesiyle deðiþtir

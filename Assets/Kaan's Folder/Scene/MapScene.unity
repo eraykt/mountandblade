@@ -565,12 +565,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 328500bc4f366464388458da0eb30974, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 2100000, guid: 6aa6e522314844d4a8c7cba78b0ccd9f, type: 2}
-  villageUI: {fileID: 1989248890}
   openVolunteerPanel: {fileID: 246405618}
   closeVolunteerPanel: {fileID: 1716535389}
   closeMainPanel: {fileID: 1939843343}
   getVounteers: {fileID: 163695887}
+  glowMaterial: {fileID: 2100000, guid: 6aa6e522314844d4a8c7cba78b0ccd9f, type: 2}
+  villageUI: {fileID: 1989248890}
   player: {fileID: 1721357524}
   interactionDistance: 10
 --- !u!65 &34972069
@@ -8569,6 +8569,37 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 700918706}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1974199252
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1974199253}
+  m_Layer: 0
+  m_Name: AllyCounterHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1974199253
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1974199252}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -7.3129272, y: -22.458656, z: 17.392525}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!4 &1980289744 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8031339192871210686, guid: 3f9b178ccd3b86f4ebbfc1f5a2815e56,
@@ -9645,3 +9676,4 @@ SceneRoots:
   - {fileID: 731341423}
   - {fileID: 34972067}
   - {fileID: 1989248894}
+  - {fileID: 1974199253}
