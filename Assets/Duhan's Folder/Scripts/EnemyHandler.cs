@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -7,14 +8,20 @@ namespace MountAndBlade
 {
     public class EnemyHandler : MonoBehaviour
     {
+
+        private PlayerManager playerManager;
+        public int askerSayisi; // Asker sayýsý
+        public TMP_Text soldierCountText; // UI Text referansý (TextMeshPro kullanýyorsanýz Text yerine TMP_Text)
         public enum States{patrol,chase,retreat};
         private NavMeshAgent enemyAgent;
 
         public States currentState;
 
+     
+
 
         public NavMeshAgent agent; // Karakterin NavMeshAgent'i
-        [Header("BOUNDLAR CANIMMMM")]
+        [Header("Bounds")]
         public Vector3 boundsMin; // Sýnýrlarýn minimum noktasý
         public Vector3 boundsMax; // Sýnýrlarýn maksimum noktasý
 
@@ -32,6 +39,15 @@ namespace MountAndBlade
         private Vector3 moveDir;
         void Start()
         {
+            playerManager = FindObjectOfType<PlayerManager>();
+
+            if (playerManager == null)
+            {
+                Debug.LogError("PlayerHandler bulunamadý! Lütfen sahnede bir PlayerHandler olduðundan emin olun.");
+                return;
+            }
+            UpdateStrengthStatus();
+            UpdateSoldierCountText();
             enemyAgent = GetComponent<NavMeshAgent>();
             currentState = States.patrol;
         }
@@ -40,6 +56,30 @@ namespace MountAndBlade
         {
             StatesHandler();
             CheckDistance();
+        }
+
+        private void UpdateStrengthStatus()
+        {
+            if (playerManager != null)
+            {
+                isPlayerStronger = playerManager.playerSoldierAmount <= askerSayisi;
+            }
+        }
+
+
+        public void UpdateSoldierCountText()
+        {
+            if (soldierCountText != null)
+            {
+                soldierCountText.text = askerSayisi.ToString();
+            }
+        }
+
+        // Örnek: Asker sayýsýný arttýrmak ya da azaltmak
+        public void AddSoldier(int count)
+        {
+            askerSayisi += count;
+            UpdateSoldierCountText();
         }
 
         private void StatesHandler()
@@ -96,7 +136,18 @@ namespace MountAndBlade
             agent.SetDestination(transform.position + directionAwayFromPlayer);  // Hedef olarak oyuncudan uzaklaþacak yönü ayarla
         }
 
-    
+        private void OnDestroy()
+        {
+            // Düþman yok olduðunda SpawnHandler'a bildir
+            EnemyTDSpawnManager spawnHandler = FindObjectOfType<EnemyTDSpawnManager>();
+            if (spawnHandler != null)
+            {
+                spawnHandler.EnemyDestroyed();
+            }
+        }
+
+
+
         private void CheckDistance()
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -165,6 +216,7 @@ namespace MountAndBlade
                 Gizmos.DrawLine(new Vector3(boundsMax.x, boundsMin.y, boundsMin.z), new Vector3(boundsMax.x, boundsMin.y, boundsMax.z)); // Ön sol köþe
             }
         }
+
 
     }
 }

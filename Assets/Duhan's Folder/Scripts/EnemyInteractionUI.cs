@@ -4,7 +4,7 @@ using UnityEngine;
 
 namespace MountAndBlade
 {
-    public class AllyCounter : MonoBehaviour
+    public class EnemyInteractionUI : MonoBehaviour
     {
         // Start is called before the first frame update
         void Start()
