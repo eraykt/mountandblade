@@ -1,49 +1,62 @@
+using MountAndBlade;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviour, IDamagable
 {
     public Transform target;
     public TextMeshPro stateText;
     private NavMeshAgent agent;
+    public Animator animator;
 
     public float moveSpeed = 5f;
-    public Transform arrow;
     public Vector3 moveDir;
     private float stopDistance = 1.5f;
 
 
+    public bool canAttack = true;
     public bool isAttack = false;
-    public bool isAttackAnimFinished = false;
-    
-    public enum EnemyStates { Chase, Attack, LeftAttack, RightAttack, Defense}
+    public bool isAnimPlaying = false;
+
+    public float attackCooldown = 2f; // Saldýrýlar arasýnda geçen süre
+    public float attackAnimTime = 1.3f;
+
+    public enum EnemyStates { Chase, Patrol, LeftAttack, RightAttack, Defense }
     public EnemyStates currentEnemyState = EnemyStates.Chase;
 
+    public int health = 100;
+    public int damage = 2;
+    public Transform hitPoint;
+    public float hitRange = 0.2f;
 
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
-        StateMachine();
-        ChaseHandler();
-        
+        if (target)
+        {
+            StateMachine();
+            ChaseHandler();
+        }
     }
 
     private void StateMachine()
     {
         switch (currentEnemyState)
         {
+            case EnemyStates.Patrol:
+                PatrolState();
+                break;
             case EnemyStates.Chase:
                 ChaseState();
-                break;
-            case EnemyStates.Attack:
-                AttackState();
                 break;
             case EnemyStates.LeftAttack:
                 LeftAttackState();
@@ -59,52 +72,67 @@ public class Enemy : MonoBehaviour
 
     void ChaseHandler()
     {
-        float distance = Vector3.Distance(transform.position, target.position);
-        // Arrow'u moveDir yönüne döndür
-
-        if (distance > stopDistance)
+        if (target != null)
         {
-            //moveDir = ((target.position - transform.position)).normalized;
-            //transform.Translate(moveDir * moveSpeed * Time.deltaTime, Space.World);
-            agent.SetDestination(target.position);
-        }
-        else
-            return;
-        
+            float distance = Vector3.Distance(transform.position, target.position);
 
+            if (distance > stopDistance)
+            {
+                agent.SetDestination(target.position);
+            }
+        }
+        else        
+        {
+            currentEnemyState = EnemyStates.Patrol;
+            stateText.text = "Patrol State";
+            PatrolState();
+        }
+    }
+
+    private void PatrolState()
+    {
+        float randX = Random.Range(-Screen.width, Screen.width);
+        float randZ = Random.Range(-Screen.height, Screen.height);
+
+        Vector3 randomMoveDir = new Vector3(randX, transform.position.y, randZ);
+        agent.SetDestination(randomMoveDir);
     }
 
     private void ChaseState()
     {
         stateText.text = "Chase State";
-        isAttackAnimFinished = false;
-        // Eðer saldýrý tetiklendiyse, saldýrý durumuna geç
-        if (!isAttackAnimFinished  && isAttack && currentEnemyState != EnemyStates.Attack)
+
+        // Eðer hedef saldýrý menzilindeyse saldýrýya geç
+        float distance = Vector3.Distance(transform.position, target.position);
+        if (distance <= stopDistance)
         {
-            currentEnemyState = EnemyStates.Attack;
+            if (canAttack) // Eðer saldýrý yapabiliyorsa
+            {
+                // Rastgele bir saldýrý durumuna geç
+                float rnd = Random.Range(0f, 1f);
+                currentEnemyState = rnd > 0.5f ? EnemyStates.LeftAttack : EnemyStates.RightAttack;
+            }
         }
-    }
-
-    private void AttackState()
-    {
-        stateText.text = "Attack State";
-
-        // Rastgele bir saldýrý durumuna geç
-        float rnd = Random.Range(0f, 1f);
-        if (rnd > 0.5f) currentEnemyState = EnemyStates.LeftAttack;
-        else currentEnemyState = EnemyStates.RightAttack;
     }
 
     private void LeftAttackState()
     {
         stateText.text = "LeftAttack State";
-        StartCoroutine(AttackCooldownTimer());
+        transform.LookAt(target);
+        StartCoroutine(AttackAnimController());
+        agent.SetDestination(transform.position);
+        if (canAttack && isAnimPlaying) PlayerHit();
+        //else currentEnemyState = EnemyStates.Chase;
     }
 
     private void RightAttackState()
     {
         stateText.text = "RightAttack State";
-        StartCoroutine(AttackCooldownTimer());
+        transform.LookAt(target);
+        StartCoroutine(AttackAnimController());
+        agent.SetDestination(transform.position);
+        if (canAttack && isAnimPlaying) PlayerHit();
+        //else currentEnemyState = EnemyStates.Chase;
     }
 
     private void DefenseState()
@@ -112,37 +140,83 @@ public class Enemy : MonoBehaviour
         stateText.text = "Defense State";
     }
 
-    public IEnumerator AttackCooldownTimer()
+    public void PlayerHit() // => Hit fonksiyonu çalýþýnca burasý çalýþacal
     {
-        yield return new WaitForSeconds(1f); // Bekleme süresi
-        isAttackAnimFinished = true; // Saldýrý bitti
-        currentEnemyState = EnemyStates.Chase; // Chase durumuna dön
-    }
+        Collider[] hitColliders = Physics.OverlapSphere(hitPoint.position, hitRange);
 
+        foreach (Collider collider in hitColliders)
+        {
+            PlayerControllerFPS player = collider.GetComponent<PlayerControllerFPS>();
+            if (player != null)
+            {
+                player.TakeDamage(damage);
+                Debug.Log($"{player.name} has take damage by {gameObject.name}");
+                Debug.Log($"{gameObject.name}'s health = {health}");
+            }
+        }
+    }
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.GetComponentInParent<IDamagable>() != null)
         {
-            isAttack = true;
-            Debug.LogError("Player detected, isAttack = true");
-        }
-    }
-    private void OnTriggerStay(Collider other)
-    {
-        if(other.tag == "Player")
-        {
-            isAttack = true;
+            canAttack = true;
         }
     }
 
+    private void OnTriggerStay(Collider other)
+    {
+        if (other.GetComponentInParent<IDamagable>() != null)
+        {
+            StartCoroutine(AttackCooldownTimer());
+        }
+    }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.GetComponentInParent<IDamagable>() != null)
         {
-            isAttack = false;
-            Debug.LogError("Player left, isAttack = false");
+            canAttack = false;
+        }
+
+    }
+
+    public IEnumerator AttackAnimController() 
+    {
+        // Start Animation for Attack
+        isAnimPlaying = true;
+        animator.SetBool("isAttacking", true);
+        yield return new WaitForSeconds(attackAnimTime);
+        isAnimPlaying = false;
+        currentEnemyState = EnemyStates.Chase;
+        animator.SetBool("isAttacking", false);
+    }
+    public IEnumerator AttackCooldownTimer()
+    {
+        canAttack = false; // Saldýrý yapýlamaz
+        yield return new WaitForSeconds(attackCooldown); // Belirtilen süre kadar bekle
+        canAttack = true; // Saldýrý tekrar yapýlabilir
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        Debug.Log($"Enemy took {damage} damage! Remaining health: {health}");
+        if (health <= 0)
+        {
+            Die();
         }
     }
 
+    public void Die()
+    {
+        Destroy(gameObject);
+        Debug.Log("Enemy has died!");
+    }
+
+
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawSphere(hitPoint.position, hitRange);
+    }
 }

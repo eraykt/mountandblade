@@ -1,26 +1,42 @@
+using MountAndBlade;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerControllerFPS : MonoBehaviour
+public class PlayerControllerFPS : MonoBehaviour, IDamagable
 {
+    private Animator animator;
+    public Transform enemy;
+
     public float moveSpeed = 5f; // Hareket hýzý
     public float jumpForce = 5f; // Zýplama gücü
     public float gravityScale = 1f; // Yerçekimi ölçeði
     public bool isGrounded; // Karakterin yerde olup olmadýðýný kontrol etmek için
 
+    public int health = 100;
+    public int damage = 2;
+    public Transform hitPoint;
+    public float hitRange = 0.2f;
+    public bool isAttack = false;
+    public bool isAnimPlaying = false;
+
 
     private Rigidbody rb;
+
+
     void Start()
     {
-        rb = GetComponent<Rigidbody>();
+        //rb = GetComponent<Rigidbody>();
+        animator = GetComponentInChildren<Animator>();
     }
 
     void Update()
     {
         MovementHandler();
         JumpHandler();
-
+        if (Input.GetMouseButtonDown(1)) AttackHandler();
+        //Debug.Log($"Player Health : {health}");
     }
 
     void MovementHandler()
@@ -28,23 +44,15 @@ public class PlayerControllerFPS : MonoBehaviour
         // Hareket
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
-
-        Vector3 movement = new Vector3(moveX, 0, moveZ) * moveSpeed;
-        rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
-
-        // Zýplama
-        if (isGrounded && Input.GetButtonDown("Jump"))
-        {
-            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-        }
-
-        // Yerçekimi
-        rb.velocity += Vector3.up * Physics.gravity.y * gravityScale * Time.deltaTime;
+        transform.LookAt(enemy);
+        Vector3 movement = new Vector3(moveX, 0, moveZ).normalized * moveSpeed * Time.deltaTime;
+        transform.Translate(movement, Space.World);
+    //    rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
     }
 
     void JumpHandler()
     {
-        if (Input.GetKey(KeyCode.Space))
+        if (isGrounded && Input.GetKey(KeyCode.Space))
         {
             {
                 rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
@@ -53,5 +61,69 @@ public class PlayerControllerFPS : MonoBehaviour
             // Yerçekimi
             rb.velocity += Vector3.up * Physics.gravity.y * gravityScale * Time.deltaTime;
         }
+    }
+
+
+    void AttackHandler()
+    {
+        if (!isAnimPlaying && enemy)
+        {
+            Debug.Log("Attack Handler Working");
+            StartCoroutine(AttackAnimHandler());
+            isAttack = true;
+            EnemyHit();
+        }
+    }
+    IEnumerator AttackAnimHandler()
+    {
+        animator.SetBool("isAttacking", true);
+        isAnimPlaying = true;
+        yield return new WaitForSeconds(0.3f);
+        animator.SetBool("isAttacking", false);
+        isAnimPlaying = false;
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.GetComponentInParent<IDamagable>() != null)
+        {
+            Debug.Log(3131313);
+        }
+    }
+
+    public void EnemyHit()
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(hitPoint.position, hitRange);
+
+        foreach (Collider collider in hitColliders)
+        {
+            Enemy enemy = collider.GetComponent<Enemy>();
+            if (enemy != null && isAttack && enemy.GetComponent<IDamagable>() != null)
+            {
+                enemy.TakeDamage(damage);
+                isAttack = false;
+                Debug.Log($"{enemy.name} has take damage by {gameObject.name}");
+                Debug.Log($"{gameObject.name}'s health = {health}");
+            }
+        }
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+    public void Die()
+    {
+        Destroy(gameObject);
+    }
+    public void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawSphere(hitPoint.position, hitRange);
     }
 }
