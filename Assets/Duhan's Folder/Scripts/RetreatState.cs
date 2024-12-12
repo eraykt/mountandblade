@@ -1,33 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace MountAndBlade
 {
-    public class RetreatState : IState
+    public class RetreatState : MonoBehaviour
     {
-        private NavMeshAgent agent;
-        private Transform player;
-
-        public RetreatState(NavMeshAgent agent, Transform player)
+        // Start is called before the first frame update
+        void Start()
         {
-            this.agent = agent;
-            this.player = player;
+        
         }
 
-        public void Enter()
+        // Update is called once per frame
+        void Update()
         {
-            agent.speed = 8f;  // Retreat speed
+        
         }
-
-        public void Execute()
-        {
-            Vector3 directionAwayFromPlayer = agent.transform.position - player.position;
-            directionAwayFromPlayer.Normalize();
-            agent.SetDestination(agent.transform.position + directionAwayFromPlayer);
-        }
-
-        public void Exit() { }
     }
 }

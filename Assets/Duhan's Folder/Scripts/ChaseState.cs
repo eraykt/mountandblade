@@ -1,27 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.AI;
 
 namespace MountAndBlade
 {
-    public class ChaseState : IState
+    public class ChaseState : MonoBehaviour
     {
-        private NavMeshAgent agent;
-        private Transform player;
-
-        public ChaseState(NavMeshAgent agent, Transform player)
+        // Start is called before the first frame update
+        void Start()
         {
-            this.agent = agent;
-            this.player = player;
+        
         }
 
-        public void Enter() { }
-        public void Execute()
+        // Update is called once per frame
+        void Update()
         {
-            agent.SetDestination(player.position);
+        
         }
-
-        public void Exit() { }
     }
 }

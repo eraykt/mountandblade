@@ -4,44 +4,23 @@ using UnityEngine;
 
 namespace MountAndBlade
 {
-    public enum EnemyState
+    public class StateMachine : MonoBehaviour
     {
-        Patrol,
-        Chase,
-        Attack
-    }
+        private IState currentState;
 
-    public class StateMachine
-    {
-        private EnemyHandler _enemyHandler;
-        private IState _currentState;
-
-        public StateMachine(EnemyHandler enemyHandler)
+        public void changeState(IState _newState)
         {
-            _enemyHandler = enemyHandler;
+            currentState.Exit();
+            currentState = _newState;
+            currentState.Enter();  
         }
 
-        public void SetState(EnemyState state)
+        public void Execute()
         {
-            switch (state)
-            {
-                case EnemyState.Patrol:
-                    _currentState = new PatrolState(_enemyHandler);
-                    break;
-                case EnemyState.Chase:
-                    _currentState = new ChaseState(_enemyHandler);
-                    break;
-                case EnemyState.Attack:
-                    _currentState = new AttackState(_enemyHandler);
-                    break;
-            }
-
-            _currentState.Enter();
+            currentState.Execute();
         }
 
-        public void Tick()
-        {
-            _currentState?.Execute();
-        }
+
+
     }
 }
