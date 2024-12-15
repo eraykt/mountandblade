@@ -1,0 +1,81 @@
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using Unity.VisualScripting;
+using UnityEngine;
+using UnityEngine.EventSystems;
+
+namespace MountAndBlade
+{
+    public class EnemyChaseState : EnemyState
+    {
+        private Vector3 _targetPosition;
+        private Transform _transform;
+        public static bool IsAttacking;
+
+        public EnemyChaseState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine) : base(enemyBase, enemyStateMachine)
+        {
+            this.enemyBase = enemyBase;
+            this.enemyStateMachine = enemyStateMachine;
+        }
+
+        public override void AnimationTrigerEvent(EnemyBase.AnimationTriggerType triggerType)
+        {
+            base.AnimationTrigerEvent(triggerType);
+        }
+
+        public override void EnterState()
+        {
+            base.EnterState();
+            Debug.Log("Hello From Chase State !!");
+            enemyBase.agent.speed = GetRandomMoveSpeed();
+
+            enemyBase.animator.SetBool("b_isAttacking", false);
+            
+
+        }
+
+
+        public override void ExitState()
+        {
+            base.ExitState();
+
+        }
+
+        public override void FrameUpdate()
+        {
+            base.FrameUpdate();
+
+            enemyBase.MoveEnemy(enemyBase.GetTargetPosition());
+            DistanceBetweenEntities();
+
+           
+        }
+
+        public override void PhysicsUpdate()
+        {
+            base.PhysicsUpdate();
+        }
+       
+        
+        private void DistanceBetweenEntities()
+        {
+            //Debug.Log($"This Transform = {enemyBase.transform.position} \nEnemy Transform ={enemyBase.target.transform.position}\n" +
+            //    $"Distance Between = {Vector3.Distance(enemyBase.transform.position, enemyBase.target.transform.position)}");
+            if (Vector3.Distance(enemyBase.transform.position, enemyBase.target.transform.position) < 1.5f)
+            {
+                enemyBase.IsAttacking = true;
+                enemyBase.StateMachine.ChangeState(enemyBase.AttackState);
+            }
+        }
+
+        private float GetRandomMoveSpeed()
+        {
+            float randomMoveSpeed = UnityEngine.Random.Range(1f, enemyBase.maxMoveSpeed);
+            return randomMoveSpeed;
+        }
+        
+
+    }
+}

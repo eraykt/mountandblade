@@ -97,7 +97,7 @@ public class CamController : MonoBehaviour
     [SerializeField]
     private CinemachineFreeLook closeCam;
     [SerializeField]
-    private float rotationSpeed = 100f;
+    //private float rotationSpeed = 100f;
     private bool canMove;
 
     private CinemachineFreeLook activeCam;

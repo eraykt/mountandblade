@@ -7,14 +7,16 @@ using UnityEngine;
 public class PlayerControllerFPS : MonoBehaviour, IDamagable
 {
     private Animator animator;
-    public Transform enemy;
+    private GameObject enemyObject;
+    private Transform enemy;
+    public LayerMask enemyLayers;
 
     public float moveSpeed = 5f; // Hareket hýzý
     public float jumpForce = 5f; // Zýplama gücü
     public float gravityScale = 1f; // Yerçekimi ölçeði
     public bool isGrounded; // Karakterin yerde olup olmadýðýný kontrol etmek için
 
-    public int health = 100;
+    public int health = 1000000;
     public int damage = 2;
     public Transform hitPoint;
     public float hitRange = 0.2f;
@@ -29,13 +31,24 @@ public class PlayerControllerFPS : MonoBehaviour, IDamagable
     {
         //rb = GetComponent<Rigidbody>();
         animator = GetComponentInChildren<Animator>();
+        if(enemyObject  != null )
+            enemy = enemyObject.transform;
     }
 
     void Update()
     {
-        MovementHandler();
-        JumpHandler();
-        if (Input.GetMouseButtonDown(1)) AttackHandler();
+        enemyObject = GameObject.FindWithTag("Enemy");
+        if( enemyObject != null)
+        {
+            MovementHandler();
+            JumpHandler();
+            if (Input.GetMouseButtonDown(1)) AttackHandler();
+        }
+        else
+        {
+            // KAZANMA FONKSIYONLARI
+            Debug.Log("KAZANDIN AMK NE BEKLIYON CIK");
+        }
         //Debug.Log($"Player Health : {health}");
     }
 
@@ -44,7 +57,7 @@ public class PlayerControllerFPS : MonoBehaviour, IDamagable
         // Hareket
         float moveX = Input.GetAxis("Horizontal");
         float moveZ = Input.GetAxis("Vertical");
-        transform.LookAt(enemy);
+        transform.LookAt(enemyObject.transform);
         Vector3 movement = new Vector3(moveX, 0, moveZ).normalized * moveSpeed * Time.deltaTime;
         transform.Translate(movement, Space.World);
     //    rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
@@ -66,7 +79,7 @@ public class PlayerControllerFPS : MonoBehaviour, IDamagable
 
     void AttackHandler()
     {
-        if (!isAnimPlaying && enemy)
+        if (!isAnimPlaying && enemyObject)
         {
             Debug.Log("Attack Handler Working");
             StartCoroutine(AttackAnimHandler());
@@ -92,23 +105,39 @@ public class PlayerControllerFPS : MonoBehaviour, IDamagable
         }
     }
 
-    public void EnemyHit()
-    {
-        Collider[] hitColliders = Physics.OverlapSphere(hitPoint.position, hitRange);
+    //public void EnemyHit()
+    //{
+    //    Collider[] hitColliders = Physics.OverlapSphere(hitPoint.position, hitRange);
 
-        foreach (Collider collider in hitColliders)
+    //    foreach (Collider collider in hitColliders)
+    //    {
+    //        Enemy enemy = collider.GetComponent<Enemy>();
+    //        if (enemy != null && isAttack && enemy.GetComponent<IDamagable>() != null)
+    //        {
+    //            enemy.TakeDamage(damage);
+    //            isAttack = false;
+    //            Debug.Log($"{enemy.name} has take damage by {gameObject.name}");
+    //            Debug.Log($"{gameObject.name}'s health = {health}");
+    //        }
+    //    }
+    //}
+
+    public void EnemyHit() // => Hit fonksiyonu çalýþýnca burasý çalýþacal
+    {
+        Collider[] hitColliders = Physics.OverlapSphere(hitPoint.position, hitRange, enemyLayers);
+
+        foreach (Collider collider in hitColliders) // TO-DO : Make changes for SOLDIRES 
         {
-            Enemy enemy = collider.GetComponent<Enemy>();
-            if (enemy != null && isAttack && enemy.GetComponent<IDamagable>() != null)
+            IDamagable obj = collider.gameObject.GetComponent<IDamagable>();
+            if (obj != null)
             {
-                enemy.TakeDamage(damage);
+                obj.TakeDamage(damage);
                 isAttack = false;
-                Debug.Log($"{enemy.name} has take damage by {gameObject.name}");
+                Debug.Log($"{obj} has take damage by {gameObject.name}");
                 Debug.Log($"{gameObject.name}'s health = {health}");
             }
         }
     }
-
     public void TakeDamage(int damage)
     {
         health -= damage;

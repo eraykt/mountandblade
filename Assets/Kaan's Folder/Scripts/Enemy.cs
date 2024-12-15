@@ -5,14 +5,20 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static MountAndBlade.Soldier;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Enemy : MonoBehaviour, IDamagable
 {
-    public Transform target;
+    public EnemyCountManager enemyCountManagerScript;
+
+
+    public GameObject player;
+    private Transform target;
     public TextMeshPro stateText;
     private NavMeshAgent agent;
     public Animator animator;
-
+    public LayerMask playerLayers;
     public float moveSpeed = 5f;
     public Vector3 moveDir;
     private float stopDistance = 1.5f;
@@ -37,14 +43,22 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponentInChildren<Animator>();
+        player = GameObject.FindWithTag("Player");
+        target = player.transform;
+        agent.speed = Random.Range(2f, 5f);
     }
 
     void Update()
     {
+        target = FindClosestPlayer();
         if (target)
         {
             StateMachine();
             ChaseHandler();
+        }
+        else
+        {
+            currentEnemyState = EnemyStates.Patrol;
         }
     }
 
@@ -59,10 +73,10 @@ public class Enemy : MonoBehaviour, IDamagable
                 ChaseState();
                 break;
             case EnemyStates.LeftAttack:
-                LeftAttackState();
-                break;
+                AttackState("LeftAttack");
+                break; 
             case EnemyStates.RightAttack:
-                RightAttackState();
+                AttackState("RightAttack");
                 break;
             case EnemyStates.Defense:
                 DefenseState();
@@ -72,21 +86,21 @@ public class Enemy : MonoBehaviour, IDamagable
 
     void ChaseHandler()
     {
-        if (target != null)
-        {
+       // if (player != null)
+        
             float distance = Vector3.Distance(transform.position, target.position);
 
             if (distance > stopDistance)
             {
                 agent.SetDestination(target.position);
             }
-        }
-        else        
-        {
-            currentEnemyState = EnemyStates.Patrol;
-            stateText.text = "Patrol State";
-            PatrolState();
-        }
+        
+        //else        
+        //{
+        //    currentEnemyState = EnemyStates.Patrol;
+        //    stateText.text = "Patrol State";
+        //    PatrolState();
+        //}
     }
 
     private void PatrolState()
@@ -115,25 +129,36 @@ public class Enemy : MonoBehaviour, IDamagable
         }
     }
 
-    private void LeftAttackState()
+    private void AttackState(string attackType)
     {
-        stateText.text = "LeftAttack State";
-        transform.LookAt(target);
-        StartCoroutine(AttackAnimController());
+        Debug.Log($"Animasyon : {animator.GetBool("isAttacking")}");
+        Debug.Log($"State : {attackType} State");
+        transform.LookAt(target.transform); // Enemy'e dön
+        isAnimPlaying = true;
+        StartCoroutine(AttackHandler());
         agent.SetDestination(transform.position);
-        if (canAttack && isAnimPlaying) PlayerHit();
-        //else currentEnemyState = EnemyStates.Chase;
+
+
     }
 
-    private void RightAttackState()
+    private Transform FindClosestPlayer()
     {
-        stateText.text = "RightAttack State";
-        transform.LookAt(target);
-        StartCoroutine(AttackAnimController());
-        agent.SetDestination(transform.position);
-        if (canAttack && isAnimPlaying) PlayerHit();
-        //else currentEnemyState = EnemyStates.Chase;
+        GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+        float closestDistance = Mathf.Infinity;
+        Transform closestPlayer = null;
+
+        foreach (GameObject player in players)
+        {
+            float distance = Vector3.Distance(transform.position, player.transform.position);
+            if(distance < closestDistance)
+            {
+                closestDistance = distance;
+                closestPlayer = player.transform;
+            }
+        }
+        return closestPlayer;
     }
+
 
     private void DefenseState()
     {
@@ -142,15 +167,15 @@ public class Enemy : MonoBehaviour, IDamagable
 
     public void PlayerHit() // => Hit fonksiyonu çalýþýnca burasý çalýþacal
     {
-        Collider[] hitColliders = Physics.OverlapSphere(hitPoint.position, hitRange);
+        Collider[] hitColliders = Physics.OverlapSphere(hitPoint.position, hitRange, playerLayers);
 
-        foreach (Collider collider in hitColliders)
+        foreach (Collider collider in hitColliders) // TO-DO : Make changes for SOLDIRES 
         {
-            PlayerControllerFPS player = collider.GetComponent<PlayerControllerFPS>();
-            if (player != null)
+            IDamagable obj = collider.gameObject.GetComponent<IDamagable>();
+            if (obj != null)
             {
-                player.TakeDamage(damage);
-                Debug.Log($"{player.name} has take damage by {gameObject.name}");
+                obj.TakeDamage(damage);
+                Debug.Log($"{obj} has take damage by {gameObject.name}");
                 Debug.Log($"{gameObject.name}'s health = {health}");
             }
         }
@@ -171,6 +196,8 @@ public class Enemy : MonoBehaviour, IDamagable
         }
     }
 
+    
+
     private void OnTriggerExit(Collider other)
     {
         if (other.GetComponentInParent<IDamagable>() != null)
@@ -180,21 +207,21 @@ public class Enemy : MonoBehaviour, IDamagable
 
     }
 
-    public IEnumerator AttackAnimController() 
+    private IEnumerator AttackHandler()
     {
-        // Start Animation for Attack
-        isAnimPlaying = true;
         animator.SetBool("isAttacking", true);
-        yield return new WaitForSeconds(attackAnimTime);
+        yield return new WaitForSeconds(2f); // Adjust based on animation length
+        PlayerHit();
         isAnimPlaying = false;
-        currentEnemyState = EnemyStates.Chase;
         animator.SetBool("isAttacking", false);
+        currentEnemyState = EnemyStates.Chase;
     }
-    public IEnumerator AttackCooldownTimer()
+
+    private IEnumerator AttackCooldownTimer()
     {
-        canAttack = false; // Saldýrý yapýlamaz
-        yield return new WaitForSeconds(attackCooldown); // Belirtilen süre kadar bekle
-        canAttack = true; // Saldýrý tekrar yapýlabilir
+        canAttack = false;
+        yield return new WaitForSeconds(1f);
+        canAttack = true;
     }
 
     public void TakeDamage(int damage)

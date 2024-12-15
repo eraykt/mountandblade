@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 1892083663761751560}
   - component: {fileID: 6296036248777745516}
   - component: {fileID: 5758395631257071450}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Eyes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -114,7 +114,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8101618468183379911}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: TopCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -150,9 +150,9 @@ GameObject:
   - component: {fileID: 1592537705089901353}
   - component: {fileID: 7080068583313136769}
   - component: {fileID: 373216743221776577}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: _Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -293,7 +293,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2630389279206062377}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DesiredCam
   m_TagString: Untagged
   m_Icon: {fileID: 0}
