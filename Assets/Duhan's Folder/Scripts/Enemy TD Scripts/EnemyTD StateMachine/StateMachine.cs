@@ -4,20 +4,18 @@ using UnityEngine;
 
 namespace MountAndBlade
 {
-    public class StateMachine
+    public class StateMachine : MonoBehaviour
     {
-        private IState currentState;
-
-        public void ChangeState(IState newState)
+        // Start is called before the first frame update
+        void Start()
         {
-            currentState?.Exit();
-            currentState = newState;
-            currentState.Enter();
+        
         }
 
-        public void Update()
+        // Update is called once per frame
+        void Update()
         {
-            currentState?.Update();
+        
         }
     }
 }
