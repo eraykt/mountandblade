@@ -6,7 +6,7 @@ namespace MountAndBlade
 {
     public class EnemyTDStateMachine 
     {
-        EnemyTDState currentState;
+        public EnemyTDState currentState {  get; private set; }
         
         public void InitializeState(EnemyTDState _startingState)
         {
