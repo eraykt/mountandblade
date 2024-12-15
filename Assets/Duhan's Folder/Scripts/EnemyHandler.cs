@@ -168,6 +168,7 @@ namespace MountAndBlade
         {
             while (true)
             {
+                yield return new WaitForEndOfFrame();// framein bitmesini beklemesini saðlýyor.   yoksa 1 frame de sürekli çalýþmaya devam ediyor.
                 canGeneratePos = false;
                 // Random bir konum oluþtur
                 Vector3 randomPosition = GetRandomPositionWithinBounds();
