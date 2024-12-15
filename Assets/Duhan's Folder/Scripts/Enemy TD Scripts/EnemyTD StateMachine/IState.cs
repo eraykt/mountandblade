@@ -4,18 +4,10 @@ using UnityEngine;
 
 namespace MountAndBlade
 {
-    public class IState : MonoBehaviour
+    public interface IState
     {
-        // Start is called before the first frame update
-        void Start()
-        {
-        
-        }
-
-        // Update is called once per frame
-        void Update()
-        {
-        
-        }
+        void Enter();
+        void Update();
+        void Exit();
     }
 }
