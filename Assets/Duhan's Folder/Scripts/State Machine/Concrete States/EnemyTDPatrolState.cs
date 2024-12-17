@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -8,11 +9,8 @@ namespace MountAndBlade
 {
     public class EnemyTDPatrolState : EnemyTDState
     {
-        [field: SerializeField] public Vector3 boundsMin; // Sýnýrlarýn minimum noktasý
-        [field: SerializeField] public Vector3 boundsMax; // Sýnýrlarýn maksimum noktasý
-
-        
-        
+        private Vector3 boundsMin; // Sýnýrlarýn minimum noktasý
+        private Vector3 boundsMax; // Sýnýrlarýn maksimum noktasý
 
         public EnemyTDPatrolState(EnemyTD _enemy, EnemyTDStateMachine _enemyStateMachine) : base(_enemy, _enemyStateMachine)
         {
@@ -38,6 +36,8 @@ namespace MountAndBlade
         {
             base.FrameUpdate();
             MoveToNewRandomPos();
+
+            
         }
 
         
