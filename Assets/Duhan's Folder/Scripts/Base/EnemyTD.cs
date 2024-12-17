@@ -12,6 +12,10 @@ namespace MountAndBlade
         public GameObject player { get; set; }//Eraya bi sorarýz get set yazmak sadece ne iþe yarýyor.
         public EnemyTDStateMachine stateMachine { get; set; }
         public EnemyTDPatrolState patrolState { get; set; }  
+        //public EnemyTDMoveToDestinationState moveToDestState { get; set; }  
+        //public EnemyTDGeneratePosState genRandPosState { get; set; }
+
+        public Vector3 randPos;
         private void Awake()
         {
             player = GameObject.FindGameObjectWithTag("Player");
@@ -19,6 +23,10 @@ namespace MountAndBlade
 
             stateMachine = new EnemyTDStateMachine();
             patrolState = new EnemyTDPatrolState(this, stateMachine);
+            //genRandPosState = new EnemyTDGeneratePosState(this,stateMachine);
+            //moveToDestState = new EnemyTDMoveToDestinationState(this, stateMachine); // buradaki rand posu yazmadan nasýl kullanabilrim
+
+
         }
         
         
@@ -27,6 +35,7 @@ namespace MountAndBlade
         void Start()
         {
             stateMachine.InitializeState(patrolState);
+            
         }
 
         // Update is called once per frame
@@ -34,6 +43,7 @@ namespace MountAndBlade
         {
             stateMachine.currentState.FrameUpdate();
         }
+
         public void MoveToDestination(Vector3 position)
         {
             agent.SetDestination(position);
