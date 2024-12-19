@@ -28,7 +28,7 @@ public class Enemy : MonoBehaviour, IDamagable
     public bool isAttack = false;
     public bool isAnimPlaying = false;
 
-    public float attackCooldown = 2f; // Saldırılar arasında geçen süre
+    public float attackCooldown = 2f; // SaldÃ½rÃ½lar arasÃ½nda geÃ§en sÃ¼re
     public float attackAnimTime = 1.3f;
 
     public enum EnemyStates { Chase, Patrol, LeftAttack, RightAttack, Defense }
@@ -116,13 +116,13 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         stateText.text = "Chase State";
 
-        // Eğer hedef saldırı menzilindeyse saldırıya geç
+        // EÃ°er hedef saldÃ½rÃ½ menzilindeyse saldÃ½rÃ½ya geÃ§
         float distance = Vector3.Distance(transform.position, target.position);
         if (distance <= stopDistance)
         {
-            if (canAttack) // Eğer saldırı yapabiliyorsa
+            if (canAttack) // EÃ°er saldÃ½rÃ½ yapabiliyorsa
             {
-                // Rastgele bir saldırı durumuna geç
+                // Rastgele bir saldÃ½rÃ½ durumuna geÃ§
                 float rnd = Random.Range(0f, 1f);
                 currentEnemyState = rnd > 0.5f ? EnemyStates.LeftAttack : EnemyStates.RightAttack;
             }
@@ -133,7 +133,7 @@ public class Enemy : MonoBehaviour, IDamagable
     {
         Debug.Log($"Animasyon : {animator.GetBool("isAttacking")}");
         Debug.Log($"State : {attackType} State");
-        transform.LookAt(target.transform); // Enemy'e dön
+        transform.LookAt(target.transform); // Enemy'e dÃ¶n
         isAnimPlaying = true;
         StartCoroutine(AttackHandler());
         agent.SetDestination(transform.position);
@@ -165,7 +165,7 @@ public class Enemy : MonoBehaviour, IDamagable
         stateText.text = "Defense State";
     }
 
-    public void PlayerHit() // => Hit fonksiyonu çalışınca burası çalışacal
+    public void PlayerHit() // => Hit fonksiyonu Ã§alÃ½Ã¾Ã½nca burasÃ½ Ã§alÃ½Ã¾acal
     {
         Collider[] hitColliders = Physics.OverlapSphere(hitPoint.position, hitRange, playerLayers);
 
