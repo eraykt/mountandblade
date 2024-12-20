@@ -17,6 +17,7 @@ public class InventoryManager : MonoBehaviour
 
     private void PopulateInventory() 
     {
+
         foreach (var item in items) 
         {
             GameObject slotObject = Instantiate(slotPrefab, content);
@@ -31,6 +32,7 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
+
 
     private void AddEmptySlots() 
     {

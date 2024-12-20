@@ -9,4 +9,9 @@ public class Item : ScriptableObject
     public Sprite Itemicon;
     public float weight;
     public int salePrice;
+
+    public virtual string GetItemDetails()
+    {
+        return $"Name: {Itemname}\nDescription: {description}\nWeight: {weight} kg\nSale Price: {salePrice} gold";
+    }
 }

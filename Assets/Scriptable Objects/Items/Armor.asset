@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3ec41fa49bdeda0479c6ff7798d51f7e, type: 3}
   m_Name: Armor
   m_EditorClassIdentifier: 
-  name: 
-  description: 
-  icon: {fileID: 0}
-  weight: 0
-  salePrice: 0
-  defense: 0
-  health: 0
-  armorType: 0
+  Itemname: rawhide coat
+  description: no requirement needed
+  Itemicon: {fileID: 21300000, guid: 4c902b0c579846541b99f729600f0e63, type: 3}
+  weight: 5
+  salePrice: 20
+  defense: 10
+  health: 12
+  armorType: 4

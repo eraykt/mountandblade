@@ -6,4 +6,9 @@ using UnityEngine;
 public class Food : Item
 {
     public int moraleBonus;
+
+    public override string GetItemDetails()
+    {
+        return base.GetItemDetails() + $"\nMorale Bonus: {moraleBonus}";
+    }
 }

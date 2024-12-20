@@ -9,12 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8220d5024d9d5e744b02c1d7a73e19df, type: 3}
-  m_Name: Food
+  m_Script: {fileID: 11500000, guid: 1e9d649e51335c04592c12441b92ca8e, type: 3}
+  m_Name: Hourse
   m_EditorClassIdentifier: 
-  Itemname: flour
-  description: doesn't spoil
-  Itemicon: {fileID: 21300000, guid: 0b7fea692dad2f648938412021c3b133, type: 3}
-  weight: 50
+  Itemname: 
+  description: 
+  Itemicon: {fileID: 0}
+  weight: 0
   salePrice: 0
-  moraleBonus: 0
+  health: 0
+  speed: 0

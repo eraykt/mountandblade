@@ -6,24 +6,28 @@ using UnityEngine.UI;
 
 public class DropSlot : MonoBehaviour, IDropHandler
 {
-    public Image icon;
+   public Image icon;
 
-    public void OnDrop(PointerEventData eventData) 
+
+    public void OnDrop(PointerEventData eventData)
     {
-        GameObject droppedItem = eventData.pointerDrag; //sürüklenen itemi almak için
+        GameObject droppedItem = eventData.pointerDrag; // sürüklenen itemi almak için
 
-        if (icon != null && icon.enabled) 
+        // Eðer slot doluysa iþlemi engelle
+        if (icon != null && icon.enabled)
         {
-            Debug.Log("slot not empty.");
+            Debug.Log("Slot is already occupied.");
             return;
         }
 
-        if(droppedItem != null) 
+        DraggableItem draggableItem = droppedItem?.GetComponent<DraggableItem>();
+        if (droppedItem != null)
         {
             droppedItem.transform.SetParent(transform);
             droppedItem.transform.position = transform.position;
-
-            icon.enabled = true;
+            if (icon != null)
+                icon.enabled = true;
         }
     }
+
 }
