@@ -528,12 +528,12 @@ PrefabInstance:
     - target: {fileID: 198215682730886660, guid: 5085f126b86c13f46937a2143b8935a7,
         type: 3}
       propertyPath: randomSeed
-      value: -1866071604
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198595542957081062, guid: 5085f126b86c13f46937a2143b8935a7,
         type: 3}
       propertyPath: randomSeed
-      value: -1331727543
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1119,7 +1119,7 @@ PrefabInstance:
     - target: {fileID: 198569677445103170, guid: 1b09a7fc50f421946b2eda7e5f09e698,
         type: 3}
       propertyPath: randomSeed
-      value: -532901978
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -3502,12 +3502,12 @@ PrefabInstance:
     - target: {fileID: 198166448533278184, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: 647465270
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198379325601574384, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: 1476027528
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -5822,12 +5822,12 @@ PrefabInstance:
     - target: {fileID: 198166448533278184, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: 805638109
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198379325601574384, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: -236160883
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -6259,7 +6259,7 @@ PrefabInstance:
     - target: {fileID: 198569677445103170, guid: 1b09a7fc50f421946b2eda7e5f09e698,
         type: 3}
       propertyPath: randomSeed
-      value: 1107441457
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -8242,7 +8242,7 @@ PrefabInstance:
     - target: {fileID: 198429009732717344, guid: 42d15d42149ed484d8aea06290796e07,
         type: 3}
       propertyPath: randomSeed
-      value: -81442670
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -9278,12 +9278,12 @@ PrefabInstance:
     - target: {fileID: 198166448533278184, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: -252691047
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198379325601574384, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: -246466136
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -10369,7 +10369,7 @@ PrefabInstance:
     - target: {fileID: 198569677445103170, guid: 1b09a7fc50f421946b2eda7e5f09e698,
         type: 3}
       propertyPath: randomSeed
-      value: -1160922009
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11116,12 +11116,12 @@ PrefabInstance:
     - target: {fileID: 198166448533278184, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: -1779576299
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198379325601574384, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: 1650297611
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11347,12 +11347,12 @@ PrefabInstance:
     - target: {fileID: 198166448533278184, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: -698680181
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198379325601574384, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: -1538247161
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -11927,12 +11927,12 @@ PrefabInstance:
     - target: {fileID: 198166448533278184, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: -1046474487
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 198379325601574384, guid: 5d5da19b06b71d74baef1d8c22f634e1,
         type: 3}
       propertyPath: randomSeed
-      value: 975572562
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -12753,6 +12753,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3367198133137666702, guid: 53520964befd79e409e8ad896b88080c,
+        type: 3}
+      propertyPath: _attackWays.Array.data[1]._way
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 3367198133137666702, guid: 53520964befd79e409e8ad896b88080c,
+        type: 3}
+      propertyPath: _attackWays.Array.data[2]._way
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 3367198133137666702, guid: 53520964befd79e409e8ad896b88080c,
+        type: 3}
+      propertyPath: _attackWays.Array.data[3]._way
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4985697445439507281, guid: 53520964befd79e409e8ad896b88080c,
         type: 3}
