@@ -5732,7 +5732,7 @@ MonoBehaviour:
   m_TileSize: 256
   m_OverrideVoxelSize: 0
   m_VoxelSize: 0.16666667
-  m_MinRegionArea: 2
+  m_MinRegionArea: 10000000
   m_NavMeshData: {fileID: 23800000, guid: 7c82c663cc2ad154f8c2fef8f9c9092c, type: 2}
   m_BuildHeightMesh: 0
 --- !u!4 &1000124723
@@ -5971,7 +5971,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195802538}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.26273292, y: 0.000000011310045, z: -0.0000000030797151, w: 0.9648686}
+  m_LocalRotation: {x: 0.26273292, y: 0.000000011310042, z: -0.0000000030797134, w: 0.9648686}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7206,7 +7206,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1415465004}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.23480508, y: -0.000000016725332, z: 0.0000000040401456, w: 0.9720425}
+  m_LocalRotation: {x: 0.23480508, y: 0.000000016725336, z: -0.000000004040147, w: 0.9720425}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7731,7 +7731,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1481494661}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18617815, y: 0.000000018900973, z: -0.0000000035815684, w: 0.982516}
+  m_LocalRotation: {x: 0.18617815, y: -0.000000018900973, z: 0.0000000035815684, w: 0.982516}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8573,7 +8573,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594801652}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.18617815, y: 0.000000037801946, z: -0.0000000071631363, w: 0.98251605}
+  m_LocalRotation: {x: 0.18617815, y: -0.000000037801946, z: 0.0000000071631363, w: 0.98251605}
   m_LocalPosition: {x: 0, y: 20.07, z: -25.79}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8927,7 +8927,7 @@ MonoBehaviour:
   moveSpeed: 20
   topCam: {fileID: 551135183}
   closeCam: {fileID: 1821237495}
-  rotationSpeed: 100
+  canMove: 0
 --- !u!1 &1645021510
 GameObject:
   m_ObjectHideFlags: 0
