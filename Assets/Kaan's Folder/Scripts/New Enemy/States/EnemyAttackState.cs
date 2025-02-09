@@ -21,16 +21,6 @@ namespace MountAndBlade
         {
             base.AnimationTrigerEvent(triggerType);
         }
-
-        public override void EnterState()
-        {
-            base.EnterState();
-
-            Debug.Log("Hello From Attack State");
-            enemyBase.transform.LookAt(enemyBase.target.transform.position);
-            Debug.Log(enemyBase.target.transform.position);
-        }
-
         public override void ExitState()
         {
             base.ExitState();
@@ -38,6 +28,15 @@ namespace MountAndBlade
             Debug.LogWarning("Exit Attack State");
 
         }
+
+        public override void EnterState()
+        {
+            base.EnterState();
+
+            enemyBase.transform.LookAt(enemyBase.target.transform.position);
+            Debug.Log(enemyBase.target.transform.position);
+        }
+
 
         public override void FrameUpdate()
         {

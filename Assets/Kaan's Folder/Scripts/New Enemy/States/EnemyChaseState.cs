@@ -42,27 +42,20 @@ namespace MountAndBlade
             base.ExitState();
 
         }
-
-        public override void FrameUpdate()
-        {
-            base.FrameUpdate();
-
-            enemyBase.MoveEnemy(enemyBase.GetTargetPosition());
-            DistanceBetweenEntities();
-
-           
-        }
-
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
         }
-       
-        
+
+        public override void FrameUpdate()
+        {
+            base.FrameUpdate();
+            enemyBase.MoveEnemy(enemyBase.GetTargetPosition());
+            DistanceBetweenEntities();
+        }
+
         private void DistanceBetweenEntities()
         {
-            //Debug.Log($"This Transform = {enemyBase.transform.position} \nEnemy Transform ={enemyBase.target.transform.position}\n" +
-            //    $"Distance Between = {Vector3.Distance(enemyBase.transform.position, enemyBase.target.transform.position)}");
             if (Vector3.Distance(enemyBase.transform.position, enemyBase.target.transform.position) < 1.5f)
             {
                 enemyBase.IsAttacking = true;

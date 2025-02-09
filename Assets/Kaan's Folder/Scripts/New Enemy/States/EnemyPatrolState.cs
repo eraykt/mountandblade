@@ -28,7 +28,10 @@ namespace MountAndBlade
 
         public override void FrameUpdate()
         {
-            base.FrameUpdate();
+            if (enemyBase.target != null)
+            {
+                enemyStateMachine.ChangeState(enemyBase.ChaseState);
+            }
         }
 
         public override void PhysicsUpdate()
