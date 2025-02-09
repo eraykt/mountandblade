@@ -7,7 +7,7 @@ namespace MountAndBlade
     public class EnemyPatrolState : EnemyState
     {
         [field: SerializeField] public Transform _target;
-        public EnemyPatrolState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine) : base(enemyBase, enemyStateMachine)
+        public EnemyPatrolState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine) : base(enemyBase, enemyStateMachine, Vector3.zero )
         {
         }
 

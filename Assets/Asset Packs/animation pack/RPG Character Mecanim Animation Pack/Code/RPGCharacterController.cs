@@ -393,7 +393,7 @@ namespace RPGCharacterAnims
         private void Awake()
         {
             // Setup Animator, add AnimationEvents script.
-            animator = GetComponentInChildren<Animator>();
+            //animator = GetComponentInChildren<Animator>();
 
             if (!animator) {
                 Debug.LogError("ERROR: There is no Animator Component on child of character.");

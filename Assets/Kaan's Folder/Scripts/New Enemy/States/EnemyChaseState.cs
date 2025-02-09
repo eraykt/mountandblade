@@ -14,10 +14,11 @@ namespace MountAndBlade
         private Transform _transform;
         public static bool IsAttacking;
 
-        public EnemyChaseState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine) : base(enemyBase, enemyStateMachine)
+        public EnemyChaseState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine, Vector3 targetPosition) : base(enemyBase, enemyStateMachine, Vector3.zero)
         {
             this.enemyBase = enemyBase;
             this.enemyStateMachine = enemyStateMachine;
+            this._targetPosition = targetPosition;
         }
 
         public override void AnimationTrigerEvent(EnemyBase.AnimationTriggerType triggerType)
@@ -31,7 +32,7 @@ namespace MountAndBlade
             Debug.Log("Hello From Chase State !!");
             enemyBase.agent.speed = GetRandomMoveSpeed();
 
-            enemyBase.animator.SetBool("b_isAttacking", false);
+            //enemyBase.animator.SetBool("b_isAttacking", false);
             
 
         }
@@ -50,14 +51,20 @@ namespace MountAndBlade
         public override void FrameUpdate()
         {
             base.FrameUpdate();
-            enemyBase.MoveEnemy(enemyBase.GetTargetPosition());
+
+            // Vector3 targetPos = enemyBase.GetTargetPosition();
+
+            Vector3 targetPos = enemyBase.GetTargetPosition();
+            enemyBase.MoveEnemy(_targetPosition);
+            Debug.Log("EnemyChaseState : " + _targetPosition);
             DistanceBetweenEntities();
         }
 
         private void DistanceBetweenEntities()
         {
-            if (Vector3.Distance(enemyBase.transform.position, enemyBase.target.transform.position) < 1.5f)
+            if (Vector3.Distance(enemyBase.transform.position, enemyBase.target.transform.position) < 3f)
             {
+                Debug.Log("Yeterince yakýnlaþtýk");
                 enemyBase.IsAttacking = true;
                 enemyBase.StateMachine.ChangeState(enemyBase.AttackState);
             }

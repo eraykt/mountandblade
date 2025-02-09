@@ -11,7 +11,7 @@ namespace MountAndBlade
         private float _timer;
         public float _cooldownTimer { get; set; }
         private float cooldownTime = 10.0f; 
-        public EnemyAttackState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine) : base(enemyBase, enemyStateMachine)
+        public EnemyAttackState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine) : base(enemyBase, enemyStateMachine, Vector3.zero)
         {
             this.enemyBase = enemyBase;
             this.enemyStateMachine = enemyStateMachine;
@@ -64,7 +64,7 @@ namespace MountAndBlade
             if (_cooldownTimer < cooldownTime)
             {
                 
-                enemyBase.animator.SetBool("b_isAttacking", true);
+                //enemyBase.animator.SetBool("b_isAttacking", true);
                 Debug.Log("ÜstKISIMMM");
             }
             _cooldownTimer = 0;
