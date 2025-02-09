@@ -2,10 +2,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using DG.Tweening;
+using MountAndBlade;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class AttackController : MonoBehaviour
+public class PlayerAttackController : MonoBehaviour
 {
     public TwoBoneIKConstraint _twoBoneIK;
     [SerializeField] private Transform _target;
@@ -13,10 +14,10 @@ public class AttackController : MonoBehaviour
     
     private Animator _animator;
     
-    [SerializeField] private List<AttackWay> _attackWays ;
+    [SerializeField] private List<AttackWayStruct> _attackWays ;
 
     private Vector2 _mouseDelta;
-    private string _currentWay = "";
+    private AttackWay _currentWay = MountAndBlade.AttackWay.Right;
     public float _threshold;
 
     private Vector2 _accumulatedDelta = Vector2.zero;
@@ -39,13 +40,13 @@ public class AttackController : MonoBehaviour
             // Yön tayini
             if (Mathf.Abs(_accumulatedDelta.x) > Mathf.Abs(_accumulatedDelta.y))
             {
-                if (_accumulatedDelta.x > _threshold) AttackWay("right");
-                else if (_accumulatedDelta.x < -_threshold) AttackWay("left");
+                if (_accumulatedDelta.x > _threshold) AttackWay(MountAndBlade.AttackWay.Right);
+                else if (_accumulatedDelta.x < -_threshold) AttackWay(MountAndBlade.AttackWay.Left);
             }
             else
             {
-                if (_accumulatedDelta.y > _threshold/3f) AttackWay("up");
-                else if (_accumulatedDelta.y < -_threshold/3f) AttackWay("down");
+                if (_accumulatedDelta.y > _threshold/3f) AttackWay(MountAndBlade.AttackWay.Up);
+                else if (_accumulatedDelta.y < -_threshold/3f) AttackWay(MountAndBlade.AttackWay.Down);
             }
 
             // Birikimi yavaşça sıfırla (yumuşak sıfırlama)
@@ -56,7 +57,7 @@ public class AttackController : MonoBehaviour
         else if (Input.GetMouseButtonUp(0))
         {
             _accumulatedDelta = Vector2.zero;
-            _animator.SetTrigger(_currentWay == "" ? "right" : _currentWay);
+            _animator.SetTrigger(_currentWay.ToString());
             _attackWays.ForEach(x => x._indicator.gameObject.SetActive(false));
             DOVirtual.Float(_twoBoneIK.weight, 0f, 0.5f, val => _twoBoneIK.weight = val);
         }
@@ -64,18 +65,18 @@ public class AttackController : MonoBehaviour
            
     }
 
-    private void AttackWay(string way)
+    private void AttackWay(MountAndBlade.AttackWay way)
     {
         if (_currentWay.Equals(way)) return;
-        if (way.Equals(""))
-        {
-            _currentWay = "";
-            return;
-        }
+        // if (way.Equals(""))
+        // {
+        //     _currentWay = "";
+        //     return;
+        // }
         
         _attackWays.ForEach(x => x._indicator.gameObject.SetActive(false));
         _currentWay = way;
-        var newAttackWay = _attackWays.Find(x => x._name.Equals(way));
+        var newAttackWay = _attackWays.Find(x => x._way.Equals(way));
         newAttackWay._indicator.gameObject.SetActive(true);
         
         _target.DOLocalMove(newAttackWay._target.localPosition, 0.5f);
@@ -95,9 +96,9 @@ public class AttackController : MonoBehaviour
 }
 
 [System.Serializable]
-public class AttackWay
+public struct AttackWayStruct
 {
-    public string _name;
+    public AttackWay _way;
     public Transform _target;
     public Transform _hint;
     public Image _indicator;
