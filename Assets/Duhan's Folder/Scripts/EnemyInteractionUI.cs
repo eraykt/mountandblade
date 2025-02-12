@@ -8,6 +8,14 @@ namespace MountAndBlade
 {
     public class EnemyInteractionUI : MonoBehaviour
     {
+
+        //çarpýþma gerçekleþirse ekran açýlsýn
+        //çarpýþma dan çýkýlmadýkça tekrar çarpýþma gerçekleþemesin.
+        //üzerine týklanýrsa belli bir yakýnlýkta parýldasýn ve parýldýyorken basýlýrsa ekran açýlsýn
+
+        public Material glowMaterial; // Parlama için kullanýlacak malzeme
+        private Material originalMaterial;
+
         public GameObject enemyInterractionUI;
 
         public Button engageCombatButton;
@@ -19,7 +27,7 @@ namespace MountAndBlade
 
         private float distanceToPlayer;
         [SerializeField] float engageDistanceTreshold;
-
+        private bool isInterractable = false;
         private bool canBeOpenedAgain = true;// alanýn içindeyken sürekli açýk kalmamasý için.
 
         
@@ -27,9 +35,14 @@ namespace MountAndBlade
         {
             HandleButtonInterraction();
         }
+
+        private void Start()
+        {
+            originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
+        }
         private void Update()
         {
-            InterractWithDistance();
+            DistanceChecks();
         }
 
         private void OpenInterractionUI()
@@ -46,26 +59,43 @@ namespace MountAndBlade
 
         private void OnMouseDown()
         {
-            OpenInterractionUI();
+            if(isInterractable)
+                OpenInterractionUI();
         }
         
-        private void InterractWithDistance()
+        private void DistanceChecks()
         {
             distanceToPlayer = Vector3.Distance(transform.position, player.position);
-            if (engageDistanceTreshold < distanceToPlayer)
+
+            if (engageDistanceTreshold < distanceToPlayer)// eðer dýþýndaysak tekrar açýlabilir olsun. ama etkileþime girilemez olsun
             {
+                HandleGlow(false);
+                isInterractable = false;
                 canBeOpenedAgain = true;
             }
             //içinde durduðu sürece açýk kalmasýný istemiyorum , içine girdiðinde açýlabilir ama içindeyken açýlýrsa tekrar açýlmasý için ilk uzaklaþmasý lazým
 
-            if (engageDistanceTreshold >= distanceToPlayer && canBeOpenedAgain == true)
+            if (engageDistanceTreshold >= distanceToPlayer && canBeOpenedAgain == true)// eðer yeterince yakýnsak interractable olsun
             {
-                OpenInterractionUI();                
+                HandleGlow(true);
+                isInterractable = true;
                 canBeOpenedAgain = false;
             }
 
 
             
+        }
+        private void HandleGlow(bool enable)
+        {
+            Renderer renderer = GetComponent<Renderer>();
+            if (enable)
+            {
+                renderer.material = glowMaterial;
+            }
+            else
+            {
+                renderer.material = originalMaterial;
+            }
         }
 
         private void HandleButtonInterraction()
