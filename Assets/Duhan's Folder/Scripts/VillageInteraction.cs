@@ -180,7 +180,5 @@ namespace MountAndBlade
             }
         }
 
-
-
     }
 }

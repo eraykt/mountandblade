@@ -8,25 +8,28 @@ namespace MountAndBlade
 {
     public class EnemyInteractionUI : MonoBehaviour
     {
-
+        //yapýlacaklar------------------------------
         //çarpýþma gerçekleþirse ekran açýlsýn
         //çarpýþma dan çýkýlmadýkça tekrar çarpýþma gerçekleþemesin.
-        //üzerine týklanýrsa belli bir yakýnlýkta parýldasýn ve parýldýyorken basýlýrsa ekran açýlsýn
+        //belli bir yakýnlýkta parýldasýn ve parýldýyorken üzerine týklanýrsa ekran açýlsýn
 
-        public Material glowMaterial; // Parlama için kullanýlacak malzeme
+        [Header("Materials")]
+        public Material glowMaterial;
         private Material originalMaterial;
 
-        public GameObject enemyInterractionUI;
+        [Header("UI Related")]
+        [SerializeField] GameObject enemyInterractionUI;
+        [SerializeField] Button engageCombatButton;
+        [SerializeField] Button disengageCombatButton;
 
-        public Button engageCombatButton;
-        public Button disengageCombatButton;
+        //public EnemyHandler enemyHandler; ileride asker sayýsýna göre uý'ý manipüle etmek için kullanýlabilir.
 
-        public EnemyHandler enemyHandler; //þimdilik mesafe için, ileride asker sayýsýna göre uý'ý manipüle etmek için kullanýlabilir.
-
-        public Transform player;
-
-        private float distanceToPlayer;
+        [Header("Set Up Distance Functions")]
+        [SerializeField] Transform player;
         [SerializeField] float engageDistanceTreshold;
+        private float distanceToPlayer;
+        [SerializeField]private float autoTriggerDistance;
+
         private bool isInterractable = false;
         private bool canBeOpenedAgain = true;// alanýn içindeyken sürekli açýk kalmamasý için.
 
@@ -62,29 +65,32 @@ namespace MountAndBlade
             if(isInterractable)
                 OpenInterractionUI();
         }
-        
+
         private void DistanceChecks()
         {
             distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
-            if (engageDistanceTreshold < distanceToPlayer)// eðer dýþýndaysak tekrar açýlabilir olsun. ama etkileþime girilemez olsun
+            if(autoTriggerDistance >= distanceToPlayer && canBeOpenedAgain == true)//çok yakýndayken açýlýr can be opened booluyla sürekki açýlmamasýný kontrol ettim.
+            {
+                canBeOpenedAgain = false;
+                OpenInterractionUI();
+            }
+
+            if (engageDistanceTreshold < distanceToPlayer)//eðer etkileþim mesafesi dýþýndaysak tekrar bana deðerse etkileþime geçebilir olsun
             {
                 HandleGlow(false);
                 isInterractable = false;
                 canBeOpenedAgain = true;
             }
-            //içinde durduðu sürece açýk kalmasýný istemiyorum , içine girdiðinde açýlabilir ama içindeyken açýlýrsa tekrar açýlmasý için ilk uzaklaþmasý lazým
 
-            if (engageDistanceTreshold >= distanceToPlayer && canBeOpenedAgain == true)// eðer yeterince yakýnsak interractable olsun
+            if (engageDistanceTreshold >= distanceToPlayer)//eðer yeterince yakýnsak interractable olsun
             {
                 HandleGlow(true);
                 isInterractable = true;
-                canBeOpenedAgain = false;
+                //canBeOpenedAgain = false;
             }
-
-
-            
         }
+
         private void HandleGlow(bool enable)
         {
             Renderer renderer = GetComponent<Renderer>();
