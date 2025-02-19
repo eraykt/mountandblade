@@ -9,7 +9,7 @@ namespace MountAndBlade
     public class EnemyHandler : MonoBehaviour
     {
 
-        private PlayerManager playerManager;
+        public PlayerManager playerManager;
         public int askerSayisi; // Asker sayýsý
         public TMP_Text soldierCountText; // UI Text referansý (TextMeshPro kullanýyorsanýz Text yerine TMP_Text)
         public enum States{patrol,chase,retreat};
@@ -17,6 +17,7 @@ namespace MountAndBlade
 
         public States currentState;
 
+       
      
 
 

@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace MountAndBlade
@@ -24,7 +26,8 @@ namespace MountAndBlade
         private bool isInterractable = false;
         private bool canBeOpenedAgain = true;// alanýn içindeyken sürekli açýk kalmamasý için.
 
-        
+        EnemyHandler enemyHandler;
+
         private void Awake()
         {
             HandleButtonInterraction();
@@ -33,6 +36,7 @@ namespace MountAndBlade
         private void Start()
         {
             originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
+           // enemyHandler = GetComponent<EnemyHandler>(); 
         }
         private void Update()
         {
@@ -53,10 +57,13 @@ namespace MountAndBlade
         
         private void OnMouseDown()
         {
-            if(isInterractable)
+            if (isInterractable)
+            {
+                GameManager.instance.getEnemyUnitAmount(this.GetComponent<EnemyHandler>().askerSayisi);
                 OpenInterractionUI();
+            }
         }
-
+        
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject == player.gameObject && player.gameObject != null)
@@ -95,7 +102,7 @@ namespace MountAndBlade
 
             }
         }
-     
+
         private void HandleGlow(bool enable)
         {
             Renderer renderer = GetComponent<Renderer>();
@@ -113,7 +120,7 @@ namespace MountAndBlade
         {
             engageCombatButton.onClick.AddListener(() => {
 
-                Debug.Log("savas sahnesine geçtik");
+                StartCoroutine(GameManager.instance.loadWsScene());
 
             });
 
@@ -121,6 +128,7 @@ namespace MountAndBlade
 
                 if (enemyInterractionUI != null) {
                     CloseInterractionUI();
+                    GameManager.instance.getEnemyUnitAmount(0);
                 }
             });
         }

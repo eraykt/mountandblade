@@ -11,11 +11,17 @@ namespace MountAndBlade
         public GameObject enemyPrefab;
         public Transform spawnPoint;
 
+        GameManager manager;
+
         public int enemySoliderCount = 10;  // => GameManager'dan çekilecek olan deðer
 
         private float offsetX = 10f;
         private float offsetZ = 10f;
 
+        private void OnEnable()
+        {
+
+        }
 
         void Start()
         {

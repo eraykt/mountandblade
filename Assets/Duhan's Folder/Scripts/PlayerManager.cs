@@ -10,10 +10,12 @@ namespace MountAndBlade
         public int playerSoldierAmount  = 5; // Asker sayýsý
         public TMP_Text playerSoldierAmountText; // UI Text referansý (TextMeshPro kullanýyorsanýz Text yerine TMP_Text)
 
+        GameManager gameManager;// asker sayisi almak icin 
         private void Start()
         {
             UpdateSoldierCountText();
             
+            gameManager.getAllyUnitAmount(playerSoldierAmount);
         }
         private void Update()
         {
@@ -34,5 +36,8 @@ namespace MountAndBlade
             playerSoldierAmount += count;
             UpdateSoldierCountText();
         }
+
+        
     }
+    
 }
