@@ -130,10 +130,6 @@ namespace MountAndBlade
                 }
 
             }
-
-
-
-
         }
         private void OnMouseEnter()
         {

@@ -15,6 +15,10 @@ namespace MountAndBlade
         {
             
         }
+        private void OnEnable()
+        {
+            gameObject.SetActive(false);
+        }
         void Start()
         {
             // Ana kamerayý bul
