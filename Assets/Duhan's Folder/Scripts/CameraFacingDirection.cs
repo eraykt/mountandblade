@@ -8,9 +8,13 @@ namespace MountAndBlade
     {
         private Transform mainCamera;
 
-
+        CamController controller;
         //private Transform mainCamera;
 
+        private void Awake()
+        {
+            
+        }
         void Start()
         {
             // Ana kamerayý bul
@@ -28,7 +32,7 @@ namespace MountAndBlade
         {
             if (mainCamera == null)
                 return;
-
+            Debug.Log("calisiyom");
             // Kameraya doðru dönmek için yön vektörü oluþtur
             Vector3 directionToCamera = mainCamera.position - transform.position;
 

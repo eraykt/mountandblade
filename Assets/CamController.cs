@@ -87,6 +87,7 @@
 using System.Collections;
 using UnityEngine;
 using Cinemachine;
+using MountAndBlade;
 
 public class CamController : MonoBehaviour
 {
@@ -172,5 +173,7 @@ public class CamController : MonoBehaviour
             transform.Translate(Vector3.zero);
         }
     }
+
+   
 }
 

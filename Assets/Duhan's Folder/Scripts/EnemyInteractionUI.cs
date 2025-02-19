@@ -66,7 +66,7 @@ namespace MountAndBlade
                 OpenInterractionUI();
         }
 
-        private void DistanceChecks()
+        private void DistanceChecks()// uý aç kapa kýsmý camvas objesindeki singleton içinde düzenlensin ve kontrol edilsin.
         {
             distanceToPlayer = Vector3.Distance(transform.position, player.position);
 
