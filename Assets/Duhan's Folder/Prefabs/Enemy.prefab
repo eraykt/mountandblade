@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 779016508638922948}
   - component: {fileID: 2973689156363762372}
   - component: {fileID: 4268427900929703812}
+  - component: {fileID: 4277338474887397344}
+  - component: {fileID: 4867427326973107142}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -153,9 +155,49 @@ MonoBehaviour:
   player: {fileID: 0}
   chaseRange: 30
   stopRange: 15
-  retreatSpeed: 4
+  retreatSpeed: 1
   maxDistance: 50
   isPlayerStronger: 1
+--- !u!114 &4277338474887397344
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25781909441057907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efdf8dd9699ae1a4596544c4d9cf400c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glowMaterial: {fileID: 2100000, guid: 6aa6e522314844d4a8c7cba78b0ccd9f, type: 2}
+  enemyInterractionUI: {fileID: 0}
+  engageCombatButton: {fileID: 0}
+  disengageCombatButton: {fileID: 0}
+  player: {fileID: 0}
+  engageDistanceTreshold: 10
+  autoTriggerDistance: 3
+--- !u!135 &4867427326973107142
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25781909441057907}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 6
+  m_Center: {x: 0, y: -0.5, z: 0}
 --- !u!1 &1905935628142110867
 GameObject:
   m_ObjectHideFlags: 0

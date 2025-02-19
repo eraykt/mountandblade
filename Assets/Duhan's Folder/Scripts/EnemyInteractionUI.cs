@@ -23,9 +23,12 @@ namespace MountAndBlade
         [SerializeField] Button disengageCombatButton;
 
         //public EnemyHandler enemyHandler; ileride asker sayýsýna göre uý'ý manipüle etmek için kullanýlabilir.
+        [SerializeField] LayerMask interractableLayer;
+        [SerializeField] private GameObject player;
+
 
         [Header("Set Up Distance Functions")]
-        [SerializeField] Transform player;
+        //[SerializeField] Transform player;
         [SerializeField] float engageDistanceTreshold;
         private float distanceToPlayer;
         [SerializeField]private float autoTriggerDistance;
@@ -45,7 +48,7 @@ namespace MountAndBlade
         }
         private void Update()
         {
-            DistanceChecks();
+           // DistanceChecks();
         }
 
         private void OpenInterractionUI()
@@ -60,36 +63,75 @@ namespace MountAndBlade
             Time.timeScale = 1;
         }
 
+        
         private void OnMouseDown()
         {
-            if(isInterractable)
+            
+            if(isInterractable && )
                 OpenInterractionUI();
+                Debug.Log("þuna bastýn" + this.gameObject.GetComponent<CapsuleCollider>());
         }
 
-        private void DistanceChecks()// uý aç kapa kýsmý camvas objesindeki singleton içinde düzenlensin ve kontrol edilsin.
+        private void OnTriggerEnter(Collider other)
         {
-            distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-            if(autoTriggerDistance >= distanceToPlayer && canBeOpenedAgain == true)//çok yakýndayken açýlýr can be opened booluyla sürekki açýlmamasýný kontrol ettim.
+            if (other.gameObject == player.gameObject && player.gameObject != null)
             {
-                canBeOpenedAgain = false;
-                OpenInterractionUI();
+                Debug.Log("hi from trigger enter ");
+                HandleGlow(true);
+                isInterractable = true;
             }
+            
+        }
 
-            if (engageDistanceTreshold < distanceToPlayer)//eðer etkileþim mesafesi dýþýndaysak tekrar bana deðerse etkileþime geçebilir olsun
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject == player && player.gameObject != null)
             {
+                Debug.Log("hi from trigger exit ");
                 HandleGlow(false);
                 isInterractable = false;
                 canBeOpenedAgain = true;
             }
+        }
 
-            if (engageDistanceTreshold >= distanceToPlayer)//eðer yeterince yakýnsak interractable olsun
+        private void OnCollisionEnter(Collision collision)
+        {
+            
+            if (player == null)
+                return;
+
+            if(collision.gameObject == player && canBeOpenedAgain)
             {
-                HandleGlow(true);
-                isInterractable = true;
-                //canBeOpenedAgain = false;
+
+                canBeOpenedAgain = false;
+                OpenInterractionUI();
+
             }
         }
+        //private void DistanceChecks()// uý aç kapa kýsmý camvas objesindeki singleton içinde düzenlensin ve kontrol edilsin.
+        //{
+        //    distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        //    if(autoTriggerDistance >= distanceToPlayer && canBeOpenedAgain == true)//çok yakýndayken açýlýr can be opened booluyla sürekki açýlmamasýný kontrol ettim.
+        //    {
+        //        canBeOpenedAgain = false;
+        //        OpenInterractionUI();
+        //    }
+
+        //    if (engageDistanceTreshold < distanceToPlayer)//eðer etkileþim mesafesi dýþýndaysak tekrar bana deðerse etkileþime geçebilir olsun
+        //    {
+        //        HandleGlow(false);
+        //        isInterractable = false;
+        //        canBeOpenedAgain = true;
+        //    }
+
+        //    if (engageDistanceTreshold >= distanceToPlayer)//eðer yeterince yakýnsak interractable olsun
+        //    {
+        //        HandleGlow(true);
+        //        isInterractable = true;
+        //        //canBeOpenedAgain = false;
+        //    }
+        //}
 
         private void HandleGlow(bool enable)
         {
