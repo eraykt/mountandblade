@@ -545,6 +545,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 342068934729205273, guid: 53520964befd79e409e8ad896b88080c,
         type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 342068934729205273, guid: 53520964befd79e409e8ad896b88080c,
+        type: 3}
       propertyPath: m_TagString
       value: Allies
       objectReference: {fileID: 0}
@@ -562,6 +567,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.44500017
+      objectReference: {fileID: 0}
+    - target: {fileID: 1298211193065605409, guid: 53520964befd79e409e8ad896b88080c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4
+      objectReference: {fileID: 0}
+    - target: {fileID: 1298211193065605409, guid: 53520964befd79e409e8ad896b88080c,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1298211193065605409, guid: 53520964befd79e409e8ad896b88080c,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 3367198133137666702, guid: 53520964befd79e409e8ad896b88080c,
         type: 3}
@@ -642,6 +662,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalPosition.y
       value: 0.44500017
+      objectReference: {fileID: 0}
+    - target: {fileID: 8458723742795492601, guid: 53520964befd79e409e8ad896b88080c,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
