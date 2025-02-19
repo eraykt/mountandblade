@@ -67,7 +67,7 @@ namespace MountAndBlade
         {
             StateMachine.CurrentEnemyState.FrameUpdate();
 
-            Vector3 targetPosition = target.transform.position;
+            Vector3 targetPosition = GetTargetPosition();
             if (Vector3.Distance(transform.position, targetPosition) < 10f)
             {
                 // Player'ýn pozisyonunu ChaseState'e ilet
@@ -79,6 +79,7 @@ namespace MountAndBlade
             float maxSpeed = agent.speed;
             float normalizedSpeed = Mathf.Clamp01(currentSpeed / maxSpeed);
             animator.SetFloat("Velocity", normalizedSpeed);
+            MoveEnemy(targetTransform.position);
 
 
             //Debug.Log($"Clamplenmiþ Agent Speed :  {animator.GetFloat("Velocity")} , Enemy Speed : {normalizedSpeed}");

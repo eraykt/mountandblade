@@ -42,7 +42,7 @@ namespace MountAndBlade
         {
             base.FrameUpdate();
 
-            enemyBase.MoveEnemy(enemyBase.transform.position);
+            //enemyBase.MoveEnemy(enemyBase.transform.position);
             CooldownTimer();
             
 

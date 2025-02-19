@@ -55,7 +55,7 @@ namespace MountAndBlade
             // Vector3 targetPos = enemyBase.GetTargetPosition();
 
             Vector3 targetPos = enemyBase.GetTargetPosition();
-            enemyBase.MoveEnemy(_targetPosition);
+            //enemyBase.MoveEnemy(_targetPosition);
             Debug.Log("EnemyChaseState : " + _targetPosition);
             DistanceBetweenEntities();
         }
