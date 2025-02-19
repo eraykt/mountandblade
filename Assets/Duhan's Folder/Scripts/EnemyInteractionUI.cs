@@ -8,10 +8,6 @@ namespace MountAndBlade
 {
     public class EnemyInteractionUI : MonoBehaviour
     {
-        //yapýlacaklar------------------------------
-        //çarpýþma gerçekleþirse ekran açýlsýn
-        //çarpýþma dan çýkýlmadýkça tekrar çarpýþma gerçekleþemesin.
-        //belli bir yakýnlýkta parýldasýn ve parýldýyorken üzerine týklanýrsa ekran açýlsýn
 
         [Header("Materials")]
         public Material glowMaterial;
@@ -23,15 +19,7 @@ namespace MountAndBlade
         [SerializeField] Button disengageCombatButton;
 
         //public EnemyHandler enemyHandler; ileride asker sayýsýna göre uý'ý manipüle etmek için kullanýlabilir.
-        [SerializeField] LayerMask interractableLayer;
         [SerializeField] private GameObject player;
-
-
-        [Header("Set Up Distance Functions")]
-        //[SerializeField] Transform player;
-        [SerializeField] float engageDistanceTreshold;
-        private float distanceToPlayer;
-        [SerializeField]private float autoTriggerDistance;
 
         private bool isInterractable = false;
         private bool canBeOpenedAgain = true;// alanýn içindeyken sürekli açýk kalmamasý için.
@@ -48,7 +36,6 @@ namespace MountAndBlade
         }
         private void Update()
         {
-           // DistanceChecks();
         }
 
         private void OpenInterractionUI()
@@ -66,10 +53,8 @@ namespace MountAndBlade
         
         private void OnMouseDown()
         {
-            
-            if(isInterractable && )
+            if(isInterractable)
                 OpenInterractionUI();
-                Debug.Log("þuna bastýn" + this.gameObject.GetComponent<CapsuleCollider>());
         }
 
         private void OnTriggerEnter(Collider other)
@@ -80,11 +65,14 @@ namespace MountAndBlade
                 HandleGlow(true);
                 isInterractable = true;
             }
-            
         }
 
         private void OnTriggerExit(Collider other)
         {
+
+            if (player == null)
+                return;
+
             if (other.gameObject == player && player.gameObject != null)
             {
                 Debug.Log("hi from trigger exit ");
@@ -96,7 +84,6 @@ namespace MountAndBlade
 
         private void OnCollisionEnter(Collision collision)
         {
-            
             if (player == null)
                 return;
 
@@ -108,31 +95,7 @@ namespace MountAndBlade
 
             }
         }
-        //private void DistanceChecks()// uý aç kapa kýsmý camvas objesindeki singleton içinde düzenlensin ve kontrol edilsin.
-        //{
-        //    distanceToPlayer = Vector3.Distance(transform.position, player.position);
-
-        //    if(autoTriggerDistance >= distanceToPlayer && canBeOpenedAgain == true)//çok yakýndayken açýlýr can be opened booluyla sürekki açýlmamasýný kontrol ettim.
-        //    {
-        //        canBeOpenedAgain = false;
-        //        OpenInterractionUI();
-        //    }
-
-        //    if (engageDistanceTreshold < distanceToPlayer)//eðer etkileþim mesafesi dýþýndaysak tekrar bana deðerse etkileþime geçebilir olsun
-        //    {
-        //        HandleGlow(false);
-        //        isInterractable = false;
-        //        canBeOpenedAgain = true;
-        //    }
-
-        //    if (engageDistanceTreshold >= distanceToPlayer)//eðer yeterince yakýnsak interractable olsun
-        //    {
-        //        HandleGlow(true);
-        //        isInterractable = true;
-        //        //canBeOpenedAgain = false;
-        //    }
-        //}
-
+     
         private void HandleGlow(bool enable)
         {
             Renderer renderer = GetComponent<Renderer>();
@@ -160,7 +123,6 @@ namespace MountAndBlade
                     CloseInterractionUI();
                 }
             });
-
         }
     }
 }
