@@ -20,12 +20,10 @@ namespace MountAndBlade
             
                 Destroy(gameObject);    
             }
-        }
 
-        private void Start()
-        {
             DontDestroyOnLoad(gameObject);  
         }
+
         #endregion
 
 
@@ -42,14 +40,15 @@ namespace MountAndBlade
         {
             engagedEnemyAmount = _enemyUnitAmount; 
         }
-
+        
         public void getAllyUnitAmount(float _currentAllyAmount)
         {
-             currentAllyAmount = _currentAllyAmount;
+            currentAllyAmount = _currentAllyAmount;
         }
 
         private void Update()
         {
+            
             Debug.Log(currentAllyAmount);
             Debug.Log(engagedEnemyAmount);
 

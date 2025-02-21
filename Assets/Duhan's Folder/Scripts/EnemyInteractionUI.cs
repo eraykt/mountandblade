@@ -68,7 +68,6 @@ namespace MountAndBlade
         {
             if (other.gameObject == player.gameObject && player.gameObject != null)
             {
-                Debug.Log("hi from trigger enter ");
                 HandleGlow(true);
                 isInterractable = true;
             }
@@ -82,7 +81,6 @@ namespace MountAndBlade
 
             if (other.gameObject == player && player.gameObject != null)
             {
-                Debug.Log("hi from trigger exit ");
                 HandleGlow(false);
                 isInterractable = false;
                 canBeOpenedAgain = true;
