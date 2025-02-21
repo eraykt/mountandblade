@@ -94,7 +94,7 @@ namespace MountAndBlade
 
             if(collision.gameObject == player && canBeOpenedAgain)
             {
-
+                GameManager.instance.getEnemyUnitAmount(this.GetComponent<EnemyHandler>().askerSayisi);
                 canBeOpenedAgain = false;
                 OpenInterractionUI();
 
@@ -117,7 +117,7 @@ namespace MountAndBlade
         private void HandleButtonInterraction()
         {
             engageCombatButton.onClick.AddListener(() => {
-
+                Time.timeScale = 1;
                 StartCoroutine(GameManager.instance.loadWsScene());
 
             });

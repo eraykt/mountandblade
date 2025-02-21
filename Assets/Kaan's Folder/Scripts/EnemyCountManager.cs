@@ -13,16 +13,17 @@ namespace MountAndBlade
 
         GameManager manager;
 
-        public int enemySoliderCount = 10;  // => GameManager'dan çekilecek olan deðer
+        public float enemySoldierCount = 10;  // => GameManager'dan çekilecek olan deðer
 
         private float offsetX = 10f;
         private float offsetZ = 10f;
 
         private void OnEnable()
         {
-
         }
-
+        private void Awake()
+        {
+            enemySoldierCount = GameManager.instance.ReturnEnemyAmount();        }
         void Start()
         {
             EnemySpawner();
@@ -46,7 +47,7 @@ namespace MountAndBlade
             spawnedEnemies = new List<Enemy>();
 
             // Düþmanlarý oluþtur ve listeye ekle
-            for (int i = 0; i < enemySoliderCount; i++)
+            for (int i = 0; i < enemySoldierCount; i++)
             {
                 Vector3 spawnPosition = GenerateSpawnPosition();
 
