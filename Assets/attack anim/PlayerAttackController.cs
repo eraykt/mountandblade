@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Cinemachine;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 using DG.Tweening;
@@ -8,6 +9,8 @@ using UnityEngine.UI;
 
 public class PlayerAttackController : MonoBehaviour
 {
+    public CinemachineVirtualCamera virtualCamera;
+    
     public TwoBoneIKConstraint _twoBoneIK;
     [SerializeField] private Transform _target;
     [SerializeField] private Transform _hint;
@@ -21,7 +24,13 @@ public class PlayerAttackController : MonoBehaviour
     public float _threshold;
 
     private Vector2 _accumulatedDelta = Vector2.zero;
+    public SwordController swordController;
 
+    public bool isAttacking;
+    public float attackingTimer = 0.5f;
+    private Vector3 _shakeDirection = Vector3.right;
+    
+    
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -29,6 +38,8 @@ public class PlayerAttackController : MonoBehaviour
 
     void Update()
     {
+        // if (isAttacking) return;
+        
         if (Input.GetMouseButton(0))
         {
             // Mouse delta değerini oku
@@ -56,6 +67,7 @@ public class PlayerAttackController : MonoBehaviour
 
         else if (Input.GetMouseButtonUp(0))
         {
+            isAttacking = true;
             _accumulatedDelta = Vector2.zero;
             _animator.SetTrigger(_currentWay.ToString());
             _attackWays.ForEach(x => x._indicator.gameObject.SetActive(false));
@@ -78,6 +90,8 @@ public class PlayerAttackController : MonoBehaviour
         _currentWay = way;
         var newAttackWay = _attackWays.Find(x => x._way.Equals(way));
         newAttackWay._indicator.gameObject.SetActive(true);
+        _shakeDirection = newAttackWay._shakeDirection;
+        
         
         _target.DOLocalMove(newAttackWay._target.localPosition, 0.5f);
         _target.DOLocalRotateQuaternion(newAttackWay._target.localRotation, 0.5f);
@@ -91,7 +105,15 @@ public class PlayerAttackController : MonoBehaviour
 
     public void Hit()
     {
-        Debug.Log("Hit animation event triggered!");
+        Debug.Log("sword can attack");
+        swordController.canAttack = true;
+        swordController.virtualCamera.m_DefaultVelocity = _shakeDirection;
+    }
+
+    public void ExitHit()
+    {
+        swordController.canAttack = false;
+        isAttacking = false;
     }
 }
 
@@ -102,4 +124,5 @@ public struct AttackWayStruct
     public Transform _target;
     public Transform _hint;
     public Image _indicator;
+    public Vector3 _shakeDirection;
 }
