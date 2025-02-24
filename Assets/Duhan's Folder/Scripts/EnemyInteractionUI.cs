@@ -57,7 +57,9 @@ namespace MountAndBlade
         
         private void OnMouseDown()
         {
-            if (isInterractable)
+            CameraRay.instance.ignoreTriggersEnemyCheck();
+
+            if (isInterractable && CameraRay.instance.isItEnemy)
             {
                 GameManager.instance.getEnemyUnitAmount(this.GetComponent<EnemyHandler>().askerSayisi);
                 OpenInterractionUI();

@@ -101,13 +101,14 @@ public class CamController : MonoBehaviour
     //private float rotationSpeed = 100f;
     private bool canMove;
 
-    private CinemachineFreeLook activeCam;
+    public CinemachineFreeLook activeCam;
 
     private void Awake()
     {
         // Ýlk baþta closeCam'i aktif kamera olarak ayarla
         activeCam = closeCam;
         SetInitialPriorities();
+
     }
 
     private void Update()

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.Properties;
@@ -31,8 +32,8 @@ namespace MountAndBlade
         //ws sahnesinde bu deðerlere göre spawn iþlemi gerçekleþtir.
         //sahne deðiþikliðini buradan çaðýrabiliriz. 
 
-        public static float currentAllyAmount;
-        public static float engagedEnemyAmount;
+        private float currentAllyAmount;
+        private float engagedEnemyAmount;
 
         public void getEnemyUnitAmount(float _enemyUnitAmount)
         {
@@ -54,6 +55,7 @@ namespace MountAndBlade
         {
             return engagedEnemyAmount;
         }
+
 
     }
 }
