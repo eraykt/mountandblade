@@ -44,8 +44,17 @@ namespace MountAndBlade
                 // Perform the raycast
                 if (Physics.Raycast(ray, out hit, Mathf.Infinity,layerMask,QueryTriggerInteraction.Ignore))
                 {
-                    if (hit.collider.name == "Enemy") {
+                    //if (hit.collider.name == "Enemy") {
 
+                    //    isItEnemy = true;
+                    //}
+                    //else
+                    //{
+                    //    isItEnemy = false;
+                    //}
+
+                    if (hit.collider.GetComponent<EnemyHandler>() != null) 
+                    {
                         isItEnemy = true;
                     }
                     else
@@ -53,6 +62,7 @@ namespace MountAndBlade
                         isItEnemy = false;
                     }
                 }
+                
             }
         }
 
