@@ -6,47 +6,29 @@ namespace MountAndBlade
 {
     public class CameraFacingDirection : MonoBehaviour
     {
-        private Transform mainCamera;
+        //private Transform mainCamera;
 
         CamController controller;
         //private Transform mainCamera;
+        [SerializeField] private Camera mainCamera;
 
-        private void Awake()
-        {
-            
-        }
-        private void OnEnable()
-        {
-            gameObject.SetActive(false);
-        }
-        void Start()
-        {
-            // Ana kamerayý bul
-            if (Camera.main != null)
-            {
-                mainCamera = Camera.main.transform;
-            }
-            else
-            {
-                Debug.LogError("Ana kamera bulunamadý! Lütfen bir kamera eklediðinizden emin olun.");
-            }
-        }
+       
 
         void LateUpdate()
         {
-            if (mainCamera == null)
+            if(mainCamera==null)
                 return;
-            Debug.Log("calisiyom");
+
             // Kameraya doðru dönmek için yön vektörü oluþtur
-            Vector3 directionToCamera = mainCamera.position - transform.position;
+            Vector3 directionToCamera = mainCamera.transform.position - transform.position;
 
             // Kameranýn eðim açýsýna göre Canvas'ý hizalama
             // Kamera tamamen yataysa (top-down), Canvas yatay hizalanmalý
-            float cameraPitch = Vector3.Angle(Vector3.up, mainCamera.forward);
+            float cameraPitch = Vector3.Angle(Vector3.up, mainCamera.transform.forward);
 
             if (cameraPitch < 45f) // Kamera neredeyse tamamen yukarýdan bakýyorsa
             {
-                transform.rotation = Quaternion.Euler(90f, mainCamera.eulerAngles.y, 0f);
+                transform.rotation = Quaternion.Euler(90f, mainCamera.transform.eulerAngles.y, 0f);
             }
             else // Kamera eðimli veya yataysa
             {

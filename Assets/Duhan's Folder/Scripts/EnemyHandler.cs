@@ -60,10 +60,7 @@ namespace MountAndBlade
         private void HandleAnimations()
         {
             currentSpeed = Mathf.Clamp01(agent.velocity.magnitude);
-            //current speedi al 0ile1 arasýna clample 
-            //diðer projeden kopya cek
             enemyAnim.SetFloat("CurrentSpeed", currentSpeed);
-
         }
 
         private void UpdateStrengthStatus()
