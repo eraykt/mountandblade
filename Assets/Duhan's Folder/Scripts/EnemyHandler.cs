@@ -13,13 +13,10 @@ namespace MountAndBlade
         public int askerSayisi; // Asker sayýsý
         public TMP_Text soldierCountText; // UI Text referansý (TextMeshPro kullanýyorsanýz Text yerine TMP_Text)
         public enum States{patrol,chase,retreat};
-        private NavMeshAgent enemyAgent;
-
         public States currentState;
 
-       
-     
-
+        private Animator enemyAnim;
+        private float currentSpeed;
 
         public NavMeshAgent agent; // Karakterin NavMeshAgent'i
         [Header("Bounds")]
@@ -40,6 +37,7 @@ namespace MountAndBlade
         private Vector3 moveDir;
         void Start()
         {
+            enemyAnim = GetComponent<Animator>();
             playerManager = FindObjectOfType<PlayerManager>();
 
             if (playerManager == null)
@@ -49,7 +47,6 @@ namespace MountAndBlade
             }
             UpdateStrengthStatus();
             UpdateSoldierCountText();
-            enemyAgent = GetComponent<NavMeshAgent>();
             currentState = States.patrol;
         }
 
@@ -57,6 +54,16 @@ namespace MountAndBlade
         {
             StatesHandler();
             CheckDistance();
+            HandleAnimations();
+        }
+
+        private void HandleAnimations()
+        {
+            currentSpeed = Mathf.Clamp01(agent.velocity.magnitude);
+            //current speedi al 0ile1 arasýna clample 
+            //diðer projeden kopya cek
+            enemyAnim.SetFloat("CurrentSpeed", currentSpeed);
+
         }
 
         private void UpdateStrengthStatus()
