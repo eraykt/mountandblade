@@ -4,8 +4,15 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
+
+public enum SlotType
+{
+    Inventory,
+    Discard
+}
 public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
+    public SlotType slotType;
     public Image icon;
     public Item currentItem;
     public Tooltip tooltip;
@@ -50,38 +57,48 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             icon.sprite = item.Itemicon; // ScriptableObject'ten ikonu al ve slota koy
             icon.enabled = true;
         }
-
+        
+        DraggableItem draggable = icon.GetComponent<DraggableItem>();
+        if (draggable != null)
+        {
+            draggable.item = item;
+            draggable.enabled = true;
+        }
+        
     }
 
     public void OnDrop(PointerEventData eventData)
     {
         DraggableItem draggableItem = eventData.pointerDrag?.GetComponent<DraggableItem>();
-        // Eðer slot doluysa item býrakmayý iptal et
+        
         if (IsOccupied)
         {
             Debug.Log($"Slot {gameObject.name} is already occupied.");
             return;
         }
-
-        if (draggableItem != null)
+        
+        if (draggableItem != null && draggableItem.item != null)
         {
-            InventorySlot draggedSlot = draggableItem.GetComponentInParent<InventorySlot>();
-            if (draggedSlot != null && draggedSlot.currentItem != null)
-            {
-                SetSlot(draggedSlot.currentItem); // Hedef slota item ekle
-                draggedSlot.ClearSlot(); // Kaynak slotu temizle
-            }
+            SetSlot(draggableItem.item); // Item verisini gÃ¼ncelle
+            Destroy(draggableItem.gameObject); // Eski draggable objeyi yok et
         }
+
     }
-
-
-    public void ClearSlot() 
+    
+    public void ClearSlot()
     {
         currentItem = null;
         if(icon != null) 
         {
             icon.sprite = null;
             icon.enabled = false;
+        }
+        
+        DraggableItem draggable = icon.GetComponent<DraggableItem>();
+        if (draggable != null)
+        {
+            draggable.item = null;
+            draggable.enabled = false;
         }
 
     }

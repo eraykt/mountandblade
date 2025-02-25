@@ -9,12 +9,7 @@ public class Weapon : Item
     public float attackSpeed;
     public WeaponType weaponType;
 
-    public override string GetItemDetails()
-    {
-        return base.GetItemDetails() + $"\nAttack Damage: {attackDamage}\nAttack Speed: {attackSpeed} seconds\nWeapon Type: {weaponType}";
-    }
-
-    public enum WeaponType 
+    public enum WeaponType
     {
         OneHanded,
         TwoHanded,
@@ -26,4 +21,10 @@ public class Weapon : Item
         ThrownWeapon,
         Firearm
     }
+
+    public override string GetItemDetails()
+    {
+        return base.GetItemDetails() + $"\nAttack Damage: {attackDamage}\nAttack Speed: {attackSpeed} seconds\nWeapon Type: {weaponType}";
+    }
+
 }

@@ -12,6 +12,11 @@ public class Tooltip : MonoBehaviour
 
     private bool isVisible = false;
 
+    public void Start() 
+    {
+        tooltipPanel.SetActive(false);
+    }
+
     public void ShowTooltip(string content, Vector2 position) 
     {
         if (isVisible) return;
@@ -22,8 +27,7 @@ public class Tooltip : MonoBehaviour
 
         RectTransform rect = tooltipPanel.GetComponent<RectTransform>();
 
-        // Fare pozisyonuna bir ofset ekleyin
-        Vector2 adjustedPosition = position + new Vector2(20f, -20f);
+        Vector2 adjustedPosition = position + new Vector2(20f, -20f); //fare pozisyon offseti
         rect.position = adjustedPosition;
     }
 

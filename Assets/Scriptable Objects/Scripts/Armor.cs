@@ -9,11 +9,6 @@ public class Armor : Item
     public int health;
     public ArmorType armorType;
 
-    public override string GetItemDetails()
-    {
-        return base.GetItemDetails() + $"\nDefense: {defense}\nHealth: {health}\nArmor Type: {armorType}";
-    }
-
     public enum ArmorType 
     {
         Helmet,
@@ -21,5 +16,10 @@ public class Armor : Item
         Shields,
         Gloves,
         BodyArmor
+    }
+
+    public override string GetItemDetails()
+    {
+        return base.GetItemDetails() + $"\nDefense: {defense}\nHealth: {health}\nArmor Type: {armorType}";
     }
 }

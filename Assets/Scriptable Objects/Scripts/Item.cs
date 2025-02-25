@@ -15,3 +15,4 @@ public class Item : ScriptableObject
         return $"Name: {Itemname}\nDescription: {description}\nWeight: {weight} kg\nSale Price: {salePrice} gold";
     }
 }
+

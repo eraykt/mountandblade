@@ -6,41 +6,57 @@ using UnityEngine.UI;
 
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
+    public Item item;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
     private Vector3 startPosition;
     private Transform originalParent;
-
+    private Image itemIcon;
     private void Awake() 
     {
-        rectTransform = GetComponent<RectTransform>(); //UI kontrolü için
+        rectTransform = GetComponent<RectTransform>(); 
         canvasGroup = GetComponent<CanvasGroup>();
+        
+        if (canvasGroup == null)
+            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        
     }
 
-    public void OnBeginDrag(PointerEventData eventData) //sürükleme baþýnda yapýlacak iþlemleri tanýmlamak için
+    public void OnBeginDrag(PointerEventData eventData) //sï¿½rï¿½kleme baï¿½ï¿½nda yapï¿½lacak iï¿½lemleri tanï¿½mlamak iï¿½in
     {
+        
         startPosition = rectTransform.position;
         originalParent = transform.parent;
         
-        canvasGroup.alpha = 0.6f; //opaklýðý düþürür
-        canvasGroup.blocksRaycasts = false; //raycasti(çarpýþmayý) devre dýþý býrakýr
-        transform.SetParent(transform.root);
+        canvasGroup.alpha = 0.6f; //opaklï¿½ï¿½ï¿½ dï¿½ï¿½ï¿½rï¿½r
+        canvasGroup.blocksRaycasts = false; //raycasti(ï¿½arpï¿½ï¿½mayï¿½) devre dï¿½ï¿½ï¿½ bï¿½rakï¿½r
+        
+        transform.SetParent(transform.root, true);
+        
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.position = Input.mousePosition; // mouse pozisyonuna göre itemý sürükler
+        rectTransform.position = Input.mousePosition; // mouse pozisyonuna gï¿½re itemï¿½ sï¿½rï¿½kler
     }
 
-    public void OnEndDrag(PointerEventData eventData) //sürükleme tamamlandýðýnda
+    public void OnEndDrag(PointerEventData eventData) //sï¿½rï¿½kleme tamamlandï¿½ï¿½ï¿½nda
     {
+        
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
-
+        
         if (rectTransform.parent == transform.root) 
         {
             rectTransform.position = startPosition;
-            transform.SetParent(originalParent);
+            transform.SetParent(originalParent, true);
+            
+            InventorySlot parentSlot = originalParent.GetComponent<InventorySlot>();
+            if (parentSlot != null && item != null)
+            {
+                parentSlot.SetSlot(item);
+            }
+            
         }
     }
 
