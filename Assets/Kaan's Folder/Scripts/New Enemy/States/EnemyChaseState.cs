@@ -14,11 +14,10 @@ namespace MountAndBlade
         private Transform _transform;
         public static bool IsAttacking;
 
-        public EnemyChaseState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine, Vector3 targetPosition) : base(enemyBase, enemyStateMachine, Vector3.zero)
+        public EnemyChaseState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine) : base(enemyBase, enemyStateMachine)
         {
             this.enemyBase = enemyBase;
             this.enemyStateMachine = enemyStateMachine;
-            this._targetPosition = targetPosition;
         }
 
         public override void AnimationTrigerEvent(EnemyBase.AnimationTriggerType triggerType)
@@ -58,6 +57,7 @@ namespace MountAndBlade
             //enemyBase.MoveEnemy(_targetPosition);
             Debug.Log("EnemyChaseState : " + _targetPosition);
             DistanceBetweenEntities();
+            enemyBase.MoveEnemy(targetPos);
         }
 
         private void DistanceBetweenEntities()

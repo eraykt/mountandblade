@@ -18,6 +18,12 @@ namespace MountAndBlade
             this.targetPosition = targetPosition;
         }
 
+        public EnemyState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine)
+        {
+            this.enemyBase = enemyBase;
+            this.enemyStateMachine = enemyStateMachine;
+        }
+
         public virtual void EnterState() { }
         public virtual void ExitState() { }
         public virtual void FrameUpdate() { }

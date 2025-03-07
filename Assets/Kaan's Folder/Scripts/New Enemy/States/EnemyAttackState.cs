@@ -33,7 +33,7 @@ namespace MountAndBlade
         {
             base.EnterState();
 
-            enemyBase.transform.LookAt(enemyBase.target.transform.position);
+            //enemyBase.transform.LookAt(enemyBase.target.transform.position);
             Debug.Log(enemyBase.target.transform.position);
         }
 

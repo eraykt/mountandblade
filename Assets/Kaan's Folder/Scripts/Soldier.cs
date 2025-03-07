@@ -12,7 +12,7 @@ namespace MountAndBlade
         public Animator animator; // UnityEditor.ObjectWrapperJSON:{"guid":"","localId":0,"type":0,"instanceID":29084}
                                   // UnityEditor.ObjectWrapperJSON:{"guid":"","localId":0,"type":0,"instanceID":29124}
         private GameObject target;
-
+        public float soldierSpeed;
         [Header("Attack Tweaks")]
         public Transform hitPoint;
         public float hitRange = 0.6f;
@@ -46,7 +46,8 @@ namespace MountAndBlade
         void Update()
         {
             //Debug.LogWarning($"Can Allies Attack = {canAttack}");
-
+            soldierSpeed = agent.speed;
+            animator.SetFloat("speed", soldierSpeed);
             StateMachine();
         }
 
@@ -96,6 +97,7 @@ namespace MountAndBlade
                 else
                 {
                     agent.SetDestination(target.transform.position);
+                    
                 }
             }
         }
@@ -165,7 +167,7 @@ namespace MountAndBlade
             yield return new WaitForSeconds(2f); // Adjust based on animation length
             EnemyHit();
             isAnimPlaying = false;
-            animator.SetBool("isAttacking", false);
+            animator.SetTrigger("attack");
             ResetRandGenerating();
         }
 
