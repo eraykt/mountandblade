@@ -8,7 +8,11 @@ using UnityEngine.UI;
 public enum SlotType
 {
     Inventory,
-    Discard
+    Discard,
+    RightHand,
+    Helmet,
+    Armor,
+    Shields
 }
 public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler, IDropHandler
 {
@@ -16,7 +20,9 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Image icon;
     public Item currentItem;
     public Tooltip tooltip;
+    public Transform characterSlot;
 
+    private GameObject spawnedItemOnCharacter;
     public bool IsOccupied => currentItem != null;
 
     private void Start() 
@@ -32,9 +38,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         if(currentItem != null && tooltip != null) 
         {
-            string TooltipText = currentItem.GetItemDetails();
-            Debug.Log(TooltipText);
-            tooltip.ShowTooltip(TooltipText, Input.mousePosition);
+            tooltip.ShowTooltip(currentItem.GetItemDetails(), Input.mousePosition);
         }
 
     }
@@ -44,7 +48,6 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if(tooltip != null) 
         {
             tooltip.HideTooltip();
-            Debug.Log("Tooltip hidden.");
         }
     }
 
@@ -54,7 +57,7 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         currentItem = item;
         if (icon != null && item.Itemicon != null)
         {
-            icon.sprite = item.Itemicon; // ScriptableObject'ten ikonu al ve slota koy
+            icon.sprite = item.Itemicon;
             icon.enabled = true;
         }
         
@@ -65,24 +68,71 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             draggable.enabled = true;
         }
         
+        if (IsCharacterSlot() && item.itemPrefab != null)
+        {
+            if (spawnedItemOnCharacter != null)
+            {
+                Destroy(spawnedItemOnCharacter);
+            }
+            spawnedItemOnCharacter = Instantiate(item.itemPrefab, characterSlot);
+            spawnedItemOnCharacter.transform.localPosition = Vector3.zero;
+            spawnedItemOnCharacter.transform.localRotation = Quaternion.identity;
+        }
+        
     }
 
     public void OnDrop(PointerEventData eventData)
     {
+        
         DraggableItem draggableItem = eventData.pointerDrag?.GetComponent<DraggableItem>();
-        
-        if (IsOccupied)
-        {
-            Debug.Log($"Slot {gameObject.name} is already occupied.");
-            return;
-        }
-        
+
         if (draggableItem != null && draggableItem.item != null)
         {
-            SetSlot(draggableItem.item); // Item verisini güncelle
-            Destroy(draggableItem.gameObject); // Eski draggable objeyi yok et
-        }
+            
+            if (slotType == SlotType.Discard)
+            {
+                if (!IsOccupied)
+                {
+                    SetSlot(draggableItem.item); 
+                    Destroy(draggableItem.gameObject); 
+                }
+                return;
+            }
 
+            
+            if (slotType == SlotType.Inventory)
+            {
+                SwapOrPlaceItem(draggableItem);
+                return;
+            }
+
+            //sadece belirli türdeki item'leri kabul et
+            if (draggableItem.item.allowedSlotType == slotType)
+            {
+                SwapOrPlaceItem(draggableItem);
+            }
+            else
+            {
+                Debug.LogWarning($"Item {draggableItem.item.Itemname} cannot be placed in {slotType} slot.");
+                tooltip?.ShowTooltip($"This item can only be placed in {draggableItem.item.allowedSlotType} slot.", Input.mousePosition);
+            }
+        }
+    }
+    
+    private void SwapOrPlaceItem(DraggableItem draggableItem)
+    {
+        if (IsOccupied)
+        {
+            Item tempItem = currentItem;
+            ClearSlot();
+            SetSlot(draggableItem.item); 
+            draggableItem.SetItem(tempItem); 
+        }
+        else
+        {
+            SetSlot(draggableItem.item); 
+            Destroy(draggableItem.gameObject); 
+        }
     }
     
     public void ClearSlot()
@@ -94,6 +144,11 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             icon.enabled = false;
         }
         
+        if (spawnedItemOnCharacter != null)
+        {
+            Destroy(spawnedItemOnCharacter);
+        }
+        
         DraggableItem draggable = icon.GetComponent<DraggableItem>();
         if (draggable != null)
         {
@@ -101,6 +156,11 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             draggable.enabled = false;
         }
 
+    }
+    
+    private bool IsCharacterSlot()
+    {
+        return slotType == SlotType.RightHand || slotType == SlotType.Helmet || slotType == SlotType.Armor || slotType == SlotType.Shields;
     }
 
 }

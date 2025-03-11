@@ -9,9 +9,7 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
     public Item item;
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
-    private Vector3 startPosition;
     private Transform originalParent;
-    private Image itemIcon;
     private void Awake() 
     {
         rectTransform = GetComponent<RectTransform>(); 
@@ -22,17 +20,18 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         
     }
 
+    public void SetItem(Item newItem)
+    {
+        item = newItem;
+        GetComponent<Image>().sprite = item.Itemicon;
+    }
+
     public void OnBeginDrag(PointerEventData eventData) //s�r�kleme ba��nda yap�lacak i�lemleri tan�mlamak i�in
     {
-        
-        startPosition = rectTransform.position;
         originalParent = transform.parent;
-        
+        transform.SetParent(transform.root, true);
         canvasGroup.alpha = 0.6f; //opakl��� d���r�r
         canvasGroup.blocksRaycasts = false; //raycasti(�arp��may�) devre d��� b�rak�r
-        
-        transform.SetParent(transform.root, true);
-        
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -48,15 +47,8 @@ public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEn
         
         if (rectTransform.parent == transform.root) 
         {
-            rectTransform.position = startPosition;
             transform.SetParent(originalParent, true);
-            
-            InventorySlot parentSlot = originalParent.GetComponent<InventorySlot>();
-            if (parentSlot != null && item != null)
-            {
-                parentSlot.SetSlot(item);
-            }
-            
+            rectTransform.localPosition = Vector3.zero;
         }
     }
 

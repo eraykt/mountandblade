@@ -9,6 +9,9 @@ public class Item : ScriptableObject
     public Sprite Itemicon;
     public float weight;
     public int salePrice;
+    public GameObject itemPrefab;
+    
+    public SlotType allowedSlotType;
 
     public virtual string GetItemDetails()
     {

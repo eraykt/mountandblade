@@ -11,9 +11,9 @@ public class DropSlot : MonoBehaviour, IDropHandler
 
     public void OnDrop(PointerEventData eventData)
     {
-        GameObject droppedItem = eventData.pointerDrag; // sürüklenen itemi almak için
+        GameObject droppedItem = eventData.pointerDrag; // sÃ¼rÃ¼klenen itemi almak iÃ§in
 
-        // Eðer slot doluysa iþlemi engelle
+        // EÄŸer slot doluysa iÅŸlemi engelle
         if (icon != null && icon.enabled)
         {
             Debug.Log("Slot is already occupied.");

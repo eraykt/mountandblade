@@ -17,6 +17,9 @@ MonoBehaviour:
   Itemicon: {fileID: 21300000, guid: 4c902b0c579846541b99f729600f0e63, type: 3}
   weight: 5
   salePrice: 20
+  itemPrefab: {fileID: 7821820561433432649, guid: 93bf5b8411099294ea3216865b4654a6,
+    type: 3}
+  allowedSlotType: 4
   defense: 10
   health: 12
   armorType: 4
