@@ -97,12 +97,12 @@ public class CamController : MonoBehaviour
     private CinemachineFreeLook topCam;
     [SerializeField]
     private CinemachineFreeLook closeCam;
-    [SerializeField]
-    //private float rotationSpeed = 100f;
-    private bool canMove;
 
     public CinemachineFreeLook activeCam;
 
+    //private float rotationSpeed = 100f;
+    [SerializeField]
+    private bool canMove;
     private void Awake()
     {
         // Ýlk baþta closeCam'i aktif kamera olarak ayarla
@@ -160,8 +160,6 @@ public class CamController : MonoBehaviour
             Vector3 moveDir = new Vector3(horizontal, 0, vertical).normalized;
 
             transform.Translate(moveDir * moveSpeed * Time.deltaTime);
-
-            
         
     }
     private void CloseDistanceMovementFixer()
