@@ -64,6 +64,7 @@ namespace MountAndBlade
 
         private Vector3 GetRandomPositionWithinBounds()
         {
+            Debug.Log("rendým posýþýn oluþturuyorum");
             // Rastgele bir pozisyon oluþtur
             float x = Random.Range(spawnAreaMin.x, spawnAreaMax.x);
             float z = Random.Range(spawnAreaMin.z, spawnAreaMax.z);
