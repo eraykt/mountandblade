@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
@@ -29,8 +30,14 @@ public class PlayerAttackController : MonoBehaviour
     public bool isAttacking;
     public float attackingTimer = 0.5f;
     private Vector3 _shakeDirection = Vector3.right;
-    
-    
+
+
+    private void Awake()
+    {
+        EventManager.RegisterEvent<EventManager.OnSwordChange>(OnSwordChange);
+    }
+
+
     void Start()
     {
         _animator = GetComponent<Animator>();
@@ -114,6 +121,11 @@ public class PlayerAttackController : MonoBehaviour
     {
         swordController.canAttack = false;
         isAttacking = false;
+    }
+    
+    private void OnSwordChange(EventManager.OnSwordChange obj)
+    {
+        swordController = obj.sword;
     }
 }
 

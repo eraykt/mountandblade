@@ -9,18 +9,29 @@ namespace MountAndBlade
         public CinemachineImpulseSource virtualCamera;
 
         public int swordDamage = 10;
-        
-        
+
+        private void Awake()
+        {
+            EventManager.RegisterEvent<EventManager.OnEnemyHit>(OnEnemyHit);
+        }
+
+        private void OnEnemyHit(EventManager.OnEnemyHit obj)
+        {
+            Debug.Log($"{obj.enemy} got {obj.damage} damage");;
+        }
+
+
         private void OnTriggerEnter(Collider other)
         {
             if (!canAttack) return;
             canAttack = false;
             if (other.gameObject.TryGetComponent<IDamagable>(out var damagable))
             {
+                EventManager.TriggerEvent(new EventManager.OnEnemyHit(swordDamage, damagable));
                 damagable.TakeDamage(swordDamage);
                 virtualCamera.GenerateImpulseWithForce(0.1f);
             }
-            Debug.Log("sword attack is triggered");
+            Debug.Log("sword attack is triggered by enter");
         }
 
         private void OnTriggerStay(Collider other)
@@ -29,10 +40,11 @@ namespace MountAndBlade
             canAttack = false;
             if (other.gameObject.TryGetComponent<IDamagable>(out var damagable))
             {
+                EventManager.TriggerEvent(new EventManager.OnEnemyHit(swordDamage, damagable));
                 damagable.TakeDamage(swordDamage);
                 virtualCamera.GenerateImpulseWithForce(0.05f);
             }
-            Debug.Log("sword attack is triggered");
+            Debug.Log("sword attack is triggered by stay");
         }
     }
 }
