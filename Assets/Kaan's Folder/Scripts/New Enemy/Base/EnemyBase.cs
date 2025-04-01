@@ -12,7 +12,7 @@ namespace MountAndBlade
     {
         public TextMeshPro stateText;
         #region Components
-        [SerializeField] protected NavMeshAgent agent;
+        [SerializeField] public NavMeshAgent agent { get; private set; }
         [SerializeField] protected Animator animator;
         [SerializeField] protected Transform hitPoint;
         [SerializeField] protected float hitRange = 0.2f;
@@ -33,7 +33,7 @@ namespace MountAndBlade
         public Transform target { get; set; }
         [HideInInspector] public IDamagablee targetScript;
         [SerializeField] protected float detectionRange = 10f;
-        [SerializeField] protected float attackRange = 1.5f;
+        [SerializeField] public float attackRange = 3f;
         [SerializeField] protected string enemyTag = "Enemy";
         [SerializeField] protected string allyTag = "Allies";
         [SerializeField] protected string oppositeTag = "";
@@ -95,6 +95,8 @@ namespace MountAndBlade
             agent.updateRotation = false; // We'll handle rotation manually
             agent.angularSpeed = 120; // Limit rotation speed
 
+            oppositeTag = gameObject.CompareTag("Enemy") ? allyTag : enemyTag;
+
 
             StartCoroutine(FindTargetRoutine());
             // Start in Chase state if we have a target, otherwise Patrol
@@ -118,7 +120,6 @@ namespace MountAndBlade
         protected virtual void Start()
         {
             
-            oppositeTag = gameObject.CompareTag("Enemy") ? allyTag : enemyTag;
             // Start in Chase state if we have a target, otherwise Patrol
             if (target != null)
             {
@@ -134,29 +135,81 @@ namespace MountAndBlade
             }
         }
 
+        //protected virtual void Update()
+        //{
+        //    // Update the current state
+        //    StateMachine.CurrentEnemyState.FrameUpdate();
+
+        //    Debug.Assert(animator != null, "ANIMATOR NULL");
+        //    Debug.Assert(agent != null, "AGENT NULL");
+        //    if (target.transform.position == null)
+        //    {
+        //        Debug.LogError("Target Transform is NULL");
+        //        return;
+        //    }
+        //    string original = StateMachine.CurrentEnemyState.ToString();
+        //    string prefix = "MountAndBlade.";
+
+        //    if (original.StartsWith(prefix))
+        //    {
+        //        original = original.Substring(prefix.Length);
+        //        stateText.text = original;
+        //    }
+
+
+
+
+
+        //    // Update animator with velocity
+        //    if (animator != null)
+        //    {
+        //        float speed = agent.velocity.magnitude;
+        //        animator.SetFloat("Velocity", speed);
+        //    }
+
+        //    if (target != null)
+        //    {
+        //        gameObject.transform.LookAt(target);
+        //    }
+
+        //    // Check for target every few seconds
+        //    checkTargetTimer -= Time.deltaTime;
+        //    if (checkTargetTimer <= 0)
+        //    {
+        //        checkTargetTimer = checkTargetInterval;
+        //        FindNearestTarget();
+        //    }
+
+        //    animator.SetFloat("Velocity", agent.speed);
+
+        //    //if (StateMachine.CurrentEnemyState == AttackState)
+        //    //{
+        //    //    if (animTrigType == AnimationTriggerType.AttackFinished)
+        //    //    {
+
+        //    //    }
+        //    //}
+        //}
+
         protected virtual void Update()
         {
             // Update the current state
             StateMachine.CurrentEnemyState.FrameUpdate();
 
-            Debug.Assert(animator != null, "ANIMATOR NULL");
-            Debug.Assert(agent != null, "AGENT NULL");
-            if (target.transform.position != null)
+            // Check if target is valid
+            if (target == null)
             {
-                Debug.LogError("Target Transform is NULL");
-            }
-            string original = StateMachine.CurrentEnemyState.ToString();
-            string prefix = "MountAndBlade.";
-
-            if (original.StartsWith(prefix))
-            {
-                original = original.Substring(prefix.Length);
-                stateText.text = original;
+                FindNearestTarget();
+                if (target == null)
+                {
+                    // If still no target, just display state and return
+                    UpdateStateText();
+                    return;
+                }
             }
 
-            
-
-
+            // Update state text display
+            UpdateStateText();
 
             // Update animator with velocity
             if (animator != null)
@@ -165,7 +218,8 @@ namespace MountAndBlade
                 animator.SetFloat("Velocity", speed);
             }
 
-            if (target != null)
+            // Look at target
+            if (target != null && StateMachine.CurrentEnemyState != AttackState)
             {
                 gameObject.transform.LookAt(target);
             }
@@ -177,16 +231,21 @@ namespace MountAndBlade
                 checkTargetTimer = checkTargetInterval;
                 FindNearestTarget();
             }
+        }
 
-            animator.SetFloat("Velocity", agent.speed);
+        private void UpdateStateText()
+        {
+            if (stateText != null)
+            {
+                string original = StateMachine.CurrentEnemyState.ToString();
+                string prefix = "MountAndBlade.";
 
-            //if (StateMachine.CurrentEnemyState == AttackState)
-            //{
-            //    if (animTrigType == AnimationTriggerType.AttackFinished)
-            //    {
-
-            //    }
-            //}
+                if (original.StartsWith(prefix))
+                {
+                    original = original.Substring(prefix.Length);
+                    stateText.text = original;
+                }
+            }
         }
 
         protected virtual void FixedUpdate()

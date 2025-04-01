@@ -7,7 +7,6 @@ namespace MountAndBlade
     public class EnemyAttackState : EnemyState
     {
         private bool isAttacking = false;
-        
 
         public EnemyAttackState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine, Vector3 targetPosition)
             : base(enemyBase, enemyStateMachine, targetPosition)
@@ -16,8 +15,9 @@ namespace MountAndBlade
 
         public override void EnterState()
         {
-            // Stop moving when entering attack state
-            enemyBase.StopMoving();
+            // Saldýrý durumuna girdiðinde tamamen hareketi durdur
+            enemyBase.agent.isStopped = true;
+            enemyBase.agent.velocity = Vector3.zero;
 
             // Start attack if we can
             if (enemyBase.canAttack && !isAttacking)
@@ -30,10 +30,9 @@ namespace MountAndBlade
 
         public override void ExitState()
         {
-            // Resume movement when exiting attack state
-            enemyBase.ResumeMoving();
+            enemyBase.agent.isStopped = false;
             isAttacking = false;
-            enemyBase.SetBool("isAttacking", false);
+            enemyBase.SetBool("isAttacking", false); // Make sure to use the correct parameter name
 
             Debug.Log($"{enemyBase.gameObject.name} exited Attack State");
         }
@@ -45,6 +44,11 @@ namespace MountAndBlade
             {
                 enemyStateMachine.ChangeState(enemyBase.PatrolState);
                 return;
+            }
+            else
+            {
+                Vector3 directionToTarget = enemyBase.target.position - enemyBase.transform.position;
+                float distanceToTarget = directionToTarget.magnitude;
             }
 
             // Always face the target during attack
@@ -64,28 +68,35 @@ namespace MountAndBlade
             }
         }
 
-        public override void PhysicsUpdate()
-        {
-            // Not needed for attack state
-        }
-
-        public void SetIsAttack(bool isAttack)
-        {
-            this.isAttacking = isAttack;
-        }
-
         public override void AnimationTrigerEvent(EnemyBase.AnimationTriggerType triggerType)
         {
-           
+            if (triggerType == EnemyBase.AnimationTriggerType.AttackFinished)
+            {
+                // Saldýrý tamamlandý, ChaseState'e geri dön
+                isAttacking = false;
+                enemyBase.SetBool("isAttacking", false);
+                enemyBase.AttackHandler();
+                enemyStateMachine.ChangeState(enemyBase.ChaseState);
+            }
         }
-
 
         private void StartAttack()
         {
+            isAttacking = true;
             enemyBase.SetBool("isAttacking", true);
+        }
 
-            ExitState();
+        private void FinishAttack()
+        {
+            // This should be called by an animation event
+            isAttacking = false;
+            enemyBase.SetBool("isAttacking", false);
 
+            // Apply cooldown
+            enemyBase.AttackHandler();
+
+            // Change back to chase state
+            enemyStateMachine.ChangeState(enemyBase.ChaseState);
         }
     }
 }

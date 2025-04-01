@@ -1,26 +1,28 @@
-using System.Collections;
-using System.Collections.Generic;
+using MountAndBlade;
 using UnityEngine;
 
-namespace MountAndBlade
+public class EnemyAttackRangeCheck : MonoBehaviour
 {
-    public class EnemyAttackRangeCheck : MonoBehaviour
+    private EnemyBase _enemy;
+
+    private void Awake()
     {
-        private EnemyBase _enemy;
+        _enemy = GetComponentInParent<EnemyBase>();
+    }
 
-
-        private void Awake()
+    // Animasyon event'i tarafýndan çaðrýlacak
+    public void EndAttack()
+    {
+        if (_enemy != null)
         {
-            _enemy = GetComponentInParent<EnemyBase>();
-        }
+            // Saldýrý bittiðini bildir
+            _enemy.OnAttackFinished();
 
-      
-
-        public void EndAttack()
-        {
-
-          //  _enemy.StateMachine.ChangeState(_enemy.ChaseState);
-            _enemy.targetScript.Damage(10);
+            // Hasar ver (eðer target varsa)
+            if (_enemy.target != null && _enemy.targetScript != null)
+            {
+                _enemy.targetScript.Damage(10);
+            }
         }
     }
 }

@@ -45,9 +45,6 @@ namespace MountAndBlade
         
         public override void FrameUpdate()
         {
-
-           
-
             // If there's no target, go back to patrol
             if (enemyBase.target == null)
             {
@@ -59,15 +56,31 @@ namespace MountAndBlade
                     return;
                 }
             }
-
-            // Check if target is in attack range
-            if (enemyBase.IsTargetInAttackRange())
+            if (enemyBase.target != null)
             {
-                // If we're close enough, switch to attack state
-                enemyStateMachine.ChangeState(enemyBase.AttackState);
-                Debug.Log("asd");
-                return;
+                float distanceToTarget = Vector3.Distance(enemyBase.transform.position, enemyBase.target.position);
+
+                // Manuel durma mantýðý
+                if (distanceToTarget <= enemyBase.agent.stoppingDistance)
+                {
+                    // Durdurma iþlemi
+                    enemyBase.agent.isStopped = true;
+                    enemyBase.agent.velocity = Vector3.zero;
+
+                    // Yeterince yakýnsa ve durduysak, saldýrýya geç
+                    if (enemyBase.IsTargetInAttackRange())
+                    {
+                        enemyStateMachine.ChangeState(enemyBase.AttackState);
+                    }
+                }
+                else
+                {
+                    // Yeterince yakýn deðilse, harekete devam et
+                    enemyBase.agent.isStopped = false;
+                    enemyBase.MoveToTarget();
+                }
             }
+
 
             // Check if target is outside detection range
             if (!enemyBase.IsTargetInDetectionRange())
