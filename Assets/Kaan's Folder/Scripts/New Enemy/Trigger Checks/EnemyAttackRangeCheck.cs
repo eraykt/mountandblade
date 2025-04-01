@@ -19,7 +19,7 @@ namespace MountAndBlade
         public void EndAttack()
         {
 
-            _enemy.StateMachine.ChangeState(_enemy.ChaseState);
+          //  _enemy.StateMachine.ChangeState(_enemy.ChaseState);
             _enemy.targetScript.Damage(10);
         }
     }

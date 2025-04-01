@@ -1,81 +1,105 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.InteropServices.WindowsRuntime;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.AI;
 
 namespace MountAndBlade
 {
     public class EnemyChaseState : EnemyState
     {
-        private Vector3 _targetPosition;
-        private Transform _transform;
-        public static bool IsAttacking;
+        private float updatePathTimer = 0f;
+        private float updatePathInterval = 0.5f;
+        public bool exitState { get; set; } = false;
 
-        public EnemyChaseState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine) : base(enemyBase, enemyStateMachine)
+        public EnemyChaseState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine, Vector3 targetPosition)
+            : base(enemyBase, enemyStateMachine, targetPosition)
         {
-            this.enemyBase = enemyBase;
-            this.enemyStateMachine = enemyStateMachine;
-        }
-
-        public override void AnimationTrigerEvent(EnemyBase.AnimationTriggerType triggerType)
-        {
-            base.AnimationTrigerEvent(triggerType);
         }
 
         public override void EnterState()
         {
-            base.EnterState();
-            Debug.Log("Hello From Chase State !!");
-            enemyBase.agent.speed = GetRandomMoveSpeed();
+            // Make sure the agent is moving
+            enemyBase.ResumeMoving();
 
-            //enemyBase.animator.SetBool("b_isAttacking", false);
-            
+            // Start chasing the target
+            if (enemyBase.target != null)
+            {
+                enemyBase.MoveToTarget();
+            }
 
+            Debug.Log($"{enemyBase.gameObject.name} entered Chase State");
         }
-
 
         public override void ExitState()
         {
-            base.ExitState();
-
+            if (enemyBase.target.transform.position.magnitude <= 3.0f)
+                enemyStateMachine.ChangeState(enemyBase.AttackState);
+            else
+                enemyBase.MoveToTarget();
         }
-        public override void PhysicsUpdate()
-        {
-            base.PhysicsUpdate();
-        }
-
+        
         public override void FrameUpdate()
         {
-            base.FrameUpdate();
-
-            // Vector3 targetPos = enemyBase.GetTargetPosition();
-
-            Vector3 targetPos = enemyBase.GetTargetPosition();
-            //enemyBase.MoveEnemy(_targetPosition);
-            Debug.Log("EnemyChaseState : " + _targetPosition);
-            DistanceBetweenEntities();
-            enemyBase.MoveEnemy(targetPos);
-        }
-
-        private void DistanceBetweenEntities()
-        {
-            if (Vector3.Distance(enemyBase.transform.position, enemyBase.target.transform.position) < 3f)
+            // If there's no target, go back to patrol
+            if (enemyBase.target == null)
             {
-                Debug.Log("Yeterince yakýnlaþtýk");
-                enemyBase.IsAttacking = true;
-                enemyBase.StateMachine.ChangeState(enemyBase.AttackState);
+                enemyBase.FindNearestTarget();
+
+                if (enemyBase.target == null)
+                {
+                    enemyStateMachine.ChangeState(enemyBase.IdleState);
+                    return;
+                }
+            }
+
+            // Check if target is in attack range
+            if (enemyBase.IsTargetInAttackRange())
+            {
+                // If we're close enough, switch to attack state
+                enemyStateMachine.ChangeState(enemyBase.AttackState);
+                Debug.Log("asd");
+                return;
+            }
+
+            // Check if target is outside detection range
+            if (!enemyBase.IsTargetInDetectionRange())
+            {
+                // Lost the target, go back to patrol
+                enemyBase.target = null;
+                enemyBase.targetScript = null;
+                enemyStateMachine.ChangeState(enemyBase.PatrolState);
+                return;
+            }
+
+            // Update path at intervals to avoid updating every frame
+            updatePathTimer -= Time.deltaTime;
+            if (updatePathTimer <= 0f)
+            {
+                enemyBase.MoveToTarget();
+                updatePathTimer = updatePathInterval;
+            }
+
+            // Always rotate towards the movement direction
+            if (enemyBase.GetComponent<NavMeshAgent>().velocity.sqrMagnitude > 0.1f)
+            {
+                enemyBase.RotateTowardsDirection(enemyBase.GetComponent<NavMeshAgent>().velocity.normalized);
+            }
+            // If we're not moving but have a target, face the target
+            else if (enemyBase.target != null)
+            {
+                enemyBase.RotateTowardsTarget();
             }
         }
 
-        private float GetRandomMoveSpeed()
+        public override void PhysicsUpdate()
         {
-            float randomMoveSpeed = UnityEngine.Random.Range(1f, enemyBase.maxMoveSpeed);
-            return randomMoveSpeed;
+            // Not needed for chase state
         }
-        
 
+        public override void AnimationTrigerEvent(EnemyBase.AnimationTriggerType triggerType)
+        {
+            // Not handling animation events in chase state
+        }
     }
 }

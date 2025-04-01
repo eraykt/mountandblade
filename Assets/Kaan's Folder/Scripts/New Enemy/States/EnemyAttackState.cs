@@ -6,70 +6,89 @@ namespace MountAndBlade
 {
     public class EnemyAttackState : EnemyState
     {
-        [field: SerializeField] public AnimationCurve curve;
-        private float animTimer { get; set; } = 0.3f;
-        private float _timer;
-        public float _cooldownTimer { get; set; }
-        private float cooldownTime = 10.0f; 
-        public EnemyAttackState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine) : base(enemyBase, enemyStateMachine, Vector3.zero)
-        {
-            this.enemyBase = enemyBase;
-            this.enemyStateMachine = enemyStateMachine;
-        }
+        private float attackTimer;
+        private bool isAttacking = false;
+        
 
-        public override void AnimationTrigerEvent(EnemyBase.AnimationTriggerType triggerType)
+        public EnemyAttackState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine, Vector3 targetPosition)
+            : base(enemyBase, enemyStateMachine, targetPosition)
         {
-            base.AnimationTrigerEvent(triggerType);
-        }
-        public override void ExitState()
-        {
-            base.ExitState();
-
-            Debug.LogWarning("Exit Attack State");
-
         }
 
         public override void EnterState()
         {
-            base.EnterState();
+            // Stop moving when entering attack state
+            enemyBase.StopMoving();
 
-            //enemyBase.transform.LookAt(enemyBase.target.transform.position);
-            Debug.Log(enemyBase.target.transform.position);
+            // Start attack if we can
+            if (enemyBase.canAttack && !isAttacking)
+            {
+                StartAttack();
+            }
+
+            Debug.Log($"{enemyBase.gameObject.name} entered Attack State");
         }
 
+        public override void ExitState()
+        {
+            // Resume movement when exiting attack state
+            enemyBase.ResumeMoving();
+            isAttacking = false;
+            enemyBase.SetBool("isAttacking", false);
+
+            Debug.Log($"{enemyBase.gameObject.name} exited Attack State");
+        }
 
         public override void FrameUpdate()
         {
-            base.FrameUpdate();
+            // If target no longer exists, go back to patrol
+            if (enemyBase.target == null)
+            {
+                enemyStateMachine.ChangeState(enemyBase.PatrolState);
+                return;
+            }
 
-            //enemyBase.MoveEnemy(enemyBase.transform.position);
-            CooldownTimer();
-            
+            // Always face the target during attack
+            enemyBase.RotateTowardsTarget();
 
+            // If not in attack range anymore, chase the target
+            if (!enemyBase.IsTargetInAttackRange())
+            {
+                enemyStateMachine.ChangeState(enemyBase.ChaseState);
+                return;
+            }
+
+            // If we can attack again and we're not currently attacking, start a new attack
+            if (enemyBase.canAttack && !isAttacking)
+            {
+                StartAttack();
+            }
+
+           isAttacking = enemyBase.canAttack;
         }
 
         public override void PhysicsUpdate()
         {
-            base.PhysicsUpdate();
+            // Not needed for attack state
         }
 
-        private void AttackAnimationHandler()
+        public void SetIsAttack(bool isAttack)
         {
-            //enemyBase.StartCoroutine(enemyBase.AnimTimer(animTimer));
-            //enemyBase.StateMachine.ChangeState(enemyBase.ChaseState);
+            this.isAttacking = isAttack;
         }
 
-        public void CooldownTimer()
+        public override void AnimationTrigerEvent(EnemyBase.AnimationTriggerType triggerType)
         {
-            if (_cooldownTimer < cooldownTime)
-            {
-                
-                //enemyBase.animator.SetBool("b_isAttacking", true);
-                Debug.Log("ÜstKISIMMM");
-            }
-            _cooldownTimer = 0;
+           
         }
-        
-        
+
+
+        private void StartAttack()
+        {
+            enemyBase.SetBool("isAttacking", true);
+
+            ExitState();
+
+        }
     }
 }

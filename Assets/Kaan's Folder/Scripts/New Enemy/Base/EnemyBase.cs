@@ -1,174 +1,404 @@
+using RPGCharacterAnims.Lookups;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 
-/*
- * Durmadan takibi saðla 
- * Bot savaþý çalýþtýr
- */
-
-
 namespace MountAndBlade
 {
-    public class EnemyBase : MonoBehaviour, IDamagablee, IMoveable, ITriggerCheckable
+    public class EnemyBase : MonoBehaviour, IDamagablee
     {
-        [field: SerializeField] public float MaxHealth { get; set; } = 100f;
-        [field: SerializeField] public float CurrentHealth { get; set; }
-        //[field: SerializeField] public Rigidbody rb { get; set; }
-        [field: SerializeField] public Animator animator { get; set; }
-        [field: SerializeField] public NavMeshAgent agent { get; set; }
-
-        public GameObject target { get; set; } = null;
-        [field: SerializeField] private GameObject targetObject;
-
-
-
-        #region State Machine Variables
-        public EnemyStateMachine StateMachine { get; set; }
-        public EnemyChaseState ChaseState { get; set; }
-        public EnemyAttackState AttackState { get; set; }
-        public EnemyPatrolState PatrolState { get; set; }
+        #region Components
+        [SerializeField] protected NavMeshAgent agent;
+        [SerializeField] protected Animator animator;
+        [SerializeField] protected Transform hitPoint;
+        [SerializeField] protected float hitRange = 0.2f;
+        [SerializeField] protected LayerMask targetLayers;
         #endregion
 
-        public bool IsAttacking { get; set; } = false;
+        #region State Machine
+        protected EnemyStateMachine StateMachine { get; private set; }
 
-        #region Chase State Variables
-        public float maxMoveSpeed { get; set; } = 10f;
-        public bool IsChecked { get; set; }
-
+        // States
+        public EnemyIdleState IdleState { get; private set; }
+        public EnemyChaseState ChaseState { get; private set; }
+        public EnemyAttackState AttackState { get; private set; }
+        public EnemyPatrolState PatrolState { get; private set; }
         #endregion
 
-        public string oppositeTag;
-        public EnemyBase targetScript { get; set; }
+        #region Target
+        public Transform target { get; set; }
+        [HideInInspector] public IDamagablee targetScript;
+        [SerializeField] protected float detectionRange = 10f;
+        [SerializeField] protected float attackRange = 1.5f;
+        [SerializeField] protected string enemyTag = "Enemy";
+        [SerializeField] protected string allyTag = "Allies";
+        [SerializeField] protected string oppositeTag = "";
+        [SerializeField] protected float checkTargetInterval = 1.0f;
+        private float checkTargetTimer;
+        #endregion
 
-        
+        #region Combat
+        [SerializeField] protected float maxHealth = 100f;
+        [SerializeField] protected float currentHealth;
+        [SerializeField] protected float attackDamage = 10f;
+        [SerializeField] protected float attackCooldown = 2f;
+        [HideInInspector] public bool canAttack = true;
+        #endregion
 
-        #region Build-In Functions
-        private void Awake()
+        #region Movement
+        [SerializeField] protected float patrolRadius = 10f;
+        [SerializeField] protected float moveSpeed = 3.5f;
+        [SerializeField] protected float chaseSpeed = 5f;
+        [SerializeField] protected float rotationSpeed = 5f;
+        [SerializeField] protected float stoppingDistance { get; set; } = 3.00f;
+        protected Vector3 startPosition;
+
+        public static AnimationTriggerType animTrigType;
+        #endregion
+
+        #region Animation Triggers
+        public enum AnimationTriggerType
         {
+            AttackStart,
+            AttackPerformed,
+            AttackFinished
+        }
+        #endregion
+
+        protected virtual void Awake()
+        {
+            // Get components if not set
+            if (agent == null) agent = GetComponent<NavMeshAgent>();
+            if (animator == null) animator = GetComponent<Animator>();
+
+            // Initialize state machine
             StateMachine = new EnemyStateMachine();
-            ChaseState = new EnemyChaseState(this, StateMachine);
-            AttackState = new EnemyAttackState(this, StateMachine);
+
+            // Create states
+
+            ChaseState = new EnemyChaseState(this, StateMachine, Vector3.zero);
+            AttackState = new EnemyAttackState(this, StateMachine, Vector3.zero);
             PatrolState = new EnemyPatrolState(this, StateMachine);
 
-            animator = GetComponentInChildren<Animator>();
-            GetTargetPosition();
+            // Set initial values
+            currentHealth = maxHealth;
+            startPosition = transform.position;
+            agent.speed = moveSpeed;
+            agent.stoppingDistance = stoppingDistance;
+            checkTargetTimer = checkTargetInterval;
+
+            // Configure NavMesh Agent to prevent spinning
+            agent.updateRotation = false; // We'll handle rotation manually
+            agent.angularSpeed = 120; // Limit rotation speed
+
+
+            StartCoroutine(FindTargetRoutine());
+            // Start in Chase state if we have a target, otherwise Patrol
+            if (target != null)
+            {
+                Debug.Log("Target Bulundu");
+                StateMachine.Initalize(ChaseState);
+            }
+            else
+            {
+                Debug.Log("Target YOK");
+                string targetTag = gameObject.CompareTag(enemyTag) ? allyTag : enemyTag;
+                target = GameObject.FindGameObjectWithTag(targetTag).transform;
+                //StateMachine.Initalize(PatrolState);
+            }
         }
+
+
+
+
         protected virtual void Start()
         {
-            StateMachine.Initalize(ChaseState);
-            CurrentHealth = MaxHealth;
+            
+            oppositeTag = gameObject.CompareTag("Enemy") ? allyTag : enemyTag;
+            // Start in Chase state if we have a target, otherwise Patrol
+            if (target != null)
+            {
+                Debug.Log("Target Bulundu");
+                StateMachine.Initalize(ChaseState);
+            }
+            else
+            {
+                Debug.Log("Target YOK");
+                string targetTag = gameObject.CompareTag(enemyTag) ? allyTag : enemyTag;
+                target = GameObject.FindGameObjectWithTag(targetTag).transform;
+                //StateMachine.Initalize(PatrolState);
+            }
         }
+
         protected virtual void Update()
         {
+            // Update the current state
             StateMachine.CurrentEnemyState.FrameUpdate();
 
-            Vector3 targetPosition = GetTargetPosition();
-            if (Vector3.Distance(transform.position, targetPosition) < 10f)
+            Debug.Assert(animator != null, "ANIMATOR NULL");
+            Debug.Assert(agent != null, "AGENT NULL");
+            if (target.transform.position != null)
             {
-                // Player'ýn pozisyonunu ChaseState'e ilet
-                StateMachine.ChangeState(new EnemyChaseState(this, StateMachine));
+                if(target.transform.position.magnitude < stoppingDistance)
+                {
+                    agent.SetDestination(target.transform.position);
+                }
+                else
+                {
+                    StateMachine.ChangeState(AttackState);
+                }
+            }
+                
+           
+            // Update animator with velocity
+            if (animator != null)
+            {
+                float speed = agent.velocity.magnitude;
+                animator.SetFloat("Velocity", speed);
             }
 
-            // Speed ayarlarý
-            float currentSpeed = agent.velocity.magnitude;
-            float maxSpeed = agent.speed;
-            float normalizedSpeed = Mathf.Clamp01(currentSpeed / maxSpeed);
-            animator.SetFloat("Velocity", normalizedSpeed);
-        }
-       
-        #endregion
-
-        #region Health/Die Functions 
-        public void Damage(float damageAmount)
-        {
-            Debug.Log($"{this.name} has taken {damageAmount} damage");
-            CurrentHealth -= damageAmount;
-            if (CurrentHealth <= 0) Die();
-        }
-
-        public void Die()
-        {
-            Debug.Log($"{gameObject.name} has died!");
-            Destroy(gameObject);
-        }
-        #endregion 
-
-        #region Movement Functions
-        public void MoveEnemy(Vector3 pos)
-        {
-            agent.SetDestination(pos);
-        }
-
-        #endregion
-
-        #region Animaton Functions
-        private void AnimationTriggerEvent(AnimationTriggerType triggerType)
-        {
-            StateMachine.CurrentEnemyState.AnimationTrigerEvent(triggerType);
-        }
-        public enum AnimationTriggerType { EnemyDamaged, PlayFootstepSound }
-        #endregion
-
-        #region Distance Checker
-        public void SetCheckStatus(bool isChecked)
-        {
-            IsChecked = isChecked;
-        }
-        #endregion
-
-        public Vector3 GetTargetPosition()
-        {
-            // Hedefi her frame'de doðru þekilde almak için
-            TagChecker();
-            GameObject[] enemies = GameObject.FindGameObjectsWithTag(oppositeTag);
-            float closestDistance = Mathf.Infinity;
-            GameObject closestEnemy = null;
-
-            foreach (var enemy in enemies)
+            if (target != null)
             {
-                float distance = Vector3.Distance(this.transform.position, enemy.transform.position);
+                gameObject.transform.LookAt(target);
+            }
+
+            // Check for target every few seconds
+            checkTargetTimer -= Time.deltaTime;
+            if (checkTargetTimer <= 0)
+            {
+                checkTargetTimer = checkTargetInterval;
+            }
+
+            //if (StateMachine.CurrentEnemyState == AttackState)
+            //{
+            //    if (animTrigType == AnimationTriggerType.AttackFinished)
+            //    {
+
+            //    }
+            //}
+        }
+
+        protected virtual void FixedUpdate()
+        {
+            StateMachine.CurrentEnemyState.PhysicsUpdate();
+        }
+
+        #region Target Methods
+
+        private IEnumerator FindTargetRoutine()
+        {
+            while (true)
+            {
+                FindNearestTarget();
+                yield return new WaitForSeconds(0.5f); // Update target every half second
+            }
+        }
+
+        public void FindNearestTarget()
+        {
+            GameObject[] possibleTargets = GameObject.FindGameObjectsWithTag(oppositeTag);
+            float closestDistance = detectionRange;
+            Transform nearestTarget = null;
+
+            foreach (GameObject potentialTarget in possibleTargets)
+            {
+                float distance = Vector3.Distance(transform.position, potentialTarget.transform.position);
                 if (distance < closestDistance)
                 {
                     closestDistance = distance;
-                    closestEnemy = enemy;
+                    nearestTarget = potentialTarget.transform;
+
+                    // Try to get the IDamagablee component
+                    IDamagablee damagable = potentialTarget.GetComponent<IDamagablee>();
+                    if (damagable != null)
+                    {
+                        targetScript = damagable;
+                    }
                 }
             }
 
-            // Eðer en yakýn düþmaný bulmuþsan
-            if (closestEnemy != null)
+            // Update the target
+            target = nearestTarget;
+
+            // Debug info
+            if (target != null)
+                Debug.Log($"{gameObject.name} targeting: {target.name}");
+        }
+
+
+        public virtual bool IsTargetInAttackRange()
+        {
+            if (target == null) return false;
+            return Vector3.Distance(transform.position, target.position) <= attackRange;
+        }
+
+        public virtual bool IsTargetInDetectionRange()
+        {
+            if (target == null) return false;
+            return Vector3.Distance(transform.position, target.position) <= detectionRange;
+        }
+        #endregion
+
+        #region Animation Event Handlers
+        // Call these from animation events
+        public virtual void OnAttackStart()
+        {
+            StateMachine.CurrentEnemyState.AnimationTrigerEvent(AnimationTriggerType.AttackStart);
+        }
+
+        public virtual void OnAttackPerformed()
+        {
+            StateMachine.CurrentEnemyState.AnimationTrigerEvent(AnimationTriggerType.AttackPerformed);
+            PerformDamage();
+        }
+
+        public virtual void OnAttackFinished()
+        {
+            StateMachine.CurrentEnemyState.AnimationTrigerEvent(AnimationTriggerType.AttackFinished);
+        }
+
+        protected virtual void PerformDamage()
+        {
+            if (target == null || targetScript == null) return;
+
+            // Check if target is in range
+            if (IsTargetInAttackRange())
             {
-                target = closestEnemy;
-                
+                targetScript.Damage(attackDamage);
+                StartCoroutine(AttackCooldown());
             }
-
-
-            // Hedef varsa, hedefin pozisyonunu döndür
-            return target != null ? target.transform.position : transform.position;
         }
 
-       
-        public IEnumerator AnimTimer(float animTime)
+        public void AttackHandler()
         {
-            yield return new WaitForSeconds(animTime);
-            IsAttacking = false;
+            StartCoroutine(AttackCooldown());
         }
 
-        private void TagChecker()
+        protected virtual IEnumerator AttackCooldown()
+        {   
+            canAttack = false;
+            yield return new WaitForSeconds(attackCooldown);
+            canAttack = true;
+        }
+        #endregion
+
+        #region Movement Methods
+        public virtual void MoveToTarget()
         {
-            oppositeTag = this.tag == "Enemy" ? "Allies" : "Enemy"; 
+            if (target == null) return;
+            agent.speed = chaseSpeed;
+            agent.SetDestination(target.position);
         }
 
-        private void OnDrawGizmos()
+        public virtual void MoveToPoint(Vector3 position)
         {
-            if (agent != null && agent.destination != Vector3.zero)
+            agent.speed = moveSpeed;
+            agent.SetDestination(position);
+        }
+
+        public virtual Vector3 GetRandomPatrolPoint()
+        {
+            Vector3 randomDirection = UnityEngine.Random.insideUnitSphere * patrolRadius;
+            randomDirection += startPosition;
+            NavMeshHit hit;
+            NavMesh.SamplePosition(randomDirection, out hit, patrolRadius, 1);
+            return hit.position;
+        }
+
+        public virtual void StopMoving()
+        {
+            agent.isStopped = true;
+        }
+
+        public virtual void ResumeMoving()
+        {
+            agent.isStopped = false;
+        }
+
+        public virtual void RotateTowardsTarget()
+        {
+            if (target == null) return;
+
+            Vector3 direction = target.position - transform.position;
+            direction.y = 0; // Keep rotation only on y-axis
+
+            if (direction == Vector3.zero) return;
+
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+        }
+
+        public virtual void RotateTowardsDirection(Vector3 direction)
+        {
+            direction.y = 0; // Keep rotation only on y-axis
+
+            if (direction == Vector3.zero) return;
+
+            Quaternion rotation = Quaternion.LookRotation(direction);
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * rotationSpeed);
+        }
+
+        public virtual bool HasReachedDestination()
+        {
+            if (agent.pathPending) return false;
+
+            return agent.remainingDistance <= agent.stoppingDistance;
+        }
+        #endregion
+
+        #region IDamagablee Implementation
+        public float MaxHealth { get => maxHealth; set => maxHealth = value; }
+        public float CurrentHealth { get => currentHealth; set => currentHealth = value; }
+
+        public virtual void Damage(float damageAmount)
+        {
+            currentHealth -= damageAmount;
+
+            // Visual feedback could be added here
+
+            if (currentHealth <= 0)
             {
-                Gizmos.color = Color.green;  // Hedef çizgi rengini yeþil yap
-                Gizmos.DrawLine(transform.position, agent.destination);  // Mevcut konumdan hedefe çizgi çizer
+                Die();
             }
+        }
+
+        public virtual void Die()
+        {
+            // Could add death animation here
+            Destroy(gameObject);
+        }
+        #endregion
+
+        #region Gizmos
+        private void OnDrawGizmosSelected()
+        {
+            // Attack range
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(transform.position, attackRange);
+
+            // Detection range
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(transform.position, detectionRange);
+
+            // Hit point
+            if (hitPoint != null)
+            {
+                Gizmos.color = Color.magenta;
+                Gizmos.DrawSphere(hitPoint.position, hitRange);
+            }
+        }
+        #endregion
+
+        public virtual void SetBool(string variable, bool value)
+        {
+            animator.SetBool(variable, value);
+        }
+
+        public virtual void SetFloat(string variable, float value)
+        {
+            animator.SetFloat(variable, value);
         }
     }
 }

@@ -916,6 +916,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 0}
+  soldierSpeed: 0
   hitPoint: {fileID: 1334816710}
   hitRange: 0.6
   attackDistance: 1
@@ -2771,6 +2772,11 @@ PrefabInstance:
     - target: {fileID: 8550684135406947512, guid: c229e55f3f770354b89edbd6bdc163e9,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8965127469976766638, guid: c229e55f3f770354b89edbd6bdc163e9,
+        type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
