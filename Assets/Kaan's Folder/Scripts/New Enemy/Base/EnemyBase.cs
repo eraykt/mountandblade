@@ -2,6 +2,7 @@ using RPGCharacterAnims.Lookups;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -9,6 +10,7 @@ namespace MountAndBlade
 {
     public class EnemyBase : MonoBehaviour, IDamagablee
     {
+        public TextMeshPro stateText;
         #region Components
         [SerializeField] protected NavMeshAgent agent;
         [SerializeField] protected Animator animator;
@@ -141,17 +143,21 @@ namespace MountAndBlade
             Debug.Assert(agent != null, "AGENT NULL");
             if (target.transform.position != null)
             {
-                if(target.transform.position.magnitude < stoppingDistance)
-                {
-                    agent.SetDestination(target.transform.position);
-                }
-                else
-                {
-                    StateMachine.ChangeState(AttackState);
-                }
+                Debug.LogError("Target Transform is NULL");
             }
-                
-           
+            string original = StateMachine.CurrentEnemyState.ToString();
+            string prefix = "MountAndBlade.";
+
+            if (original.StartsWith(prefix))
+            {
+                original = original.Substring(prefix.Length);
+                stateText.text = original;
+            }
+
+            
+
+
+
             // Update animator with velocity
             if (animator != null)
             {
@@ -169,7 +175,10 @@ namespace MountAndBlade
             if (checkTargetTimer <= 0)
             {
                 checkTargetTimer = checkTargetInterval;
+                FindNearestTarget();
             }
+
+            animator.SetFloat("Velocity", agent.speed);
 
             //if (StateMachine.CurrentEnemyState == AttackState)
             //{

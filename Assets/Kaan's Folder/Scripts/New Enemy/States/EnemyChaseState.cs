@@ -10,7 +10,7 @@ namespace MountAndBlade
     {
         private float updatePathTimer = 0f;
         private float updatePathInterval = 0.5f;
-        public bool exitState { get; set; } = false;
+
 
         public EnemyChaseState(EnemyBase enemyBase, EnemyStateMachine enemyStateMachine, Vector3 targetPosition)
             : base(enemyBase, enemyStateMachine, targetPosition)
@@ -33,14 +33,21 @@ namespace MountAndBlade
 
         public override void ExitState()
         {
-            if (enemyBase.target.transform.position.magnitude <= 3.0f)
-                enemyStateMachine.ChangeState(enemyBase.AttackState);
-            else
+
+           
+            //enemyStateMachine.ChangeState(enemyBase.AttackState);
+            //Debug.Log("YAKLASTIK");
+            
+            
+
                 enemyBase.MoveToTarget();
         }
         
         public override void FrameUpdate()
         {
+
+           
+
             // If there's no target, go back to patrol
             if (enemyBase.target == null)
             {

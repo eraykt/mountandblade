@@ -6,7 +6,6 @@ namespace MountAndBlade
 {
     public class EnemyAttackState : EnemyState
     {
-        private float attackTimer;
         private bool isAttacking = false;
         
 
@@ -63,8 +62,6 @@ namespace MountAndBlade
             {
                 StartAttack();
             }
-
-           isAttacking = enemyBase.canAttack;
         }
 
         public override void PhysicsUpdate()
