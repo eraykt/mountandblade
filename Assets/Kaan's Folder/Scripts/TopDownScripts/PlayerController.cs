@@ -28,6 +28,9 @@ public class PlayerController : MonoBehaviour
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit))
             {
+                if (hit.transform.gameObject.CompareTag("Unclickable"))
+                    return;
+
                 agent.SetDestination(hit.point);
 
             }
