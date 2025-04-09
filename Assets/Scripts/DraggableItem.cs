@@ -7,49 +7,75 @@ using UnityEngine.UI;
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Item item;
+    [HideInInspector] public InventorySlot sourceSlot; //sürüklenen itemin yeni slotu
+    [HideInInspector] public Transform originalParent;
+    
     private CanvasGroup canvasGroup;
     private RectTransform rectTransform;
-    private Transform originalParent;
+    
     private void Awake() 
     {
         rectTransform = GetComponent<RectTransform>(); 
         canvasGroup = GetComponent<CanvasGroup>();
-        
+
         if (canvasGroup == null)
+        {
             canvasGroup = gameObject.AddComponent<CanvasGroup>();
+        }
         
     }
 
     public void SetItem(Item newItem)
     {
         item = newItem;
-        GetComponent<Image>().sprite = item.Itemicon;
+
+        Image itemImage = GetComponent<Image>();
+        if (itemImage != null)
+        {
+            itemImage.sprite = item.Itemicon;
+        }
+        else
+        {
+            Debug.LogWarning("Item icon is missing");
+        }
     }
 
-    public void OnBeginDrag(PointerEventData eventData) //s�r�kleme ba��nda yap�lacak i�lemleri tan�mlamak i�in
+    public void OnBeginDrag(PointerEventData eventData) 
     {
         originalParent = transform.parent;
         transform.SetParent(transform.root, true);
-        canvasGroup.alpha = 0.6f; //opakl��� d���r�r
-        canvasGroup.blocksRaycasts = false; //raycasti(�arp��may�) devre d��� b�rak�r
+        canvasGroup.alpha = 0.6f; //opaklık
+        canvasGroup.blocksRaycasts = false; //raycast devre dışı
     }
 
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.position = Input.mousePosition; // mouse pozisyonuna g�re item� s�r�kler
+        rectTransform.position = Input.mousePosition; 
     }
 
-    public void OnEndDrag(PointerEventData eventData) //s�r�kleme tamamland���nda
+    public void OnEndDrag(PointerEventData eventData)
     {
         
         canvasGroup.alpha = 1f;
         canvasGroup.blocksRaycasts = true;
         
-        if (rectTransform.parent == transform.root) 
+        GameObject targetObject = eventData.pointerCurrentRaycast.gameObject;
+
+        if (targetObject == null || targetObject.GetComponentInParent<InventorySlot>() == null)
         {
-            transform.SetParent(originalParent, true);
-            rectTransform.localPosition = Vector3.zero;
+            transform.SetParent(originalParent, false);
+            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
         }
+        else
+        {
+            InventorySlot targetSlot = targetObject.GetComponent<InventorySlot>();
+            if (targetSlot?.icon != null)
+            {
+                transform.SetParent(targetSlot.icon.transform, false);
+                rectTransform.anchoredPosition = Vector2.zero;
+            }
+        }
+        
     }
 
 }

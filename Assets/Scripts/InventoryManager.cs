@@ -20,6 +20,10 @@ public class InventoryManager : MonoBehaviour
     public Transform charShield;
     
     public Button SellButton;
+    
+    private List<InventorySlot> inventorySlots = new List<InventorySlot>();
+    private List<InventorySlot> discardSlots = new List<InventorySlot>();
+    private Dictionary<SlotType, InventorySlot> characterSlots = new Dictionary<SlotType, InventorySlot>();
     private void Start() 
     {
         PopulateInventory();
@@ -48,6 +52,7 @@ public class InventoryManager : MonoBehaviour
             if (slot != null)
             {
                 slot.SetSlot(item); // Item'i slota bagla
+                inventorySlots.Add(slot);
             }
             else
             {
@@ -64,33 +69,38 @@ public class InventoryManager : MonoBehaviour
 
         for (int i = 0; i < emptySlotsToAdd; i++) 
         {
-            Instantiate(slotPrefab, content); //bos slot olusturma
+            GameObject slotObject = Instantiate(slotPrefab, content);
+            InventorySlot slot = slotObject.GetComponent <InventorySlot>();
+            if (slot != null)
+            {
+                inventorySlots.Add(slot);
+            }
+            
         }
     }
 
     private void AddDiscardSlots()
     {
-        if (content == null)
+        if (discardContent == null)
         {
             Debug.LogError("Discard content is not assigned!");
             return;
         }
 
-        Debug.Log($"Discard Content: {content.name}");
-
-
         int discardSlotCount = 8; //Hedef slot sayisi
         for (int i = 0; i < discardSlotCount; i++)
         {
-            GameObject slot = Instantiate(discardSlotPrefab, discardContent); 
-            slot.name = "DiscardSlot" + i;
-            slot.transform.SetParent(discardContent, false);
+            GameObject slotObject = Instantiate(discardSlotPrefab, discardContent); 
+            slotObject.name = "DiscardSlot" + i;
+            InventorySlot slot = slotObject.GetComponent <InventorySlot>();
             
-            InventorySlot inventorySlot = slot.GetComponent<InventorySlot>();
-            if (inventorySlot != null)
+            if (slot != null)
             {
-                inventorySlot.slotType = SlotType.Discard; 
+                slot.slotType = SlotType.Discard; 
+                discardSlots.Add(slot);
             }
+            
+            slotObject.transform.SetParent(discardContent, false);
         }
     }
 
@@ -102,17 +112,17 @@ public class InventoryManager : MonoBehaviour
             return;
         }
         
-        foreach (Transform child in discardContent)
+        List<InventorySlot> soldItems = new List<InventorySlot>();
+        foreach (InventorySlot slot in discardSlots)
         {
-
-            InventorySlot slot = child.GetComponent<InventorySlot>();
-            if (slot != null && slot.slotType == SlotType.Discard && slot.IsOccupied)
+            if (slot != null && slot.IsOccupied)
             {
                 Debug.Log($"Item {slot.currentItem.name} sold and removed.");
                 slot.ClearSlot();
+                soldItems.Add(slot);
             }
-            
         }
+        
     }
     
     private void AssignCharSlots()
@@ -128,6 +138,10 @@ public class InventoryManager : MonoBehaviour
             InventorySlot slot = slotTransform.GetComponent<InventorySlot>();
             if (slot != null)
             {
+                if (!characterSlots.ContainsKey(slot.slotType))
+                {
+                    characterSlots.Add(slot.slotType, slot);
+                }
                 switch (slot.slotType)
                 {
                     case SlotType.RightHand:

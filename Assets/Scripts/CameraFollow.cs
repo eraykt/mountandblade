@@ -6,7 +6,7 @@ public class CameraFollow : MonoBehaviour
 {
     public Transform target;
     public float smoothSpeed = 0.125F;
-    public Vector3 offset; //kamera ile karakter arasýndaki mesafe
+    public Vector3 offset; //kamera ile karakter arasÄ±ndaki mesafe
 
     private Vector3 smoothedPosition;
 
