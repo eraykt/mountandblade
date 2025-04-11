@@ -18,6 +18,8 @@ namespace MountAndBlade
         private Animator enemyAnim;
         private float currentSpeed;
 
+        [SerializeField]private float SpeedMultiplier;
+        
         public NavMeshAgent agent; // Karakterin NavMeshAgent'i
         [Header("Bounds")]
         public Vector3 boundsMin; // Sýnýrlarýn minimum noktasý
@@ -29,7 +31,6 @@ namespace MountAndBlade
         public float stopRange = 15f;            // Takip etmeyi býrakma mesafesi (Editor'dan ayarlanabilir)
         private bool isInReach = false;          // Takip durumu
         private bool canGeneratePos = true;
-        public float retreatSpeed = 8f;
 
         public float maxDistance = 50f;
         public bool isPlayerStronger = false;
@@ -55,6 +56,7 @@ namespace MountAndBlade
             StatesHandler();
             CheckDistance();
             HandleAnimations();
+            updateSpeedDependingSoldierAmount();
         }
 
         private void HandleAnimations()
@@ -62,7 +64,6 @@ namespace MountAndBlade
             currentSpeed = Mathf.Clamp01(agent.velocity.magnitude);
             enemyAnim.SetFloat("CurrentSpeed", currentSpeed);
         }
-
         private void UpdateStrengthStatus()
         {
             if (playerManager != null)
@@ -70,8 +71,6 @@ namespace MountAndBlade
                 isPlayerStronger = playerManager.playerSoldierAmount <= askerSayisi;
             }
         }
-
-
         public void UpdateSoldierCountText()
         {
             if (soldierCountText != null)
@@ -79,14 +78,11 @@ namespace MountAndBlade
                 soldierCountText.text = askerSayisi.ToString();
             }
         }
-
-        // Örnek: Asker sayýsýný arttýrmak ya da azaltmak
         public void AddSoldier(int count)
         {
             askerSayisi += count;
             UpdateSoldierCountText();
         }
-
         private void StatesHandler()
         {
 
@@ -103,10 +99,7 @@ namespace MountAndBlade
                     break;
 
             }
-
-
         }
-
         private void PatrolBehaviour()
         {
             if (canGeneratePos)
@@ -118,16 +111,13 @@ namespace MountAndBlade
             else if (isInReach && !isPlayerStronger)
                 currentState = States.retreat;
         }
-
         private void ChaseBehaviour()
         {
             if (isInReach)
             {
                 agent.SetDestination(player.position);
-
             }
         }
-
         private void RetreatBehaviour()
         {
             // Oyuncuya doðru olan yönü hesapla
@@ -135,12 +125,10 @@ namespace MountAndBlade
             directionAwayFromPlayer.Normalize(); // Yönü normalize et (birim vektör)
 
             // Kaçma hareketi için hýzý ayarla
-            agent.speed = retreatSpeed;
 
             // Oyuncudan uzaklaþarak hareket et
             agent.SetDestination(transform.position + directionAwayFromPlayer);  // Hedef olarak oyuncudan uzaklaþacak yönü ayarla
         }
-
         private void OnDestroy()
         {
             // Düþman yok olduðunda SpawnHandler'a bildir
@@ -150,9 +138,6 @@ namespace MountAndBlade
                 spawnHandler.EnemyDestroyed();
             }
         }
-
-
-
         private void CheckDistance()
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -168,7 +153,10 @@ namespace MountAndBlade
                currentState = States.patrol;
  
         }
-
+        private void updateSpeedDependingSoldierAmount()
+        {
+            agent.speed = askerSayisi * SpeedMultiplier;
+        }
         private IEnumerator GenerateRandomPosition()
         {
             while (true)
@@ -192,7 +180,6 @@ namespace MountAndBlade
                 }
             }
         }
-
         private Vector3 GetRandomPositionWithinBounds()
         {
             // Sýnýrlar arasýnda rastgele bir pozisyon üret (sadece yatay x ve z için)
@@ -222,7 +209,5 @@ namespace MountAndBlade
                 Gizmos.DrawLine(new Vector3(boundsMax.x, boundsMin.y, boundsMin.z), new Vector3(boundsMax.x, boundsMin.y, boundsMax.z)); // Ön sol köþe
             }
         }
-
-
     }
 }

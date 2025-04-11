@@ -26,8 +26,6 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
-
-        Debug.Log(agent.velocity.magnitude);
         if (!canMove)
             return;
 
