@@ -39,13 +39,18 @@ public class PlayerController : MonoBehaviour
         if (playerAnimator != null)
         {
             HandleAnimation();
-        } 
+        }
+
+        CastAgentDestinationRay();
+    }
+
+    private void CastAgentDestinationRay() {
 
         if (Input.GetMouseButtonDown(0))
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit , Mathf.Infinity, ~0 , QueryTriggerInteraction.Ignore))
+            if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~0, QueryTriggerInteraction.Ignore))
             {
                 if (hit.transform.gameObject.CompareTag("Unclickable"))
                     return;
@@ -55,7 +60,6 @@ public class PlayerController : MonoBehaviour
             }
         }
     }
-
     private void UptadeSpeedRelativeToUnitAmount()
     {
         float SlowAmount = playerManager.playerSoldierAmount * SlowMultipler;
