@@ -10,17 +10,31 @@ public class PlayerController : MonoBehaviour
     public Camera cam;
     public NavMeshAgent agent;
 
+    private Animator playerAnimator;
+    
     private bool canMove = true;
     private void Awake()
     {
         instance = this;
+
+    }
+
+    private void Start()
+    {
+        playerAnimator = GetComponentInChildren<Animator>();
     }
 
     private void Update()
     {
 
+        Debug.Log(agent.velocity.magnitude);
         if (!canMove)
             return;
+
+        if (playerAnimator != null)
+        {
+            HandleAnimation();
+        } 
 
         if (Input.GetMouseButtonDown(0))
         {
@@ -37,6 +51,12 @@ public class PlayerController : MonoBehaviour
             
         }
 
+    }
+    
+    private void HandleAnimation()
+    {
+        float clampedSpeed = Mathf.Clamp01(agent.velocity.magnitude);
+        playerAnimator.SetFloat("CurrentSpeed", clampedSpeed);
     }
 
     public void SetCanMove(bool value)

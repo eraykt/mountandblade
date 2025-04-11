@@ -33,7 +33,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 11.6, y: 6.37, z: 0}
-  m_LocalScale: {x: 2, y: 2, z: 2}
+  m_LocalScale: {x: 4, y: 4, z: 4}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4285332953792938048}
@@ -144,8 +144,8 @@ MonoBehaviour:
   soldierCountText: {fileID: 3222596837163182173}
   currentState: 0
   agent: {fileID: 2973689156363762372}
-  boundsMin: {x: -11.9, y: 0, z: -27.5}
-  boundsMax: {x: 97.1, y: 0, z: 146.1}
+  boundsMin: {x: -153.6, y: 11.67, z: -287.2}
+  boundsMax: {x: 336.8, y: 0, z: 208.5}
   player: {fileID: 0}
   chaseRange: 30
   stopRange: 15

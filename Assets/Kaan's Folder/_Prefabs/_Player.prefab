@@ -354,6 +354,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3826e4818436aa4aa7e645a7a6a262e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  mainCamera: {fileID: 0}
 --- !u!1 &6457032798046845555
 GameObject:
   m_ObjectHideFlags: 0
@@ -363,7 +364,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6103496727190756065}
-  - component: {fileID: 73099984479823165}
   - component: {fileID: 4302721410807542294}
   - component: {fileID: 1592537705089901353}
   - component: {fileID: 7080068583313136769}
@@ -395,14 +395,6 @@ Transform:
   - {fileID: 8266049454974246151}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &73099984479823165
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6457032798046845555}
-  m_Mesh: {fileID: 10208, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &4302721410807542294
 MeshRenderer:
   m_ObjectHideFlags: 0
