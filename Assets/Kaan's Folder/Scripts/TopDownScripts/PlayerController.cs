@@ -1,3 +1,4 @@
+using MountAndBlade;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,20 +8,26 @@ using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
+    private PlayerManager playerManager;
+    
     public Camera cam;
+
     public NavMeshAgent agent;
+    private bool canMove = true;
+    private float defaultAgentSpeed;
+    [SerializeField]private float SlowMultipler;
 
     private Animator playerAnimator;
-    
-    private bool canMove = true;
     private void Awake()
     {
         instance = this;
-
     }
 
     private void Start()
     {
+        playerManager = GetComponent<PlayerManager>();
+        defaultAgentSpeed = agent.speed;
+        UptadeSpeedRelativeToUnitAmount();
         playerAnimator = GetComponentInChildren<Animator>();
     }
 
@@ -38,7 +45,7 @@ public class PlayerController : MonoBehaviour
         {
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit))
+            if (Physics.Raycast(ray, out hit , Mathf.Infinity, ~0 , QueryTriggerInteraction.Ignore))
             {
                 if (hit.transform.gameObject.CompareTag("Unclickable"))
                     return;
@@ -46,22 +53,23 @@ public class PlayerController : MonoBehaviour
                 agent.SetDestination(hit.point);
 
             }
-            
         }
-
     }
-    
+
+    private void UptadeSpeedRelativeToUnitAmount()
+    {
+        float SlowAmount = playerManager.playerSoldierAmount * SlowMultipler;
+        agent.speed = defaultAgentSpeed / SlowAmount;
+    }
     private void HandleAnimation()
     {
         float clampedSpeed = Mathf.Clamp01(agent.velocity.magnitude);
         playerAnimator.SetFloat("CurrentSpeed", clampedSpeed);
     }
-
     public void SetCanMove(bool value)
     {
         canMove = value;
     }
-
     public float GetSpeed() => agent.speed;
     public bool GetIsStopped() => agent.isStopped;
 

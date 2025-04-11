@@ -101,10 +101,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.81
-  m_Height: 2.45
+  m_Radius: 0.33075142
+  m_Height: 1.8065236
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: -0.14, z: -0.02}
 --- !u!195 &2973689156363762372
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -115,7 +115,7 @@ NavMeshAgent:
   m_Enabled: 1
   m_AgentTypeID: 0
   m_Radius: 0.5
-  m_Speed: 5
+  m_Speed: 50
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
@@ -140,16 +140,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerManager: {fileID: 0}
-  askerSayisi: 3
+  askerSayisi: 5
   soldierCountText: {fileID: 3222596837163182173}
   currentState: 0
+  SlowMultipler: 2
   agent: {fileID: 2973689156363762372}
   boundsMin: {x: -153.6, y: 11.67, z: -287.2}
   boundsMax: {x: 336.8, y: 0, z: 208.5}
   player: {fileID: 0}
   chaseRange: 30
   stopRange: 15
-  retreatSpeed: 1
   maxDistance: 50
   isPlayerStronger: 1
 --- !u!114 &4277338474887397344

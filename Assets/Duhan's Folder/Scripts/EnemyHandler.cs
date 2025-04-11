@@ -18,7 +18,7 @@ namespace MountAndBlade
         private Animator enemyAnim;
         private float currentSpeed;
 
-        [SerializeField]private float SpeedMultiplier;
+        [SerializeField]private float SlowMultipler;
         
         public NavMeshAgent agent; // Karakterin NavMeshAgent'i
         [Header("Bounds")]
@@ -31,21 +31,17 @@ namespace MountAndBlade
         public float stopRange = 15f;            // Takip etmeyi býrakma mesafesi (Editor'dan ayarlanabilir)
         private bool isInReach = false;          // Takip durumu
         private bool canGeneratePos = true;
-
+        private float defaultAgentSpeed;
         public float maxDistance = 50f;
         public bool isPlayerStronger = false;
 
         private Vector3 moveDir;
         void Start()
         {
+            defaultAgentSpeed = agent.speed;
             enemyAnim = GetComponent<Animator>();
             playerManager = FindObjectOfType<PlayerManager>();
-
-            if (playerManager == null)
-            {
-                Debug.LogError("PlayerHandler bulunamadý! Lütfen sahnede bir PlayerHandler olduðundan emin olun.");
-                return;
-            }
+            UptadeSpeedRelativeToUnitAmount();
             UpdateStrengthStatus();
             UpdateSoldierCountText();
             currentState = States.patrol;
@@ -56,7 +52,6 @@ namespace MountAndBlade
             StatesHandler();
             CheckDistance();
             HandleAnimations();
-            updateSpeedDependingSoldierAmount();
         }
 
         private void HandleAnimations()
@@ -153,9 +148,10 @@ namespace MountAndBlade
                currentState = States.patrol;
  
         }
-        private void updateSpeedDependingSoldierAmount()
+        private void UptadeSpeedRelativeToUnitAmount()
         {
-            agent.speed = askerSayisi * SpeedMultiplier;
+            float SlowAmount = askerSayisi * SlowMultipler;
+            agent.speed = defaultAgentSpeed / SlowAmount;
         }
         private IEnumerator GenerateRandomPosition()
         {
