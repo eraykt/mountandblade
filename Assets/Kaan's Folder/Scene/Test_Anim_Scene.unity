@@ -155,7 +155,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 3
+  m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -176,6 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateText: {fileID: 1904956006}
+  agent: {fileID: 177599749}
   animator: {fileID: 177599752}
   hitPoint: {fileID: 1056118229}
   hitRange: 0.2
@@ -183,7 +184,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   detectionRange: 10
-  attackRange: 3.38
+  attackRange: 1.5
   enemyTag: Enemy
   allyTag: Allies
   oppositeTag: 
@@ -1232,7 +1233,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 3
+  m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1253,6 +1254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateText: {fileID: 430500153}
+  agent: {fileID: 1603341993}
   animator: {fileID: 1603341996}
   hitPoint: {fileID: 2091522498}
   hitRange: 0.2
@@ -1444,7 +1446,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 3
+  m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1
@@ -1465,6 +1467,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stateText: {fileID: 879726946}
+  agent: {fileID: 1850163056}
   animator: {fileID: 1850163059}
   hitPoint: {fileID: 194343886}
   hitRange: 0.2
