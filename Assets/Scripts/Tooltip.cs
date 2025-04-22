@@ -26,9 +26,21 @@ public class Tooltip : MonoBehaviour
         isVisible = true;
 
         RectTransform rect = tooltipPanel.GetComponent<RectTransform>();
+        Canvas canvas = GetComponentInParent<Canvas>();
 
         Vector2 adjustedPosition = position + new Vector2(20f, -20f); //fare pozisyon offseti
-        rect.position = adjustedPosition;
+
+        Vector2 canvasSize = canvas.GetComponent<RectTransform>().sizeDelta;
+        Vector2 tooltipSize = rect.sizeDelta;
+        
+        if (adjustedPosition.x + tooltipSize.x > canvasSize.x)
+            adjustedPosition.x = canvasSize.x - tooltipSize.x;
+
+        // Alt sınırı kontrol et
+        if (adjustedPosition.y - tooltipSize.y < 0)
+            adjustedPosition.y = tooltipSize.y;
+        
+        rect.anchoredPosition = adjustedPosition;
     }
 
     public void HideTooltip() 
