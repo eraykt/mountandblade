@@ -1139,8 +1139,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 641, y: -4}
-  m_SizeDelta: {x: 644.1282, y: 1096.9}
+  m_AnchoredPosition: {x: 636.97, y: -6.538}
+  m_SizeDelta: {x: 646.06, y: 1100.7}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &411421602
 MonoBehaviour:
@@ -3339,8 +3339,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 2, y: -0.000061035156}
-  m_SizeDelta: {x: 623.26, y: 0}
+  m_AnchoredPosition: {x: -1.5079346, y: 0}
+  m_SizeDelta: {x: 630.14, y: 1087.5924}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &987671058
 MonoBehaviour:
@@ -3373,7 +3373,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 987671056}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3245ec927659c4140ac4f8d17403cc18, type: 3}
   m_Name: 
@@ -3567,18 +3567,6 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 444336771}
   m_SourcePrefab: {fileID: 100100000, guid: 2fc03eca4b5402243b7eb4dd9cf923ec, type: 3}
---- !u!114 &1049846756 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8120880068004346502, guid: 2fc03eca4b5402243b7eb4dd9cf923ec,
-    type: 3}
-  m_PrefabInstance: {fileID: 2001849049}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &1066839401
 GameObject:
   m_ObjectHideFlags: 0
@@ -3621,6 +3609,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 07109103378efee459c060261f40dd84, type: 2}
   totalSlot: 21
   charContent: {fileID: 505853372}
+  inventoryCanvas: {fileID: 1852280088}
   charRightHand: {fileID: 2116938053}
   charArmor: {fileID: 2061037239}
   charHelmet: {fileID: 1211788779}
@@ -4889,7 +4878,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 20, y: -548.5}
+  m_AnchoredPosition: {x: 9.799988, y: -392}
   m_SizeDelta: {x: 20, y: -17}
   m_Pivot: {x: 1, y: 1}
 --- !u!114 &1575101042
@@ -4936,7 +4925,7 @@ MonoBehaviour:
   m_HandleRect: {fileID: 1096507854}
   m_Direction: 2
   m_Value: 0
-  m_Size: 1
+  m_Size: 0.5059542
   m_NumberOfSteps: 0
   m_OnValueChanged:
     m_PersistentCalls:
@@ -5518,6 +5507,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1946611188}
   m_CullTransparentMesh: 1
+--- !u!114 &1961312952 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8120880068004346502, guid: 2fc03eca4b5402243b7eb4dd9cf923ec,
+    type: 3}
+  m_PrefabInstance: {fileID: 2001849049}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1965752161
 GameObject:
   m_ObjectHideFlags: 0
@@ -5759,11 +5760,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 645743153078200863, guid: 2fc03eca4b5402243b7eb4dd9cf923ec,
+        type: 3}
+      propertyPath: m_Name
+      value: Image
+      objectReference: {fileID: 0}
     - target: {fileID: 2877172048184615993, guid: 2fc03eca4b5402243b7eb4dd9cf923ec,
         type: 3}
       propertyPath: icon
       value: 
-      objectReference: {fileID: 1049846756}
+      objectReference: {fileID: 1961312952}
     - target: {fileID: 2877172048184615993, guid: 2fc03eca4b5402243b7eb4dd9cf923ec,
         type: 3}
       propertyPath: tooltip
@@ -5793,6 +5799,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: InventorySlot 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6203697806238530660, guid: 2fc03eca4b5402243b7eb4dd9cf923ec,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,10 +11,10 @@ public class InventoryManager : MonoBehaviour
     public GameObject slotPrefab;
     public GameObject discardSlotPrefab;
     public List<Item> items;
-    public int totalSlot = 21;
     public Transform charContent;
     
-    //karakterdeki yerler
+    public GameObject inventoryCanvas;
+    
     public Transform charRightHand;
     public Transform charArmor;
     public Transform charHelmet;
@@ -26,8 +27,11 @@ public class InventoryManager : MonoBehaviour
     private Dictionary<SlotType, InventorySlot> characterSlots = new Dictionary<SlotType, InventorySlot>();
     private void Start() 
     {
+        if (inventoryCanvas != null)
+        {
+            inventoryCanvas.SetActive(false);
+        }
         PopulateInventory();
-        AddEmptySlots();
         AddDiscardSlots();
         
         if (SellButton != null)
@@ -41,41 +45,78 @@ public class InventoryManager : MonoBehaviour
 
         AssignCharSlots();
     }
-
-    private void PopulateInventory() 
+    
+    void Update()
     {
-
-        foreach (var item in items) 
+        if (Input.GetKeyDown(KeyCode.I))
         {
-            GameObject slotObject = Instantiate(slotPrefab, content);
-            InventorySlot slot = slotObject.GetComponent <InventorySlot>();
-            if (slot != null)
+            if (inventoryCanvas != null)
             {
-                slot.SetSlot(item); // Item'i slota bagla
-                inventorySlots.Add(slot);
+                bool isActive = inventoryCanvas.activeSelf;
+                inventoryCanvas.SetActive(!isActive);
+                
+                if (!isActive) 
+                {
+                    foreach (InventorySlot slot in inventorySlots)
+                    {
+                        slot.ResetAllItemsVisual();
+                    }
+                
+                    foreach (InventorySlot slot in discardSlots)
+                    {
+                        slot.ResetAllItemsVisual();
+                    }
+                
+                    foreach (var slot in characterSlots.Values)
+                    {
+                        slot.ResetAllItemsVisual();
+                    }
+                }
             }
             else
             {
-                Debug.LogError("InventorySlot script'i slot prefab'inde bulunamadi!");
+                Debug.LogWarning("Inventory canvas is not assigned!");
             }
         }
     }
 
 
-    private void AddEmptySlots() 
+    private void PopulateInventory() 
     {
-        int currentSlotCount = content.childCount;
-        int emptySlotsToAdd = totalSlot - currentSlotCount;
+        int minSlotCount = 14;
+        int totalNeededSlots = Mathf.Max(items.Count, minSlotCount);
 
-        for (int i = 0; i < emptySlotsToAdd; i++) 
+        for (int i = 0; i < totalNeededSlots; i++)
         {
             GameObject slotObject = Instantiate(slotPrefab, content);
-            InventorySlot slot = slotObject.GetComponent <InventorySlot>();
+            InventorySlot slot = slotObject.GetComponent<InventorySlot>();
+
             if (slot != null)
             {
+                if (i < items.Count)
+                    slot.SetSlot(items[i]);
+
                 inventorySlots.Add(slot);
             }
-            
+        }
+    }
+
+
+    private void AddEmptySlots(Item newItem) 
+    {
+        items.Add(newItem);
+
+        InventorySlot emptySlot = inventorySlots.Find(slot => !slot.IsOccupied);
+        if (emptySlot != null)
+        {
+            emptySlot.SetSlot(newItem);
+        }
+        else
+        {
+            GameObject slotObject = Instantiate(slotPrefab, content);
+            InventorySlot slot = slotObject.GetComponent<InventorySlot>();
+            slot.SetSlot(newItem);
+            inventorySlots.Add(slot);
         }
     }
 
@@ -83,11 +124,10 @@ public class InventoryManager : MonoBehaviour
     {
         if (discardContent == null)
         {
-            Debug.LogError("Discard content is not assigned!");
             return;
         }
 
-        int discardSlotCount = 8; //Hedef slot sayisi
+        int discardSlotCount = 14;
         for (int i = 0; i < discardSlotCount; i++)
         {
             GameObject slotObject = Instantiate(discardSlotPrefab, discardContent); 
@@ -108,7 +148,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (discardContent == null)
         {
-            Debug.LogError("Discard content is not assigned!");
             return;
         }
         
@@ -129,7 +168,6 @@ public class InventoryManager : MonoBehaviour
     {
         if (charContent== null)
         {
-            Debug.LogError("charSlot is not assigned!");
             return;
         }
         

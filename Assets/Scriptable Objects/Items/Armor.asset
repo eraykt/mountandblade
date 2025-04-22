@@ -20,6 +20,7 @@ MonoBehaviour:
   itemPrefab: {fileID: 7821820561433432649, guid: 93bf5b8411099294ea3216865b4654a6,
     type: 3}
   allowedSlotType: 4
+  itemType: 1
   defense: 10
   health: 12
   armorType: 4

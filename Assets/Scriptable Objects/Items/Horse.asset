@@ -17,6 +17,9 @@ MonoBehaviour:
   Itemicon: {fileID: 21300000, guid: 9cfef0bfcfd75194aa3306ed233b3387, type: 3}
   weight: 900
   salePrice: 600
+  itemPrefab: {fileID: 0}
+  allowedSlotType: 0
+  itemType: 4
   hitPoints: 110
   speed: 50
   armor: 12

@@ -5,15 +5,13 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "NewHorse", menuName = "Inventory/Horse")]
 public class Horse : Item
 {
-    public int hitPoints; //þimdilik int sonrasýna 100/100 örneðin seklinde olacak
+    public int hitPoints; //ne kadar kullanÄ±lÄ±rsa o kadar azalÄ±r
     public float speed;
     public int armor;
-    public int maneuver;
-    public int charge;
     public int riding;
 
     public override string GetItemDetails()
     {
-        return base.GetItemDetails() + $"\nArmor: {armor}\nSpeed: {speed}\nManeuver: {maneuver}\nCharge: {charge}\nHit Points: {hitPoints}\nRequires Riding: {riding}";
+        return base.GetItemDetails() + $"\nArmor: {armor}\nSpeed: {speed}\nHit Points: {hitPoints}\nRequires Riding: {riding}";
     }
 }

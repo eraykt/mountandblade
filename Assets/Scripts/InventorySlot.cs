@@ -23,17 +23,20 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Image icon;
     public Item currentItem;
     public Tooltip tooltip;
-    public Transform characterSlot;
+    public Transform characterSlot; 
     public GameObject spawnedItemOnCharacter; 
     public bool IsOccupied => currentItem != null;
 
     private void Start() 
     {
+        if (icon == null)
+        {
+            icon = GetComponentInChildren<Image>(true);
+        }
         if(currentItem == null) 
         {
             ClearSlot();
         }
-        
     }
 
     public void OnPointerEnter(PointerEventData eventData) 
@@ -55,107 +58,108 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     
     public void OnDrop(PointerEventData eventData)
     {
-        DraggableItem draggableItem = eventData.pointerDrag?.GetComponent<DraggableItem>();
-        if(draggableItem == null || draggableItem.item == null) return;
-        
+        if (eventData.pointerDrag == null) return;
+    
+        DraggableItem draggableItem = eventData.pointerDrag.GetComponent<DraggableItem>();
+        if(draggableItem == null || draggableItem.item == null) 
+            return;
+    
         InventorySlot sourceSlot = draggableItem.sourceSlot;
         
-        if (IsOccupied && sourceSlot != this)
-        {
-            Debug.Log("Slot already occupied");
-            draggableItem.transform.SetParent(draggableItem.originalParent);
-            draggableItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            return;
-        }
-
         if (sourceSlot == this)
         {
-            draggableItem.transform.SetParent(icon?.transform ?? transform); 
+            draggableItem.transform.SetParent(transform.Find("Image").transform, false);
             draggableItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            
+            Image itemImage = draggableItem.GetComponent<Image>();
+            if (itemImage != null)
+            {
+                Color c = itemImage.color;
+                c.a = 1.0f;
+                itemImage.color = c;
+                itemImage.raycastTarget = true;
+            }
+            
             return;
         }
         
-        if (slotType == SlotType.Discard)
+        if (IsOccupied)
         {
-            if (!IsOccupied)
-            {
-                SetSlot(draggableItem.item);
-                StartCoroutine(DisableAfterFrame(draggableItem.gameObject));
-                sourceSlot?.ClearSlot();
-            }
             return;
         }
         
-
-        if (slotType == SlotType.Inventory)
+        if (IsCharacterSlot() && !IsItemCompatibleWithSlot(draggableItem.item))
         {
-            if (IsOccupied)
-            {
-                draggableItem.transform.SetParent(draggableItem.originalParent);
-                draggableItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                return;
-            }
-            
-            SetSlot(draggableItem.item);
-            sourceSlot?.ClearSlot();
-            StartCoroutine(DisableAfterFrame(draggableItem.gameObject));
+            Debug.Log("Bu item bu slota uygun değil!");
             return;
         }
-
-        if (draggableItem.item.allowedSlotType == slotType)
+        
+        Item itemToMove = draggableItem.item;
+        sourceSlot.ClearSlot();
+        SetSlot(itemToMove);
+        
+        GameObject[] dragVisuals = GameObject.FindGameObjectsWithTag("DragVisual");
+        foreach (GameObject visual in dragVisuals)
         {
-            if (IsOccupied)
-            {
-                draggableItem.transform.SetParent(draggableItem.originalParent);
-                draggableItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-                return;
-            }
-            
-            SetSlot(draggableItem.item);
-            sourceSlot?.ClearSlot();
-            StartCoroutine(DisableAfterFrame(draggableItem.gameObject));
+            Destroy(visual);
         }
-        else
-        {
-            tooltip?.ShowTooltip($"This item can only be placed in {draggableItem.item.allowedSlotType} slot.", Input.mousePosition);
-            draggableItem.transform.SetParent(draggableItem.originalParent);
-            draggableItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-        }
-      
     }
     
-
     public void SetSlot(Item item) 
     {
         currentItem = item;
-
+        
         if (icon == null)
         {
-            icon = GetComponentInChildren<Image>(true);
+            icon = transform.Find("Image")?.GetComponent<Image>();
+            if (icon == null) icon = GetComponentInChildren<Image>(true);
         }
         
-        if (icon != null && !icon.gameObject.activeSelf)
+        if (icon != null)
         {
-            icon.gameObject.SetActive(true);
+            icon.raycastTarget = true;
+
+            Color c = icon.color;
+            c.a = 1.0f;
+            icon.color = c;
         }
 
+        
+        DraggableItem existingDraggable = icon.GetComponent<DraggableItem>();
+        if (existingDraggable != null)
+        {
+            Destroy(existingDraggable);
+        }
+        
         if (item != null)
         {
             icon.sprite = item.Itemicon;
             icon.enabled = true;
             
-            DraggableItem draggable = icon.GetComponent<DraggableItem>() ?? icon.gameObject.AddComponent<DraggableItem>();
+            DraggableItem draggable = icon.gameObject.AddComponent<DraggableItem>();
             draggable.item = item;
             draggable.sourceSlot = this;
-            draggable.enabled = true;
 
             RectTransform rect = draggable.GetComponent<RectTransform>();
             if (rect != null)
             {
-                rect.anchoredPosition3D = Vector2.zero;
+                rect.anchoredPosition = Vector2.zero;
             }
         }
         else
+        {
+            icon.sprite = null;
+            icon.enabled = false;
+        }
+        
+        UpdateCharacterItem();
+    }
+    
+    public void ClearSlot()
+    {
+        currentItem = null;
+
+        if (icon != null)
         {
             icon.sprite = null;
             icon.enabled = false;
@@ -163,15 +167,39 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             DraggableItem draggable = icon.GetComponent<DraggableItem>();
             if (draggable != null)
             {
-                draggable.item = null;
-                draggable.sourceSlot = null;
-                draggable.enabled = false;
+                Destroy(draggable);
             }
         }
         
-        UpdateCharacterItem();
-    }
+        if (spawnedItemOnCharacter != null)
+        {
+            Destroy(spawnedItemOnCharacter);
+            spawnedItemOnCharacter = null;
+        }
 
+    }
+    
+    public void ResetAllItemsVisual()
+    {
+        if (icon != null)
+        {
+            Image iconImage = icon.GetComponent<Image>();
+            if (iconImage != null)
+            {
+                Color c = iconImage.color;
+                c.a = 1.0f;
+                iconImage.color = c;
+                iconImage.raycastTarget = true;
+            }
+        
+            DraggableItem draggable = icon.GetComponent<DraggableItem>();
+            if (draggable != null)
+            {
+                draggable.ResetVisual();
+            }
+        }
+    }
+    
     private void UpdateCharacterItem()
     {
         if (IsCharacterSlot() && currentItem != null && currentItem.itemPrefab != null)
@@ -194,47 +222,41 @@ public class InventorySlot : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
             }
         }
     }
-    
-    public void ClearSlot()
-    {
-        currentItem = null;
 
-        if (icon != null)
-        {
-            icon.sprite = null;
-            icon.enabled = false;
-            
-            DraggableItem draggable = icon.GetComponent<DraggableItem>();
-            if (draggable != null)
-            {
-                draggable.item = null;
-                draggable.sourceSlot = null;
-                draggable.enabled = false;
-            }
-        }
-        
-        if (spawnedItemOnCharacter != null)
-        {
-            Destroy(spawnedItemOnCharacter);
-            spawnedItemOnCharacter = null;
-        }
-
-    }
-    
     private bool IsCharacterSlot()
     {
-        return slotType == SlotType.RightHand || slotType == SlotType.Helmet || slotType == SlotType.Armor || slotType == SlotType.Shields;
-    }
+        return slotType == SlotType.RightHand || 
+               slotType == SlotType.Helmet || 
+               slotType == SlotType.Armor ||
+               slotType == SlotType.Shields;
 
-    private IEnumerator DisableAfterFrame(GameObject obj)
+    }
+    
+    private void ReturnToOriginalSlot(DraggableItem draggableItem)
     {
-        yield return null;
-        if (obj != null)    
+        draggableItem.transform.SetParent(draggableItem.originalParent, false);
+        draggableItem.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+    }
+    
+    // Dosyanın en altına ekle
+    private bool IsItemCompatibleWithSlot(Item item)
+    {
+        if (item == null) return false;
+
+        switch (slotType)
         {
-            obj.transform.SetParent(null); // slot dışına al
-            obj.SetActive(false); // yok etmek yerine pasif yap
+            case SlotType.RightHand:
+                return item.itemType == ItemType.Weapon;
+            case SlotType.Helmet:
+                return item.itemType == ItemType.Helmet;
+            case SlotType.Armor:
+                return item.itemType == ItemType.Armor;
+            case SlotType.Shields:
+                return item.itemType == ItemType.Shield;
+            default:
+                return true;
         }
-        
     }
 
+    
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,75 +8,118 @@ using UnityEngine.UI;
 public class DraggableItem : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public Item item;
-    [HideInInspector] public InventorySlot sourceSlot; //sürüklenen itemin yeni slotu
+    [HideInInspector] public InventorySlot sourceSlot;
     [HideInInspector] public Transform originalParent;
     
-    private CanvasGroup canvasGroup;
+    private Canvas mainCanvas;
+    private GameObject dragVisual;
     private RectTransform rectTransform;
+    private Image image;
     
-    private void Awake() 
+    private void Awake()
     {
-        rectTransform = GetComponent<RectTransform>(); 
-        canvasGroup = GetComponent<CanvasGroup>();
-
-        if (canvasGroup == null)
+        rectTransform = GetComponent<RectTransform>();
+        image = GetComponent<Image>();
+        mainCanvas = GetComponentInParent<Canvas>();
+    }
+    
+    private void CleanupAllDragVisuals()
+    {
+        GameObject[] dragVisuals = GameObject.FindGameObjectsWithTag("DragVisual");
+        foreach (GameObject visual in dragVisuals)
         {
-            canvasGroup = gameObject.AddComponent<CanvasGroup>();
+            Destroy(visual);
         }
+    }
+    
+    public void OnBeginDrag(PointerEventData eventData)
+    {
+        CleanupAllDragVisuals();
         
-    }
-
-    public void SetItem(Item newItem)
-    {
-        item = newItem;
-
-        Image itemImage = GetComponent<Image>();
-        if (itemImage != null)
-        {
-            itemImage.sprite = item.Itemicon;
-        }
-        else
-        {
-            Debug.LogWarning("Item icon is missing");
-        }
-    }
-
-    public void OnBeginDrag(PointerEventData eventData) 
-    {
         originalParent = transform.parent;
-        transform.SetParent(transform.root, true);
-        canvasGroup.alpha = 0.6f; //opaklık
-        canvasGroup.blocksRaycasts = false; //raycast devre dışı
-    }
+        CreateDragVisual();
 
+        Color c = image.color;
+        c.a = 0.5f;
+        image.color = c;
+        
+        image.raycastTarget = false;
+    }
+    
+    private void CreateDragVisual()
+    {
+        if (dragVisual != null) Destroy(dragVisual);
+        
+        dragVisual = new GameObject("DragVisual");
+        dragVisual.tag = "DragVisual";
+        dragVisual.transform.SetParent(mainCanvas.transform);
+        
+        RectTransform visualRT = dragVisual.AddComponent<RectTransform>();
+        visualRT.sizeDelta = rectTransform.sizeDelta;
+        
+        Image visualImage = dragVisual.AddComponent<Image>();
+        visualImage.sprite = image.sprite;
+        visualImage.raycastTarget = false;
+        
+        dragVisual.transform.position = transform.position;
+    }
+    
     public void OnDrag(PointerEventData eventData)
     {
-        rectTransform.position = Input.mousePosition; 
+        if (dragVisual != null)
+        {
+            dragVisual.transform.position = Input.mousePosition;
+        }
     }
-
+    
     public void OnEndDrag(PointerEventData eventData)
     {
+        CleanupAllDragVisuals();
+        dragVisual = null;
         
-        canvasGroup.alpha = 1f;
-        canvasGroup.blocksRaycasts = true;
+        Color c = image.color;
+        c.a = 1.0f;
+        image.color = c;
         
-        GameObject targetObject = eventData.pointerCurrentRaycast.gameObject;
-
-        if (targetObject == null || targetObject.GetComponentInParent<InventorySlot>() == null)
+        image.raycastTarget = true;
+        
+        if (eventData.pointerCurrentRaycast.gameObject == null)
         {
-            transform.SetParent(originalParent, false);
-            GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            transform.SetParent(originalParent);
+            rectTransform.anchoredPosition = Vector2.zero;
         }
-        else
+
+        InventorySlot targetSlot = null;
+        GameObject hitObject = eventData.pointerCurrentRaycast.gameObject;
+
+        if (hitObject != null)
         {
-            InventorySlot targetSlot = targetObject.GetComponent<InventorySlot>();
-            if (targetSlot?.icon != null)
+            targetSlot = hitObject.GetComponentInParent<InventorySlot>();
+
+            if (targetSlot == null || targetSlot == sourceSlot)
             {
-                transform.SetParent(targetSlot.icon.transform, false);
+                transform.SetParent(originalParent);
                 rectTransform.anchoredPosition = Vector2.zero;
             }
         }
-        
     }
 
+    private void OnDestroy()
+    {
+        if (dragVisual != null)
+        {
+            Destroy(dragVisual);
+        }
+    }
+    
+    public void ResetVisual()
+    {
+        if (image != null)
+        {
+            Color c = image.color;
+            c.a = 1.0f;
+            image.color = c;
+            image.raycastTarget = true;
+        }
+    }
 }
