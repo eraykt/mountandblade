@@ -31,7 +31,6 @@ namespace MountAndBlade
                 damagable.TakeDamage(swordDamage);
                 virtualCamera.GenerateImpulseWithForce(0.1f);
             }
-            Debug.Log("sword attack is triggered by enter");
         }
 
         private void OnTriggerStay(Collider other)
@@ -44,7 +43,6 @@ namespace MountAndBlade
                 damagable.TakeDamage(swordDamage);
                 virtualCamera.GenerateImpulseWithForce(0.05f);
             }
-            Debug.Log("sword attack is triggered by stay");
         }
     }
 }
