@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
@@ -44,13 +45,17 @@ public class PlayerAttackController : MonoBehaviour
 
     void Update()
     {
+        // if (isAttacking) return;
+        
         if (Input.GetMouseButton(0))
         {
-            _mouseDelta = Mouse.current.delta.ReadValue() * 0.01f; 
-            if (_mouseDelta.magnitude < 0.05f) return;
+            // Mouse delta değerini oku
+            _mouseDelta = Mouse.current.delta.ReadValue() * 0.01f; // Çok küçük hareketleri küçültmek için çarpan
+            if (_mouseDelta.magnitude < 0.05f) return; // Küçük hareketleri yok say
         
             _accumulatedDelta += _mouseDelta;
             
+            // Yön tayini
             if (Mathf.Abs(_accumulatedDelta.x) > Mathf.Abs(_accumulatedDelta.y))
             {
                 if (_accumulatedDelta.x > _threshold) AttackWay(MountAndBlade.AttackWay.Right);
@@ -62,6 +67,7 @@ public class PlayerAttackController : MonoBehaviour
                 else if (_accumulatedDelta.y < -_threshold/3f) AttackWay(MountAndBlade.AttackWay.Down);
             }
 
+            // Birikimi yavaşça sıfırla (yumuşak sıfırlama)
             _accumulatedDelta = Vector2.Lerp(_accumulatedDelta, Vector2.zero, Time.deltaTime * 2);
             
         }
