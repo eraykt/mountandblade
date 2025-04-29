@@ -4,16 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-<<<<<<< HEAD
+  - CinemachineTarget
+  - Collide
+  - Enemy
   - DragVisual
-=======
-  - Village
->>>>>>> merge/dev-inventory
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
   - 
