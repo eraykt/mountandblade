@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "newWeapon", menuName = "Inventory/Weapon")]
-public class Weapon : Item
+public class WeaponSO : Item
 {
     public int attackDamage;
     public float attackSpeed;
@@ -26,5 +26,6 @@ public class Weapon : Item
     {
         return base.GetItemDetails() + $"\nAttack Damage: {attackDamage}\nAttack Speed: {attackSpeed} seconds\nWeapon Type: {weaponType}";
     }
+    
 
 }
