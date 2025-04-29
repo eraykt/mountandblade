@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
 guid: e739e299193835246b073f7ccf80875a
+=======
+guid: 18c5bc4d57c6be748908ebe4f13ceb31
+>>>>>>> merge/dev-inventory
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}
