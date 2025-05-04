@@ -45,7 +45,6 @@ public class Enemy : MonoBehaviour, IDamagable
         animator = GetComponentInChildren<Animator>();
         player = GameObject.FindWithTag("Player");
         target = player.transform;
-        agent.speed = Random.Range(2f, 5f);
     }
 
     void Update()

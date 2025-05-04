@@ -145,8 +145,8 @@ MonoBehaviour:
   currentState: 0
   SlowMultipler: 2
   agent: {fileID: 2973689156363762372}
-  boundsMin: {x: -153.6, y: 11.67, z: -287.2}
-  boundsMax: {x: 336.8, y: 0, z: 208.5}
+  boundsMin: {x: -153.6, y: 20.6, z: -178.5}
+  boundsMax: {x: 336.8, y: -5.27, z: 208.5}
   player: {fileID: 0}
   chaseRange: 30
   stopRange: 15

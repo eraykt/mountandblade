@@ -64,15 +64,10 @@ namespace MountAndBlade
             float x = Random.Range(spawnAreaMin.x, spawnAreaMax.x);
             float z = Random.Range(spawnAreaMin.z, spawnAreaMax.z);
 
-            Vector3 rayOrigin = new Vector3(x, 100f, z);
-            Debug.DrawRay(rayOrigin, Vector3.down);
 
-            if (Physics.Raycast(rayOrigin, Vector3.down, out var hit, LayerMask.GetMask("Map")))
-            {
-                return new Vector3(x, hit.transform.position.y, z);
+            return new Vector3(x, 10.5f, z);
 
-            }
-            return Vector3.zero;
+
         }
         
 

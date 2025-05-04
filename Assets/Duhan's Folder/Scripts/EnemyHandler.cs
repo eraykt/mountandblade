@@ -162,10 +162,9 @@ namespace MountAndBlade
                 // Random bir konum oluþtur
                 Vector3 randomPosition = GetRandomPositionWithinBounds();
                 // NavMesh'e uygun mu kontrol et
-                if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-                {
+                
                     // NavMesh'e uygunsa hedefi belirle
-                    agent.SetDestination(hit.position);
+                    agent.SetDestination(randomPosition);
 
                     // Hedefe ulaþmayý bekle
                     yield return new WaitUntil(() => !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance);
@@ -173,7 +172,6 @@ namespace MountAndBlade
                     // Hedefe ulaþtýðýnda 3 saniye bekle
                     yield return new WaitForSeconds(3f);
                     canGeneratePos = true;
-                }
             }
         }
         private Vector3 GetRandomPositionWithinBounds()
@@ -185,7 +183,7 @@ namespace MountAndBlade
             // Düþey y eksenini sabit tut (örn: 0 veya karakterinizin baþlangýç yüksekliði)
             float fixedY = transform.position.y;
 
-            return new Vector3(randomX, fixedY, randomZ);
+            return new Vector3(randomX, 10f, randomZ);
         }
         private void OnDrawGizmos()
         {

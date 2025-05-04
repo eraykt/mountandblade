@@ -12,8 +12,12 @@ namespace MountAndBlade
         //private Transform mainCamera;
         [SerializeField] private Camera mainCamera;
 
-       
 
+      
+        private void Start()
+        {
+            mainCamera = Camera.main;
+        }
         void LateUpdate()
         {
             if(mainCamera==null)

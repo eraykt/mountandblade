@@ -276,7 +276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0.08, y: 3.1450002}
+  m_AnchoredPosition: {x: -0.16, y: 1.5}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8023274759874469841
@@ -452,7 +452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   cam: {fileID: 0}
   agent: {fileID: 373216743221776577}
-  SlowMultipler: 2
+  SlowMultipler: 3
 --- !u!136 &7080068583313136769
 CapsuleCollider:
   m_ObjectHideFlags: 0

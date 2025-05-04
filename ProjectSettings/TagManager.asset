@@ -8,6 +8,7 @@ TagManager:
   - Collide
   - Enemy
   - DragVisual
+  - Unclickable
   layers:
   - Default
   - TransparentFX
@@ -15,7 +16,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Map
   - 
   - 
   - 
