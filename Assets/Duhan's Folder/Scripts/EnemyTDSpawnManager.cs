@@ -41,24 +41,21 @@ namespace MountAndBlade
             Vector3 randomPosition = GetRandomPositionWithinBounds();
 
             // NavMesh üzerinde olup olmadýðýný kontrol et
-            if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, 1f, NavMesh.AllAreas))
-            {
                 // Düþmaný spawnla
-                GameObject enemy = Instantiate(enemyPrefab, hit.position, Quaternion.identity);
+            GameObject enemy = Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
 
-                // EnemyHandler scriptini al ve asker sayýsýný rastgele ata
-                EnemyHandler enemyHandler = enemy.GetComponent<EnemyHandler>();
-                if (enemyHandler != null)
-                {
-                    enemyHandler.player = player; // Player referansý atanýyor
-                    //enemyHandler.soldierCountText = soldierCountText;
-                    enemyHandler.askerSayisi = Random.Range(minSoldiers, maxSoldiers + 1);
-                    enemyHandler.UpdateSoldierCountText();
-                }
-
-                // Düþman sayýsýný güncelle
-                currentEnemyCount++;
+            // EnemyHandler scriptini al ve asker sayýsýný rastgele ata
+            EnemyHandler enemyHandler = enemy.GetComponent<EnemyHandler>();
+            if (enemyHandler != null)
+            {
+                enemyHandler.player = player; // Player referansý atanýyor
+                //enemyHandler.soldierCountText = soldierCountText;
+                enemyHandler.askerSayisi = Random.Range(minSoldiers, maxSoldiers + 1);
+                enemyHandler.UpdateSoldierCountText();
             }
+
+            // Düþman sayýsýný güncelle
+            currentEnemyCount++;
         }
 
         private Vector3 GetRandomPositionWithinBounds()
@@ -66,9 +63,19 @@ namespace MountAndBlade
             // Rastgele bir pozisyon oluþtur
             float x = Random.Range(spawnAreaMin.x, spawnAreaMax.x);
             float z = Random.Range(spawnAreaMin.z, spawnAreaMax.z);
-            float y = spawnAreaMin.y; // Y deðeri sabit tutulabilir (veya gerekirse ayarlanabilir)
-            return new Vector3(x, y, z);
+
+            Vector3 rayOrigin = new Vector3(x, 100f, z);
+            Debug.DrawRay(rayOrigin, Vector3.down);
+
+            if (Physics.Raycast(rayOrigin, Vector3.down, out var hit, LayerMask.GetMask("Map")))
+            {
+                return new Vector3(x, hit.transform.position.y, z);
+
+            }
+            return Vector3.zero;
         }
+        
+
 
         public void EnemyDestroyed()
         {
