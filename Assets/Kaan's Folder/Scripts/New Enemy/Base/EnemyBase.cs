@@ -1,8 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
+
+/*
+ * Yere Düþüyor 
+ * Speed salaklaþýyor
+ */
+
 
 namespace MountAndBlade
 {
@@ -10,12 +17,13 @@ namespace MountAndBlade
     {
         [field: SerializeField] public float MaxHealth { get; set; } = 100f;
         [field: SerializeField] public float CurrentHealth { get; set; }
-        [field: SerializeField] public Rigidbody rb { get; set; }
+        //[field: SerializeField] public Rigidbody rb { get; set; }
         [field: SerializeField] public Animator animator { get; set; }
         [field: SerializeField] public NavMeshAgent agent { get; set; }
 
         public GameObject target { get; set; } = null;
-        public Transform targetTransform { get; set; } = null;
+        [field: SerializeField] private Transform targetTransform;
+        [field: SerializeField] private GameObject targetObject;
 
 
 
@@ -43,7 +51,7 @@ namespace MountAndBlade
         private void Awake()
         {
             StateMachine = new EnemyStateMachine();
-            ChaseState = new EnemyChaseState(this, StateMachine);
+            ChaseState = new EnemyChaseState(this, StateMachine, targetTransform.position);
             AttackState = new EnemyAttackState(this, StateMachine);
             PatrolState = new EnemyPatrolState(this, StateMachine);
 
@@ -58,20 +66,26 @@ namespace MountAndBlade
         protected virtual void Update()
         {
             StateMachine.CurrentEnemyState.FrameUpdate();
-            transform.LookAt(target.transform);
-        }
-        //private void FixedUpdate()
-        //{
-        //    if (StateMachine.CurrentEnemyState != null)
-        //    {
-        //        StateMachine.CurrentEnemyState.PhysicsUpdate();
-        //    }
-        //    else
-        //    {
-        //        Debug.LogError("StateMachine or CurrentEnemyState is not initialized.");
-        //    }
-        //}
 
+            Vector3 targetPosition = GetTargetPosition();
+            if (Vector3.Distance(transform.position, targetPosition) < 10f)
+            {
+                // Player'ýn pozisyonunu ChaseState'e ilet
+                StateMachine.ChangeState(new EnemyChaseState(this, StateMachine, targetPosition));
+            }
+
+            // Speed ayarlarý
+            float currentSpeed = agent.velocity.magnitude;
+            float maxSpeed = agent.speed;
+            float normalizedSpeed = Mathf.Clamp01(currentSpeed / maxSpeed);
+            animator.SetFloat("Velocity", normalizedSpeed);
+            MoveEnemy(targetTransform.position);
+
+
+            //Debug.Log($"Clamplenmiþ Agent Speed :  {animator.GetFloat("Velocity")} , Enemy Speed : {normalizedSpeed}");
+
+        }
+       
         #endregion
 
         #region Health/Die Functions 
@@ -114,6 +128,7 @@ namespace MountAndBlade
 
         public Vector3 GetTargetPosition()
         {
+            // Hedefi her frame'de doðru þekilde almak için
             TagChecker();
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(oppositeTag);
             float closestDistance = Mathf.Infinity;
@@ -128,13 +143,18 @@ namespace MountAndBlade
                     closestEnemy = enemy;
                 }
             }
+
+            // Eðer en yakýn düþmaný bulmuþsan
             if (closestEnemy != null)
             {
                 target = closestEnemy;
+                targetTransform = target.transform; // Hedef transformunu her frame'de güncelleyerek doðru deðer al
             }
-            targetScript = target.GetComponent<EnemyBase>();
-            TargetSetter();
-            return target.transform.position;
+
+            Debug.Log("Target Pos : " + targetTransform.position); // Debug ile hedefin doðru pozisyonunu kontrol et
+
+            // Hedef varsa, hedefin pozisyonunu döndür
+            return target != null ? targetTransform.position : transform.position;
         }
         private void TargetSetter()
         {
@@ -151,10 +171,20 @@ namespace MountAndBlade
         {
             oppositeTag = this.tag == "Enemy" ? "Allies" : "Enemy"; 
         }
-        //private void OnDrawGizmos()
-        //{
-        //    Gizmos.color = Color.yellow;
-        //    Gizmos.DrawSphere(targetTransform.position, 1f);
-        //}
+
+        private void OnDrawGizmos()
+        {
+            if (targetTransform != null)
+            {
+                Gizmos.color = Color.blue;  // Hedef rengini mavi yap
+                Gizmos.DrawSphere(targetTransform.position, 1.5f);  // Hedefin etrafýnda küçük bir küre çizer
+            }
+
+            if (agent != null && agent.destination != Vector3.zero)
+            {
+                Gizmos.color = Color.green;  // Hedef çizgi rengini yeþil yap
+                Gizmos.DrawLine(transform.position, agent.destination);  // Mevcut konumdan hedefe çizgi çizer
+            }
+        }
     }
 }

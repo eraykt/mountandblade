@@ -4,17 +4,19 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Village
-  - Unclickable
+  - CinemachineTarget
+  - Collide
+  - Enemy
+  - DragVisual
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Ground
+  - 
   - Water
   - UI
-  - Interractable
-  - Map
+  - 
+  - 
   - 
   - 
   - 

@@ -209,11 +209,11 @@ public class Enemy : MonoBehaviour, IDamagable
 
     private IEnumerator AttackHandler()
     {
-        animator.SetBool("isAttacking", true);
+       // animator.SetBool("isAttacking", true);
         yield return new WaitForSeconds(2f); // Adjust based on animation length
         PlayerHit();
         isAnimPlaying = false;
-        animator.SetBool("isAttacking", false);
+        //animator.SetBool("isAttacking", false);
         currentEnemyState = EnemyStates.Chase;
     }
 

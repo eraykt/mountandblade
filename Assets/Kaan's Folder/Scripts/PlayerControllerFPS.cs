@@ -89,10 +89,10 @@ public class PlayerControllerFPS : MonoBehaviour, IDamagable
     }
     IEnumerator AttackAnimHandler()
     {
-        animator.SetBool("isAttacking", true);
+        //animator.SetBool("isAttacking", true);
         isAnimPlaying = true;
         yield return new WaitForSeconds(0.3f);
-        animator.SetBool("isAttacking", false);
+       // animator.SetBool("isAttacking", false);
         isAnimPlaying = false;
     }
 

@@ -7,7 +7,6 @@ namespace MountAndBlade
 {
     public interface IMoveable
     {
-        Rigidbody rb { get; set; }
         NavMeshAgent agent { get; set; }
 
         void MoveEnemy(Vector3 pos);
