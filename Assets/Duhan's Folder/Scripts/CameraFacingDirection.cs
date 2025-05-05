@@ -10,15 +10,16 @@ namespace MountAndBlade
 
         CamController controller;
         //private Transform mainCamera;
-        [SerializeField] private Camera mainCamera;
-
+        public Camera mainCamera;
 
       
-        private void Start()
+        private void OnEnable()
         {
-            mainCamera = Camera.main;
+            if(mainCamera == null)
+                mainCamera = Camera.main;
             Debug.Log("merhaba ben start.");
         }
+
         void LateUpdate()
         {
             if(mainCamera==null)

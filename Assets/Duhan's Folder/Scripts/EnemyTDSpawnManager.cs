@@ -48,13 +48,15 @@ namespace MountAndBlade
             // NavMesh üzerinde olup olmadýðýný kontrol et
                 // Düþmaný spawnla
             GameObject enemy = Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
+            var enemyCanvas = enemy.GetComponentInChildren<CameraFacingDirection>();
+            enemyCanvas.mainCamera = Camera.main;
 
             EnemyInteractionUI enemyInteractionUI = enemy.GetComponent<EnemyInteractionUI>();
 
-            enemyInteractionUI.enemyInterractionUI = uiOnScene;
-            enemyInteractionUI.engageCombatButton = engageBtnOnScene;
-            enemyInteractionUI.disengageCombatButton = disEngageBtnOnScene;
-            enemyInteractionUI.player = player.gameObject;
+            //enemyInteractionUI.enemyInterractionUI = uiOnScene;
+            //enemyInteractionUI.engageCombatButton = engageBtnOnScene;
+            //enemyInteractionUI.disengageCombatButton = disEngageBtnOnScene;
+            //enemyInteractionUI.player = player.gameObject;
 
             // EnemyHandler scriptini al ve asker sayýsýný rastgele ata
             EnemyHandler enemyHandler = enemy.GetComponent<EnemyHandler>();
