@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 namespace MountAndBlade
 {
@@ -15,6 +16,10 @@ namespace MountAndBlade
         public int minSoldiers = 1;               // Her düþman için minimum asker sayýsý
         public int maxSoldiers = 10;              // Her düþman için maksimum asker sayýsý
         public float spawnInterval = 5f;          // Spawn aralýðý (saniye)
+
+        [SerializeField] GameObject uiOnScene;
+        [SerializeField] Button engageBtnOnScene;
+        [SerializeField] Button disEngageBtnOnScene;
 
         public Transform player;
         //public TMP_Text soldierCountText;
@@ -43,6 +48,13 @@ namespace MountAndBlade
             // NavMesh üzerinde olup olmadýðýný kontrol et
                 // Düþmaný spawnla
             GameObject enemy = Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
+
+            EnemyInteractionUI enemyInteractionUI = enemy.GetComponent<EnemyInteractionUI>();
+
+            enemyInteractionUI.enemyInterractionUI = uiOnScene;
+            enemyInteractionUI.engageCombatButton = engageBtnOnScene;
+            enemyInteractionUI.disengageCombatButton = disEngageBtnOnScene;
+            enemyInteractionUI.player = player.gameObject;
 
             // EnemyHandler scriptini al ve asker sayýsýný rastgele ata
             EnemyHandler enemyHandler = enemy.GetComponent<EnemyHandler>();

@@ -17,6 +17,7 @@ namespace MountAndBlade
         private void Start()
         {
             mainCamera = Camera.main;
+            Debug.Log("merhaba ben start.");
         }
         void LateUpdate()
         {

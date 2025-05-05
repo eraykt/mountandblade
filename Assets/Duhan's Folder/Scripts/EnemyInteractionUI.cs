@@ -16,12 +16,12 @@ namespace MountAndBlade
         private Material originalMaterial;
 
         [Header("UI Related")]
-        [SerializeField] GameObject enemyInterractionUI;
-        [SerializeField] Button engageCombatButton;
-        [SerializeField] Button disengageCombatButton;
+        public GameObject enemyInterractionUI;
+        public Button engageCombatButton;
+        public Button disengageCombatButton;
 
         //public EnemyHandler enemyHandler; ileride asker sayýsýna göre uý'ý manipüle etmek için kullanýlabilir.
-        [SerializeField] private GameObject player;
+        public GameObject player;
 
         private bool isInterractable = false;
         private bool canBeOpenedAgain = true;// alanýn içindeyken sürekli açýk kalmamasý için.
@@ -38,8 +38,15 @@ namespace MountAndBlade
             originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
            // enemyHandler = GetComponent<EnemyHandler>(); 
         }
+        
+        
         private void Update()
         {
+        }
+
+        private void DefineFields()
+        {
+
         }
 
         private void OpenInterractionUI()
@@ -61,6 +68,7 @@ namespace MountAndBlade
 
             if (isInterractable && CameraRay.instance.isItEnemy)
             {
+                Debug.Log("üzerine basýlarak açýldý");
                 GameManager.instance.getEnemyUnitAmount(this.GetComponent<EnemyHandler>().askerSayisi);
                 OpenInterractionUI();
             }
@@ -99,7 +107,7 @@ namespace MountAndBlade
                 GameManager.instance.getEnemyUnitAmount(this.GetComponent<EnemyHandler>().askerSayisi);
                 canBeOpenedAgain = false;
                 OpenInterractionUI();
-
+                Debug.Log("çarpýþarak açýldý");
             }
         }
 
