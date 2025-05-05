@@ -29,6 +29,7 @@ namespace MountAndBlade
 
         private void Update()
         {
+
             // Zamanlayýcýyý güncelle
             spawnTimer += Time.deltaTime;
 
@@ -46,17 +47,15 @@ namespace MountAndBlade
             Vector3 randomPosition = GetRandomPositionWithinBounds();
 
             // NavMesh üzerinde olup olmadýðýný kontrol et
-                // Düþmaný spawnla
+            // Düþmaný spawnla
             GameObject enemy = Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
-            var enemyCanvas = enemy.GetComponentInChildren<CameraFacingDirection>();
-            enemyCanvas.mainCamera = Camera.main;
 
             EnemyInteractionUI enemyInteractionUI = enemy.GetComponent<EnemyInteractionUI>();
 
-            //enemyInteractionUI.enemyInterractionUI = uiOnScene;
-            //enemyInteractionUI.engageCombatButton = engageBtnOnScene;
-            //enemyInteractionUI.disengageCombatButton = disEngageBtnOnScene;
-            //enemyInteractionUI.player = player.gameObject;
+            enemyInteractionUI.enemyInterractionUI = uiOnScene;
+            enemyInteractionUI.engageCombatButton = engageBtnOnScene;
+            enemyInteractionUI.disengageCombatButton = disEngageBtnOnScene;
+            enemyInteractionUI.player = player.gameObject;
 
             // EnemyHandler scriptini al ve asker sayýsýný rastgele ata
             EnemyHandler enemyHandler = enemy.GetComponent<EnemyHandler>();

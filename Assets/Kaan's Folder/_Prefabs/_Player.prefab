@@ -267,7 +267,7 @@ RectTransform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5149703204205328873}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.15}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 0.0040217196, y: 0.0040217196, z: 0.0040217196}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -276,7 +276,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: -0.16, y: 1.5}
+  m_AnchoredPosition: {x: 0, y: 1.5}
   m_SizeDelta: {x: 1920, y: 1080}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!223 &8023274759874469841
@@ -369,7 +369,7 @@ GameObject:
   - component: {fileID: 7080068583313136769}
   - component: {fileID: 373216743221776577}
   - component: {fileID: 8632966347934927386}
-  - component: {fileID: 7635387377989736927}
+  - component: {fileID: 7790479989124975068}
   m_Layer: 0
   m_Name: _Player
   m_TagString: Player
@@ -472,10 +472,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.5
+  m_Radius: 0.8546702
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: -0.026695093, y: 0, z: 0.032961316}
 --- !u!195 &373216743221776577
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -525,7 +525,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &7635387377989736927
+--- !u!114 &7790479989124975068
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -537,7 +537,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fd54695bdd08d943b4c9043e1ce675b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSoldierAmount: 10
+  playerSoldierAmount: 1
   playerSoldierAmountText: {fileID: 8461179069245453876}
 --- !u!1 &7680527986262207672
 GameObject:

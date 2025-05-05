@@ -28,26 +28,14 @@ namespace MountAndBlade
 
         EnemyHandler enemyHandler;
 
-        private void Awake()
-        {
-            HandleButtonInterraction();
-        }
-
+      
         private void Start()
         {
+            HandleButtonInterraction();
             originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
-           // enemyHandler = GetComponent<EnemyHandler>(); 
-        }
-        
-        
-        private void Update()
-        {
         }
 
-        private void DefineFields()
-        {
-
-        }
+      
 
         private void OpenInterractionUI()
         {
@@ -99,8 +87,13 @@ namespace MountAndBlade
 
         private void OnCollisionEnter(Collision collision)
         {
+            Debug.Log("carpistim");
+
             if (player == null)
                 return;
+
+            Debug.Log("carpistimve playe null deðil");
+
 
             if(collision.gameObject == player && canBeOpenedAgain)
             {
@@ -126,6 +119,7 @@ namespace MountAndBlade
 
         private void HandleButtonInterraction()
         {
+            
             engageCombatButton.onClick.AddListener(() => {
                 Time.timeScale = 1;
                 StartCoroutine(GameManager.instance.loadWsScene());

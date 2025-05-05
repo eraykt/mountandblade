@@ -13,12 +13,12 @@ GameObject:
   - component: {fileID: 779016508638922948}
   - component: {fileID: 2973689156363762372}
   - component: {fileID: 4268427900929703812}
-  - component: {fileID: 4277338474887397344}
   - component: {fileID: 4867427326973107142}
   - component: {fileID: 8241442557916163206}
+  - component: {fileID: 6687100065161720391}
   m_Layer: 0
   m_Name: Enemy
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,10 +101,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.33075142
+  m_Radius: 0.5777178
   m_Height: 1.8065236
   m_Direction: 1
-  m_Center: {x: 0, y: -0.14, z: -0.02}
+  m_Center: {x: 0.0016167164, y: -0.13999999, z: 0.06704497}
 --- !u!195 &2973689156363762372
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -152,23 +152,6 @@ MonoBehaviour:
   stopRange: 15
   maxDistance: 50
   isPlayerStronger: 1
---- !u!114 &4277338474887397344
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 25781909441057907}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: efdf8dd9699ae1a4596544c4d9cf400c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  glowMaterial: {fileID: 2100000, guid: 6aa6e522314844d4a8c7cba78b0ccd9f, type: 2}
-  enemyInterractionUI: {fileID: 0}
-  engageCombatButton: {fileID: 0}
-  disengageCombatButton: {fileID: 0}
-  player: {fileID: 0}
 --- !u!135 &4867427326973107142
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -211,6 +194,23 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &6687100065161720391
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 25781909441057907}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: efdf8dd9699ae1a4596544c4d9cf400c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  glowMaterial: {fileID: 0}
+  enemyInterractionUI: {fileID: 0}
+  engageCombatButton: {fileID: 0}
+  disengageCombatButton: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1 &1905935628142110867
 GameObject:
   m_ObjectHideFlags: 0

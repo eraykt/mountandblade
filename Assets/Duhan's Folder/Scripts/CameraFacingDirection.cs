@@ -13,11 +13,10 @@ namespace MountAndBlade
         public Camera mainCamera;
 
       
-        private void OnEnable()
+        private void Start()
         {
             if(mainCamera == null)
                 mainCamera = Camera.main;
-            Debug.Log("merhaba ben start.");
         }
 
         void LateUpdate()
