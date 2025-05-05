@@ -64,6 +64,7 @@ namespace MountAndBlade
         
         private void OnTriggerEnter(Collider other)
         {
+            Debug.Log("triggera girdi");
             if (other.gameObject == player.gameObject && player.gameObject != null)
             {
                 HandleGlow(true);

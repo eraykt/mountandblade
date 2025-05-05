@@ -370,6 +370,7 @@ GameObject:
   - component: {fileID: 373216743221776577}
   - component: {fileID: 8632966347934927386}
   - component: {fileID: 7790479989124975068}
+  - component: {fileID: 1856527074886877122}
   m_Layer: 0
   m_Name: _Player
   m_TagString: Player
@@ -472,10 +473,10 @@ CapsuleCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 0.8546702
+  m_Radius: 1.84
   m_Height: 2
   m_Direction: 1
-  m_Center: {x: -0.026695093, y: 0, z: 0.032961316}
+  m_Center: {x: -0.026695145, y: 0, z: 0.045513578}
 --- !u!195 &373216743221776577
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -526,6 +527,20 @@ Rigidbody:
   m_Constraints: 80
   m_CollisionDetection: 0
 --- !u!114 &7790479989124975068
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6457032798046845555}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4fd54695bdd08d943b4c9043e1ce675b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerSoldierAmount: 1
+  playerSoldierAmountText: {fileID: 8461179069245453876}
+--- !u!114 &1856527074886877122
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

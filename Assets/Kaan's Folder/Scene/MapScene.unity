@@ -310,7 +310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4fd54695bdd08d943b4c9043e1ce675b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerSoldierAmount: 5
+  playerSoldierAmount: 1
   playerSoldierAmountText: {fileID: 1976747489}
 --- !u!1 &83014252
 GameObject:
@@ -1629,7 +1629,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 400875133}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.28978413, y: 0.00000001646809, z: -0.000000004986136, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: -0.000000016468093, z: 0.0000000049861373, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5089,7 +5089,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195802538}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16018224, y: 0.000000032889762, z: -0.0000000053372733, w: 0.9870875}
+  m_LocalRotation: {x: 0.16018225, y: -6.2310725e-15, z: 1.7630178e-15, w: 0.9870875}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9860,6 +9860,26 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 7080068583313136769, guid: 9074b9e65da5f344284ac15654e7a7ce,
+        type: 3}
+      propertyPath: m_Height
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 7080068583313136769, guid: 9074b9e65da5f344284ac15654e7a7ce,
+        type: 3}
+      propertyPath: m_Radius
+      value: 1.84
+      objectReference: {fileID: 0}
+    - target: {fileID: 7080068583313136769, guid: 9074b9e65da5f344284ac15654e7a7ce,
+        type: 3}
+      propertyPath: m_Center.x
+      value: -0.026695145
+      objectReference: {fileID: 0}
+    - target: {fileID: 7080068583313136769, guid: 9074b9e65da5f344284ac15654e7a7ce,
+        type: 3}
+      propertyPath: m_Center.z
+      value: 0.045513578
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 7635387377989736927, guid: 9074b9e65da5f344284ac15654e7a7ce, type: 3}
