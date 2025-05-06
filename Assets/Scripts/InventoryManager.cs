@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     public GameObject discardSlotPrefab;
     public List<Item> items;
     public Transform charContent;
+    public Tooltip tooltip;
     
     public GameObject inventoryCanvas;
     
@@ -21,12 +22,15 @@ public class InventoryManager : MonoBehaviour
     public Transform charShield;
     
     public Button SellButton;
+    public int charCoin = 0;
+    public Text charCoinText;
     
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
     private List<InventorySlot> discardSlots = new List<InventorySlot>();
     private Dictionary<SlotType, InventorySlot> characterSlots = new Dictionary<SlotType, InventorySlot>();
     private void Start() 
     {
+        charCoinText.text = charCoin.ToString();
         if (inventoryCanvas != null)
         {
             inventoryCanvas.SetActive(false);
@@ -50,6 +54,8 @@ public class InventoryManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.I))
         {
+            tooltip.HideTooltip();
+            
             if (inventoryCanvas != null)
             {
                 bool isActive = inventoryCanvas.activeSelf;
@@ -71,6 +77,7 @@ public class InventoryManager : MonoBehaviour
                     {
                         slot.ResetAllItemsVisual();
                     }
+                    
                 }
             }
             else
@@ -150,15 +157,31 @@ public class InventoryManager : MonoBehaviour
         {
             return;
         }
-        
+
+        int totalEarned = 0;
         List<InventorySlot> soldItems = new List<InventorySlot>();
+        
         foreach (InventorySlot slot in discardSlots)
         {
             if (slot != null && slot.IsOccupied)
             {
-                Debug.Log($"Item {slot.currentItem.name} sold and removed.");
+                int itemValue = slot.currentItem.salePrice;
+                totalEarned += itemValue;
+                
+                //Debug.Log($"Item {slot.currentItem.name} sold for {itemValue} price.");
                 slot.ClearSlot();
                 soldItems.Add(slot);
+            }
+        }
+
+        if (totalEarned > 0)
+        {
+            charCoin += totalEarned;
+            //Debug.Log($"Total earned: {totalEarned} coins. Player now has {charCoin} coins.");
+
+            if (charCoinText != null)
+            {
+                charCoinText.text = charCoin.ToString();
             }
         }
         
