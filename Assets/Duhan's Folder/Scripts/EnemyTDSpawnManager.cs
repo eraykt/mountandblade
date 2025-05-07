@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UI;
 
 namespace MountAndBlade
 {
@@ -16,6 +17,10 @@ namespace MountAndBlade
         public int maxSoldiers = 10;              // Her düþman için maksimum asker sayýsý
         public float spawnInterval = 5f;          // Spawn aralýðý (saniye)
 
+        [SerializeField] GameObject uiOnScene;
+        [SerializeField] Button engageBtnOnScene;
+        [SerializeField] Button disEngageBtnOnScene;
+
         public Transform player;
         //public TMP_Text soldierCountText;
 
@@ -24,6 +29,7 @@ namespace MountAndBlade
 
         private void Update()
         {
+
             // Zamanlayýcýyý güncelle
             spawnTimer += Time.deltaTime;
 
@@ -41,25 +47,28 @@ namespace MountAndBlade
             Vector3 randomPosition = GetRandomPositionWithinBounds();
 
             // NavMesh üzerinde olup olmadýðýný kontrol et
-            if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, 1f, NavMesh.AllAreas))
+            // Düþmaný spawnla
+            GameObject enemy = Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
+
+            EnemyInteractionUI enemyInteractionUI = enemy.GetComponent<EnemyInteractionUI>();
+
+            enemyInteractionUI.enemyInterractionUI = uiOnScene;
+            enemyInteractionUI.engageCombatButton = engageBtnOnScene;
+            enemyInteractionUI.disengageCombatButton = disEngageBtnOnScene;
+            enemyInteractionUI.player = player.gameObject;
+
+            // EnemyHandler scriptini al ve asker sayýsýný rastgele ata
+            EnemyHandler enemyHandler = enemy.GetComponent<EnemyHandler>();
+            if (enemyHandler != null)
             {
-                // Düþmaný spawnla
-                Debug.Log("düþman Spawnladým");
-                GameObject enemy = Instantiate(enemyPrefab, hit.position, Quaternion.identity);
-
-                // EnemyHandler scriptini al ve asker sayýsýný rastgele ata
-                EnemyHandler enemyHandler = enemy.GetComponent<EnemyHandler>();
-                if (enemyHandler != null)
-                {
-                    enemyHandler.player = player; // Player referansý atanýyor
-                    //enemyHandler.soldierCountText = soldierCountText;
-                    enemyHandler.askerSayisi = Random.Range(minSoldiers, maxSoldiers + 1);
-                    enemyHandler.UpdateSoldierCountText();
-                }
-
-                // Düþman sayýsýný güncelle
-                currentEnemyCount++;
+                enemyHandler.player = player; // Player referansý atanýyor
+                //enemyHandler.soldierCountText = soldierCountText;
+                enemyHandler.askerSayisi = Random.Range(minSoldiers, maxSoldiers + 1);
+                enemyHandler.UpdateSoldierCountText();
             }
+
+            // Düþman sayýsýný güncelle
+            currentEnemyCount++;
         }
 
         private Vector3 GetRandomPositionWithinBounds()
@@ -67,9 +76,14 @@ namespace MountAndBlade
             // Rastgele bir pozisyon oluþtur
             float x = Random.Range(spawnAreaMin.x, spawnAreaMax.x);
             float z = Random.Range(spawnAreaMin.z, spawnAreaMax.z);
-            float y = spawnAreaMin.y; // Y deðeri sabit tutulabilir (veya gerekirse ayarlanabilir)
-            return new Vector3(x, y, z);
+
+
+            return new Vector3(x, 10.5f, z);
+
+
         }
+        
+
 
         public void EnemyDestroyed()
         {

@@ -7,20 +7,14 @@ namespace MountAndBlade
 {
     public class PlayerManager : MonoBehaviour
     {
-        public int playerSoldierAmount  = 5; // Asker sayýsý
+        public float playerSoldierAmount; // Asker sayýsý
         public TMP_Text playerSoldierAmountText; // UI Text referansý (TextMeshPro kullanýyorsanýz Text yerine TMP_Text)
 
         private void Start()
         {
             UpdateSoldierCountText();
-            
+            GameManager.instance.getAllyUnitAmount(playerSoldierAmount);
         }
-        private void Update()
-        {
-            
-        }
-
-
         public void UpdateSoldierCountText()
         {
             if (playerSoldierAmountText != null)
@@ -28,11 +22,13 @@ namespace MountAndBlade
                 playerSoldierAmountText.text = playerSoldierAmount.ToString();
             }
         }
-
         public void AddSoldier(int count)
         {
             playerSoldierAmount += count;
             UpdateSoldierCountText();
         }
+
+        
     }
+    
 }

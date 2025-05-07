@@ -47,7 +47,6 @@ namespace MountAndBlade
         private void Update()
         {
             HandleDistance();
-
         }
 
         private void Start()
@@ -124,20 +123,13 @@ namespace MountAndBlade
             if (isClicked)
             {
                 if (isPlayerNearby) { 
-                    
-                    
                     villageUI.SetActive(true);
                     PlayerController.instance.SetCanMove(false);
                     isClicked = false;
-                    
                 
                 }
 
             }
-
-
-
-
         }
         private void OnMouseEnter()
         {
@@ -183,8 +175,6 @@ namespace MountAndBlade
                 renderer.material = originalMaterial;
             }
         }
-
-
 
     }
 }

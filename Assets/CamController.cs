@@ -87,6 +87,7 @@
 using System.Collections;
 using UnityEngine;
 using Cinemachine;
+using MountAndBlade;
 
 public class CamController : MonoBehaviour
 {
@@ -96,17 +97,18 @@ public class CamController : MonoBehaviour
     private CinemachineFreeLook topCam;
     [SerializeField]
     private CinemachineFreeLook closeCam;
-    [SerializeField]
+
+    public CinemachineFreeLook activeCam;
+
     //private float rotationSpeed = 100f;
+    [SerializeField]
     private bool canMove;
-
-    private CinemachineFreeLook activeCam;
-
     private void Awake()
     {
         // Ýlk baþta closeCam'i aktif kamera olarak ayarla
         activeCam = closeCam;
         SetInitialPriorities();
+
     }
 
     private void Update()
@@ -158,8 +160,6 @@ public class CamController : MonoBehaviour
             Vector3 moveDir = new Vector3(horizontal, 0, vertical).normalized;
 
             transform.Translate(moveDir * moveSpeed * Time.deltaTime);
-
-            
         
     }
     private void CloseDistanceMovementFixer()
@@ -172,5 +172,7 @@ public class CamController : MonoBehaviour
             transform.Translate(Vector3.zero);
         }
     }
+
+   
 }
 

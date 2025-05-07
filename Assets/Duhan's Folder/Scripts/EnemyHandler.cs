@@ -9,17 +9,17 @@ namespace MountAndBlade
     public class EnemyHandler : MonoBehaviour
     {
 
-        private PlayerManager playerManager;
+        public PlayerManager playerManager;
         public int askerSayisi; // Asker sayýsý
         public TMP_Text soldierCountText; // UI Text referansý (TextMeshPro kullanýyorsanýz Text yerine TMP_Text)
         public enum States{patrol,chase,retreat};
-        private NavMeshAgent enemyAgent;
-
         public States currentState;
 
-     
+        private Animator enemyAnim;
+        private float currentSpeed;
 
-
+        [SerializeField]private float SlowMultipler;
+        
         public NavMeshAgent agent; // Karakterin NavMeshAgent'i
         [Header("Bounds")]
         public Vector3 boundsMin; // Sýnýrlarýn minimum noktasý
@@ -31,24 +31,19 @@ namespace MountAndBlade
         public float stopRange = 15f;            // Takip etmeyi býrakma mesafesi (Editor'dan ayarlanabilir)
         private bool isInReach = false;          // Takip durumu
         private bool canGeneratePos = true;
-        public float retreatSpeed = 8f;
-
+        private float defaultAgentSpeed;
         public float maxDistance = 50f;
         public bool isPlayerStronger = false;
 
         private Vector3 moveDir;
         void Start()
         {
+            defaultAgentSpeed = agent.speed;
+            enemyAnim = GetComponent<Animator>();
             playerManager = FindObjectOfType<PlayerManager>();
-
-            if (playerManager == null)
-            {
-                Debug.LogError("PlayerHandler bulunamadý! Lütfen sahnede bir PlayerHandler olduðundan emin olun.");
-                return;
-            }
+            UptadeSpeedRelativeToUnitAmount();
             UpdateStrengthStatus();
             UpdateSoldierCountText();
-            enemyAgent = GetComponent<NavMeshAgent>();
             currentState = States.patrol;
         }
 
@@ -56,8 +51,14 @@ namespace MountAndBlade
         {
             StatesHandler();
             CheckDistance();
+            HandleAnimations();
         }
 
+        private void HandleAnimations()
+        {
+            currentSpeed = Mathf.Clamp01(agent.velocity.magnitude);
+            enemyAnim.SetFloat("CurrentSpeed", currentSpeed);
+        }
         private void UpdateStrengthStatus()
         {
             if (playerManager != null)
@@ -65,8 +66,6 @@ namespace MountAndBlade
                 isPlayerStronger = playerManager.playerSoldierAmount <= askerSayisi;
             }
         }
-
-
         public void UpdateSoldierCountText()
         {
             if (soldierCountText != null)
@@ -74,14 +73,11 @@ namespace MountAndBlade
                 soldierCountText.text = askerSayisi.ToString();
             }
         }
-
-        // Örnek: Asker sayýsýný arttýrmak ya da azaltmak
         public void AddSoldier(int count)
         {
             askerSayisi += count;
             UpdateSoldierCountText();
         }
-
         private void StatesHandler()
         {
 
@@ -98,10 +94,7 @@ namespace MountAndBlade
                     break;
 
             }
-
-
         }
-
         private void PatrolBehaviour()
         {
             if (canGeneratePos)
@@ -113,16 +106,13 @@ namespace MountAndBlade
             else if (isInReach && !isPlayerStronger)
                 currentState = States.retreat;
         }
-
         private void ChaseBehaviour()
         {
             if (isInReach)
             {
                 agent.SetDestination(player.position);
-
             }
         }
-
         private void RetreatBehaviour()
         {
             // Oyuncuya doðru olan yönü hesapla
@@ -130,12 +120,10 @@ namespace MountAndBlade
             directionAwayFromPlayer.Normalize(); // Yönü normalize et (birim vektör)
 
             // Kaçma hareketi için hýzý ayarla
-            agent.speed = retreatSpeed;
 
             // Oyuncudan uzaklaþarak hareket et
             agent.SetDestination(transform.position + directionAwayFromPlayer);  // Hedef olarak oyuncudan uzaklaþacak yönü ayarla
         }
-
         private void OnDestroy()
         {
             // Düþman yok olduðunda SpawnHandler'a bildir
@@ -145,9 +133,6 @@ namespace MountAndBlade
                 spawnHandler.EnemyDestroyed();
             }
         }
-
-
-
         private void CheckDistance()
         {
             float distanceToPlayer = Vector3.Distance(transform.position, player.position);
@@ -163,7 +148,11 @@ namespace MountAndBlade
                currentState = States.patrol;
  
         }
-
+        private void UptadeSpeedRelativeToUnitAmount()
+        {
+            float SlowAmount = askerSayisi * SlowMultipler;
+            agent.speed = defaultAgentSpeed / SlowAmount;
+        }
         private IEnumerator GenerateRandomPosition()
         {
             while (true)
@@ -173,10 +162,9 @@ namespace MountAndBlade
                 // Random bir konum oluþtur
                 Vector3 randomPosition = GetRandomPositionWithinBounds();
                 // NavMesh'e uygun mu kontrol et
-                if (NavMesh.SamplePosition(randomPosition, out NavMeshHit hit, 2f, NavMesh.AllAreas))
-                {
+                
                     // NavMesh'e uygunsa hedefi belirle
-                    agent.SetDestination(hit.position);
+                    agent.SetDestination(randomPosition);
 
                     // Hedefe ulaþmayý bekle
                     yield return new WaitUntil(() => !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance);
@@ -184,10 +172,8 @@ namespace MountAndBlade
                     // Hedefe ulaþtýðýnda 3 saniye bekle
                     yield return new WaitForSeconds(3f);
                     canGeneratePos = true;
-                }
             }
         }
-
         private Vector3 GetRandomPositionWithinBounds()
         {
             // Sýnýrlar arasýnda rastgele bir pozisyon üret (sadece yatay x ve z için)
@@ -197,7 +183,7 @@ namespace MountAndBlade
             // Düþey y eksenini sabit tut (örn: 0 veya karakterinizin baþlangýç yüksekliði)
             float fixedY = transform.position.y;
 
-            return new Vector3(randomX, fixedY, randomZ);
+            return new Vector3(randomX, 10f, randomZ);
         }
         private void OnDrawGizmos()
         {
@@ -217,7 +203,5 @@ namespace MountAndBlade
                 Gizmos.DrawLine(new Vector3(boundsMax.x, boundsMin.y, boundsMin.z), new Vector3(boundsMax.x, boundsMin.y, boundsMax.z)); // Ön sol köþe
             }
         }
-
-
     }
 }
