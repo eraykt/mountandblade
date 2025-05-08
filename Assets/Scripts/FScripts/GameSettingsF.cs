@@ -22,17 +22,22 @@ public class GameSettingsF : MonoBehaviour
     }
 
     // Butona basýldýðýnda bu fonksiyon çaðrýlýr
-    public void CountGetter()
+    public void CountGetter(string SceneName)
     {
         if (int.TryParse(enemyInput.text, out int res_enemy) && int.TryParse(allyInput.text, out int res_allie))
         {
             enemyCount = res_enemy;
             allyCount = res_allie;
-            SceneManager.LoadScene(0);
+            SceneLoader(SceneName);
         }
         else
         {
             Debug.LogError("Invalid input values.");
         }
+    }
+
+    private void SceneLoader(string SceneName)
+    {
+        SceneManager.LoadScene(SceneName);
     }
 }

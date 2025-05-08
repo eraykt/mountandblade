@@ -35,9 +35,14 @@ namespace MountAndBlade
         private float currentAllyAmount;
         private float engagedEnemyAmount;
 
+        private void Update()
+        {
+            Debug.Log($"Asker Sayisi : {currentAllyAmount} \nDüþman Sayisi : {engagedEnemyAmount}");
+        }
+
         public void getEnemyUnitAmount(float _enemyUnitAmount)
         {
-            engagedEnemyAmount = _enemyUnitAmount; 
+            engagedEnemyAmount = _enemyUnitAmount;
         }
         
         public void getAllyUnitAmount(float _currentAllyAmount)
@@ -45,9 +50,19 @@ namespace MountAndBlade
             currentAllyAmount = _currentAllyAmount;
         }
 
+        public int GetEnemyCount()
+        {
+            return Mathf.FloorToInt(engagedEnemyAmount);
+        }
+
+        public int GetAllyCount()
+        {
+            return Mathf.FloorToInt(currentAllyAmount);
+        }
+
         public IEnumerator loadWsScene()
         {
-            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(1);
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(2);
             yield return null;
         }
 

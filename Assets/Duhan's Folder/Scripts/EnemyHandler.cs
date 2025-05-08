@@ -8,6 +8,7 @@ namespace MountAndBlade
 {
     public class EnemyHandler : MonoBehaviour
     {
+        public static EnemyHandler Instance;
 
         public PlayerManager playerManager;
         public int askerSayisi; // Asker sayýsý
@@ -36,6 +37,12 @@ namespace MountAndBlade
         public bool isPlayerStronger = false;
 
         private Vector3 moveDir;
+
+        private void Awake()
+        {
+            if (Instance == null) Instance = this;
+            else Destroy(gameObject);
+        }
         void Start()
         {
             defaultAgentSpeed = agent.speed;
@@ -53,6 +60,8 @@ namespace MountAndBlade
             CheckDistance();
             HandleAnimations();
         }
+
+        public int GetAskerSayisi() => askerSayisi;
 
         private void HandleAnimations()
         {

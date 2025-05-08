@@ -1,3 +1,4 @@
+using MountAndBlade;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class GameManagerF : MonoBehaviour
 
     public GameObject enemyPrefab;
     public GameObject allyPrefab;
+    public GameObject playerPrefab;
 
     // StateF SO'larý için referanslar
     private StateF attackStateSO;
@@ -33,12 +35,13 @@ public class GameManagerF : MonoBehaviour
 
     public void UpdateEnemyAndAllyCount()
     {
-        if (GameSettingsF.Instance.enemyCount != 0)
-            enemyCount = GameSettingsF.Instance.enemyCount;
-        else Debug.LogWarning("GameSettingsF.Instance.enemyCount 0");
-        if (GameSettingsF.Instance.allyCount != 0)
-            allyCount = GameSettingsF.Instance.allyCount;
-        else Debug.LogWarning("GameSettingsF.Instance.allyCount 0");
+        if (GameManager.instance.GetEnemyCount() != 0) 
+            enemyCount = GameManager.instance.GetEnemyCount();
+        else Debug.Log($"Enemy Count Çekilirken : {GameManager.instance.GetEnemyCount()}");
+
+        if (GameManager.instance.GetAllyCount() != 0) 
+            allyCount = GameManager.instance.GetAllyCount();
+        else Debug.Log($"Ally Count Çekilirken : {GameManager.instance.GetAllyCount()}");
 
         SpawnEnemiesAndAllies();
     }
@@ -49,7 +52,7 @@ public class GameManagerF : MonoBehaviour
         {
             enemies.Add(unit); // Listeye Ekliyoruz
         }
-        else if (unit.CompareTag("Allies"))
+        else if (unit.CompareTag("Allies") || unit.CompareTag("Player"))
         {
             allies.Add(unit);  // Listeye Ekliyoruz
         }
@@ -109,7 +112,7 @@ public class GameManagerF : MonoBehaviour
         if (allyPrefab != null)
         {
             // Ally'leri spawn et
-            for (int i = 0; i < allyCount; i++)
+            for (int i = 1; i < allyCount; i++)
             {
                 GameObject ally = Instantiate(allyPrefab, GetRandomPosition(), Quaternion.identity);
                 Register(ally);
@@ -120,6 +123,12 @@ public class GameManagerF : MonoBehaviour
             }
         }
         else Debug.LogError("AllyPrefab boþ");
+
+        if (playerPrefab != null)
+        {
+            GameObject player = Instantiate(playerPrefab, GetRandomPosition(), Quaternion.identity);
+            Register(player);
+        }
 
         CanCheckLists = true;
         Debug.Log($"Spawned {enemyCount} enemies and {allyCount} allies.");
