@@ -31,10 +31,10 @@ public class InventoryManager : MonoBehaviour
     private void Start() 
     {
         charCoinText.text = charCoin.ToString();
-        if (inventoryCanvas != null)
+        /*if (inventoryCanvas != null)
         {
             inventoryCanvas.SetActive(false);
-        }
+        }*/
         PopulateInventory();
         AddDiscardSlots();
         
