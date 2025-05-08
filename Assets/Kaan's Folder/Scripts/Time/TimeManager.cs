@@ -123,6 +123,18 @@ public class TimeManager : MonoBehaviour
         if (Input.GetKeyUp(KeyCode.LeftShift))
             Time.timeScale = 1.0f;
     }
+
+    public void TimeScaleForInventory()
+    {
+        if (Input.GetKeyDown(KeyCode.I) && Time.timeScale > 0.1)
+        {
+            Time.timeScale = 0.0f;
+        }
+        else if (Input.GetKeyDown(KeyCode.I) && Time.timeScale < 0.1)
+        {
+            Time.timeScale = 1.0f;
+        }
+    }
     private void TimeModifer()
     {
         isTimeActive = true;
