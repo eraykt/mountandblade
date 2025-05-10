@@ -127,8 +127,6 @@ public class GameManagerF : MonoBehaviour
         if (playerPrefab != null)
         {
             GameObject player = Instantiate(playerPrefab, GetRandomPosition(), Quaternion.identity);
-            Rigidbody playerRb = player.GetComponentInChildren<Rigidbody>();
-            playerRb.useGravity = false;
             Register(player);
         }
 
