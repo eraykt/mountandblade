@@ -162,8 +162,6 @@ public class PlayerAttackController : MonoBehaviour, IDamagable
         // Cinemachine Virtual Camera'yı deadCamTransform'a taşımak
         virtualCamera.transform.DOMove(deadCamTransform.position, 1.5f).SetEase(Ease.InOutSine);
         virtualCamera.transform.DORotateQuaternion(deadCamTransform.rotation, 1.5f).SetEase(Ease.InOutSine);
-    
-
     }
 }
 

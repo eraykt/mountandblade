@@ -8,6 +8,7 @@ public class GameManagerF : MonoBehaviour
     public static GameManagerF Instance;
     public int enemyCount;
     public int allyCount;
+    
 
     public GameObject enemyPrefab;
     public GameObject allyPrefab;
@@ -79,12 +80,19 @@ public class GameManagerF : MonoBehaviour
             Debug.Log($"{winnerTag} kazand�!");
 
             List<GameObject> winners = winnerTag == "Allies" ? allies : enemies;
+            
 
             foreach (var unit in winners)
             {
                 var enemyBase = unit.GetComponent<EnemyBaseF>();
                 if (enemyBase != null)
                     enemyBase.animator.SetBool("IsVictory", true);
+                if (winnerTag == "Allies")
+                {
+                    GameObject player = GameObject.FindGameObjectWithTag("Player");
+                    Animator playerAnimator = player.GetComponentInChildren<Animator>();
+                    playerAnimator.SetBool("IsVictory", true);
+                }
             }
         }
     }
