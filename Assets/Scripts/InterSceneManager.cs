@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace MountAndBlade
 {
@@ -29,6 +30,11 @@ namespace MountAndBlade
             {
                 SaveData();
             }
+
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                SceneManager.LoadScene(0);
+            }
         }
 
         public void SaveData()
@@ -39,20 +45,20 @@ namespace MountAndBlade
             foreach (var enemy in enemies)
             {
                 var e = enemy as EnemyHandler;
-                EnemyData enemyData = new EnemyData(e, e.transform);
+                EnemyData enemyData = new EnemyData(e.askerSayisi, e.transform.position);
                 currentEnemies.Add(enemyData);
-                Debug.Log(enemyData.enemy + " " + enemyData.enemyPosition.position);
             }
         }
 
+        [Serializable]
         public struct EnemyData
         {
-            public EnemyHandler enemy;
-            public Transform enemyPosition;
+            public int enemyCount;
+            public Vector3 enemyPosition;
 
-            public EnemyData(EnemyHandler enemy , Transform enemyPosition)
+            public EnemyData(int enemyCount , Vector3 enemyPosition)
             {
-                this.enemy = enemy;
+                this.enemyCount = enemyCount;
                 this.enemyPosition = enemyPosition;
             }
         }

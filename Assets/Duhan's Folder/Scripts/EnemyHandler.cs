@@ -8,11 +8,10 @@ namespace MountAndBlade
 {
     public class EnemyHandler : MonoBehaviour
     {
-        public static EnemyHandler Instance;
 
         public PlayerManager playerManager;
-        public int askerSayisi; // Asker sayýsý
-        public TMP_Text soldierCountText; // UI Text referansý (TextMeshPro kullanýyorsanýz Text yerine TMP_Text)
+        public int askerSayisi; // Asker sayï¿½sï¿½
+        public TMP_Text soldierCountText; // UI Text referansï¿½ (TextMeshPro kullanï¿½yorsanï¿½z Text yerine TMP_Text)
         public enum States{patrol,chase,retreat};
         public States currentState;
 
@@ -23,13 +22,13 @@ namespace MountAndBlade
         
         public NavMeshAgent agent; // Karakterin NavMeshAgent'i
         [Header("Bounds")]
-        public Vector3 boundsMin; // Sýnýrlarýn minimum noktasý
-        public Vector3 boundsMax; // Sýnýrlarýn maksimum noktasý
+        public Vector3 boundsMin; // Sï¿½nï¿½rlarï¿½n minimum noktasï¿½
+        public Vector3 boundsMax; // Sï¿½nï¿½rlarï¿½n maksimum noktasï¿½
 
 
         public Transform player;                 // Oyuncu
         public float chaseRange = 10f;           // Takip mesafesi (Editor'dan ayarlanabilir)
-        public float stopRange = 15f;            // Takip etmeyi býrakma mesafesi (Editor'dan ayarlanabilir)
+        public float stopRange = 15f;            // Takip etmeyi bï¿½rakma mesafesi (Editor'dan ayarlanabilir)
         private bool isInReach = false;          // Takip durumu
         private bool canGeneratePos = true;
         private float defaultAgentSpeed;
@@ -38,11 +37,6 @@ namespace MountAndBlade
 
         private Vector3 moveDir;
 
-        private void Awake()
-        {
-            if (Instance == null) Instance = this;
-            else Destroy(gameObject);
-        }
         void Start()
         {
             defaultAgentSpeed = agent.speed;
@@ -124,18 +118,18 @@ namespace MountAndBlade
         }
         private void RetreatBehaviour()
         {
-            // Oyuncuya doðru olan yönü hesapla
+            // Oyuncuya doï¿½ru olan yï¿½nï¿½ hesapla
             Vector3 directionAwayFromPlayer = transform.position - player.position;
-            directionAwayFromPlayer.Normalize(); // Yönü normalize et (birim vektör)
+            directionAwayFromPlayer.Normalize(); // Yï¿½nï¿½ normalize et (birim vektï¿½r)
 
-            // Kaçma hareketi için hýzý ayarla
+            // Kaï¿½ma hareketi iï¿½in hï¿½zï¿½ ayarla
 
-            // Oyuncudan uzaklaþarak hareket et
-            agent.SetDestination(transform.position + directionAwayFromPlayer);  // Hedef olarak oyuncudan uzaklaþacak yönü ayarla
+            // Oyuncudan uzaklaï¿½arak hareket et
+            agent.SetDestination(transform.position + directionAwayFromPlayer);  // Hedef olarak oyuncudan uzaklaï¿½acak yï¿½nï¿½ ayarla
         }
         private void OnDestroy()
         {
-            // Düþman yok olduðunda SpawnHandler'a bildir
+            // Dï¿½ï¿½man yok olduï¿½unda SpawnHandler'a bildir
             EnemyTDSpawnManager spawnHandler = FindObjectOfType<EnemyTDSpawnManager>();
             if (spawnHandler != null)
             {
@@ -166,50 +160,50 @@ namespace MountAndBlade
         {
             while (true)
             {
-                yield return new WaitForEndOfFrame();// framein bitmesini beklemesini saðlýyor.   yoksa 1 frame de sürekli çalýþmaya devam ediyor.
+                yield return new WaitForEndOfFrame();// framein bitmesini beklemesini saï¿½lï¿½yor.   yoksa 1 frame de sï¿½rekli ï¿½alï¿½ï¿½maya devam ediyor.
                 canGeneratePos = false;
-                // Random bir konum oluþtur
+                // Random bir konum oluï¿½tur
                 Vector3 randomPosition = GetRandomPositionWithinBounds();
                 // NavMesh'e uygun mu kontrol et
                 
                     // NavMesh'e uygunsa hedefi belirle
                     agent.SetDestination(randomPosition);
 
-                    // Hedefe ulaþmayý bekle
+                    // Hedefe ulaï¿½mayï¿½ bekle
                     yield return new WaitUntil(() => !agent.pathPending && agent.remainingDistance <= agent.stoppingDistance);
 
-                    // Hedefe ulaþtýðýnda 3 saniye bekle
+                    // Hedefe ulaï¿½tï¿½ï¿½ï¿½nda 3 saniye bekle
                     yield return new WaitForSeconds(3f);
                     canGeneratePos = true;
             }
         }
         private Vector3 GetRandomPositionWithinBounds()
         {
-            // Sýnýrlar arasýnda rastgele bir pozisyon üret (sadece yatay x ve z için)
+            // Sï¿½nï¿½rlar arasï¿½nda rastgele bir pozisyon ï¿½ret (sadece yatay x ve z iï¿½in)
             float randomX = Random.Range(boundsMin.x, boundsMax.x);
             float randomZ = Random.Range(boundsMin.z, boundsMax.z);
 
-            // Düþey y eksenini sabit tut (örn: 0 veya karakterinizin baþlangýç yüksekliði)
+            // Dï¿½ï¿½ey y eksenini sabit tut (ï¿½rn: 0 veya karakterinizin baï¿½langï¿½ï¿½ yï¿½ksekliï¿½i)
             float fixedY = transform.position.y;
 
             return new Vector3(randomX, 10f, randomZ);
         }
         private void OnDrawGizmos()
         {
-            // Eðer boundsMin ve boundsMax tanýmlandýysa sýnýrlarý çiz
+            // Eï¿½er boundsMin ve boundsMax tanï¿½mlandï¿½ysa sï¿½nï¿½rlarï¿½ ï¿½iz
             if (boundsMin != null && boundsMax != null)
             {
-                Gizmos.color = Color.red; // Çizim rengini kýrmýzý yapalým
+                Gizmos.color = Color.red; // ï¿½izim rengini kï¿½rmï¿½zï¿½ yapalï¿½m
 
-                // Sýnýrlarý bir kutu olarak çiz
-                Gizmos.DrawLine(new Vector3(boundsMin.x, boundsMin.y, boundsMin.z), new Vector3(boundsMax.x, boundsMin.y, boundsMin.z)); // Ön kenar
+                // Sï¿½nï¿½rlarï¿½ bir kutu olarak ï¿½iz
+                Gizmos.DrawLine(new Vector3(boundsMin.x, boundsMin.y, boundsMin.z), new Vector3(boundsMax.x, boundsMin.y, boundsMin.z)); // ï¿½n kenar
                 Gizmos.DrawLine(new Vector3(boundsMin.x, boundsMin.y, boundsMax.z), new Vector3(boundsMax.x, boundsMin.y, boundsMax.z)); // Arka kenar
                 Gizmos.DrawLine(new Vector3(boundsMin.x, boundsMin.y, boundsMin.z), new Vector3(boundsMin.x, boundsMin.y, boundsMax.z)); // Sol kenar
-                Gizmos.DrawLine(new Vector3(boundsMax.x, boundsMin.y, boundsMin.z), new Vector3(boundsMax.x, boundsMin.y, boundsMax.z)); // Sað kenar
+                Gizmos.DrawLine(new Vector3(boundsMax.x, boundsMin.y, boundsMin.z), new Vector3(boundsMax.x, boundsMin.y, boundsMax.z)); // Saï¿½ kenar
 
-                // Üst kenarlarý çiz
-                Gizmos.DrawLine(new Vector3(boundsMin.x, boundsMin.y, boundsMin.z), new Vector3(boundsMin.x, boundsMin.y, boundsMax.z)); // Ön sað köþe
-                Gizmos.DrawLine(new Vector3(boundsMax.x, boundsMin.y, boundsMin.z), new Vector3(boundsMax.x, boundsMin.y, boundsMax.z)); // Ön sol köþe
+                // ï¿½st kenarlarï¿½ ï¿½iz
+                Gizmos.DrawLine(new Vector3(boundsMin.x, boundsMin.y, boundsMin.z), new Vector3(boundsMin.x, boundsMin.y, boundsMax.z)); // ï¿½n saï¿½ kï¿½ï¿½e
+                Gizmos.DrawLine(new Vector3(boundsMax.x, boundsMin.y, boundsMin.z), new Vector3(boundsMax.x, boundsMin.y, boundsMax.z)); // ï¿½n sol kï¿½ï¿½e
             }
         }
     }

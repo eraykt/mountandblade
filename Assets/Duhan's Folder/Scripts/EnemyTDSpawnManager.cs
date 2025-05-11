@@ -1,21 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UI;
+using Random = UnityEngine.Random;
 
 namespace MountAndBlade
 {
     public class EnemyTDSpawnManager : MonoBehaviour
     {
-        public GameObject enemyPrefab;            // Spawnlanacak düþman prefabý
-        public int maxEnemies = 10;               // Dünyada ayný anda bulunabilecek maksimum düþman sayýsý
-        public Vector3 spawnAreaMin;              // Spawn alanýnýn minimum sýnýrlarý
-        public Vector3 spawnAreaMax;              // Spawn alanýnýn maksimum sýnýrlarý
-        public int minSoldiers = 1;               // Her düþman için minimum asker sayýsý
-        public int maxSoldiers = 10;              // Her düþman için maksimum asker sayýsý
-        public float spawnInterval = 5f;          // Spawn aralýðý (saniye)
+        public GameObject enemyPrefab;            // Spawnlanacak dï¿½ï¿½man prefabï¿½
+        public int maxEnemies = 10;               // Dï¿½nyada aynï¿½ anda bulunabilecek maksimum dï¿½ï¿½man sayï¿½sï¿½
+        public Vector3 spawnAreaMin;              // Spawn alanï¿½nï¿½n minimum sï¿½nï¿½rlarï¿½
+        public Vector3 spawnAreaMax;              // Spawn alanï¿½nï¿½n maksimum sï¿½nï¿½rlarï¿½
+        public int minSoldiers = 1;               // Her dï¿½ï¿½man iï¿½in minimum asker sayï¿½sï¿½
+        public int maxSoldiers = 10;              // Her dï¿½ï¿½man iï¿½in maksimum asker sayï¿½sï¿½
+        public float spawnInterval = 5f;          // Spawn aralï¿½ï¿½ï¿½ (saniye)
 
         [SerializeField] GameObject uiOnScene;
         [SerializeField] Button engageBtnOnScene;
@@ -24,30 +26,63 @@ namespace MountAndBlade
         public Transform player;
         //public TMP_Text soldierCountText;
 
-        private int currentEnemyCount = 0;        // Mevcut düþman sayýsý
-        private float spawnTimer = 0f;            // Spawn zamanlayýcý
+        private int currentEnemyCount = 0;        // Mevcut dï¿½ï¿½man sayï¿½sï¿½
+        private float spawnTimer = 0f;            // Spawn zamanlayï¿½cï¿½
+
+        private void Start()
+        {
+            if (InterSceneManager.Instance.currentEnemies != null)
+            {
+                foreach (var enemyData in InterSceneManager.Instance.currentEnemies)
+                {
+                    var e = Instantiate(enemyPrefab, enemyData.enemyPosition, Quaternion.identity);
+                    
+                    EnemyInteractionUI enemyInteractionUI = e.GetComponent<EnemyInteractionUI>();
+
+                    enemyInteractionUI.enemyInterractionUI = uiOnScene;
+                    enemyInteractionUI.engageCombatButton = engageBtnOnScene;
+                    enemyInteractionUI.disengageCombatButton = disEngageBtnOnScene;
+                    enemyInteractionUI.player = player.gameObject;
+                    
+                    EnemyHandler enemyHandler = e.GetComponent<EnemyHandler>();
+                    if (enemyHandler != null)
+                    {
+                        enemyHandler.player = player; // Player referansï¿½ atanï¿½yor
+                        enemyHandler.askerSayisi = enemyData.enemyCount;
+                        //enemyHandler.soldierCountText = soldierCountText;
+                        enemyHandler.UpdateSoldierCountText();
+                    }
+                    
+                    
+                    currentEnemyCount++;
+                }
+                
+                // InterSceneManager.Instance.currentEnemies = null;
+            }
+        }
+
 
         private void Update()
         {
 
-            // Zamanlayýcýyý güncelle
+            // Zamanlayï¿½cï¿½yï¿½ gï¿½ncelle
             spawnTimer += Time.deltaTime;
 
-            // Eðer zamanlayýcý dolmuþsa ve düþman sýnýrýna ulaþýlmamýþsa düþman spawnla
+            // Eï¿½er zamanlayï¿½cï¿½ dolmuï¿½sa ve dï¿½ï¿½man sï¿½nï¿½rï¿½na ulaï¿½ï¿½lmamï¿½ï¿½sa dï¿½ï¿½man spawnla
             if (spawnTimer >= spawnInterval && currentEnemyCount < maxEnemies)
             {
                 SpawnEnemy();
-                spawnTimer = 0f; // Zamanlayýcýyý sýfýrla
+                spawnTimer = 0f; // Zamanlayï¿½cï¿½yï¿½ sï¿½fï¿½rla
             }
         }
 
         private void SpawnEnemy()
         {
-            // Rastgele bir pozisyon oluþtur
+            // Rastgele bir pozisyon oluï¿½tur
             Vector3 randomPosition = GetRandomPositionWithinBounds();
 
-            // NavMesh üzerinde olup olmadýðýný kontrol et
-            // Düþmaný spawnla
+            // NavMesh ï¿½zerinde olup olmadï¿½ï¿½ï¿½nï¿½ kontrol et
+            // Dï¿½ï¿½manï¿½ spawnla
             GameObject enemy = Instantiate(enemyPrefab, randomPosition, Quaternion.identity);
 
             EnemyInteractionUI enemyInteractionUI = enemy.GetComponent<EnemyInteractionUI>();
@@ -57,23 +92,23 @@ namespace MountAndBlade
             enemyInteractionUI.disengageCombatButton = disEngageBtnOnScene;
             enemyInteractionUI.player = player.gameObject;
 
-            // EnemyHandler scriptini al ve asker sayýsýný rastgele ata
+            // EnemyHandler scriptini al ve asker sayï¿½sï¿½nï¿½ rastgele ata
             EnemyHandler enemyHandler = enemy.GetComponent<EnemyHandler>();
             if (enemyHandler != null)
             {
-                enemyHandler.player = player; // Player referansý atanýyor
+                enemyHandler.player = player; // Player referansï¿½ atanï¿½yor
                 //enemyHandler.soldierCountText = soldierCountText;
                 enemyHandler.askerSayisi = Random.Range(minSoldiers, maxSoldiers + 1);
                 enemyHandler.UpdateSoldierCountText();
             }
 
-            // Düþman sayýsýný güncelle
+            // Dï¿½ï¿½man sayï¿½sï¿½nï¿½ gï¿½ncelle
             currentEnemyCount++;
         }
 
         private Vector3 GetRandomPositionWithinBounds()
         {
-            // Rastgele bir pozisyon oluþtur
+            // Rastgele bir pozisyon oluï¿½tur
             float x = Random.Range(spawnAreaMin.x, spawnAreaMax.x);
             float z = Random.Range(spawnAreaMin.z, spawnAreaMax.z);
 
@@ -87,21 +122,21 @@ namespace MountAndBlade
 
         public void EnemyDestroyed()
         {
-            // Bu metot düþman yok olduðunda çaðrýlýr
+            // Bu metot dï¿½ï¿½man yok olduï¿½unda ï¿½aï¿½rï¿½lï¿½r
             currentEnemyCount--;
         }
 
 
         private void OnDrawGizmos()
         {
-            // Gizmo rengini yeþil yap
+            // Gizmo rengini yeï¿½il yap
             Gizmos.color = Color.green;
 
-            // Sýnýrlarý kutu þeklinde çiz
+            // Sï¿½nï¿½rlarï¿½ kutu ï¿½eklinde ï¿½iz
             Vector3 center = (spawnAreaMin + spawnAreaMax) / 2; // Kutunun merkezi
             Vector3 size = spawnAreaMax - spawnAreaMin;         // Kutunun boyutu
 
-            Gizmos.DrawWireCube(center, size); // Sadece çerçeve çiz (WireCube)
+            Gizmos.DrawWireCube(center, size); // Sadece ï¿½erï¿½eve ï¿½iz (WireCube)
         }
 
 
