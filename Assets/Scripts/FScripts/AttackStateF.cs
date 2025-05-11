@@ -17,12 +17,7 @@ public class AttackStateF : StateF
     {
         if (enemy.targetTransform != null)
         {
-            // Düşmana saldırı yap
-            if (enemy.AttackArea)
-            {
-                enemy.targetTransform.GetComponent<IDamagable>().TakeDamage(attackDamage);
-                Debug.Log("Enemy Vurdu SERTTI");
-            }
+            
         }
     }
 

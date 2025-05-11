@@ -157,9 +157,12 @@ public class PlayerAttackController : MonoBehaviour, IDamagable
 
         _animator.SetBool("IsDead", true);
 
-        var camTransform = Camera.main.transform;
-        camTransform.DOMove(deadCamTransform.position, 1.5f).SetEase(Ease.InOutSine);
-        camTransform.DORotateQuaternion(deadCamTransform.rotation, 1.5f).SetEase(Ease.InOutSine);
+        GameManagerF.Instance.Unregister(gameObject);
+
+        // Cinemachine Virtual Camera'yı deadCamTransform'a taşımak
+        virtualCamera.transform.DOMove(deadCamTransform.position, 1.5f).SetEase(Ease.InOutSine);
+        virtualCamera.transform.DORotateQuaternion(deadCamTransform.rotation, 1.5f).SetEase(Ease.InOutSine);
+    
 
     }
 }

@@ -65,7 +65,7 @@ public class GameManagerF : MonoBehaviour
             enemies.Remove(unit); // Listeden siliyoruz ve liste 0 olursa Victory triggerlan�yor
             if (enemies.Count == 0) TriggerVictory("Allies");
         }
-        else if (unit.CompareTag("Allies"))
+        else if (unit.CompareTag("Allies") || unit.CompareTag("Player"))
         {
             allies.Remove(unit);
             if (allies.Count == 0) TriggerVictory("Enemy");

@@ -130,7 +130,6 @@ public class CamController : MonoBehaviour
     {
         // Daha düþük Priority deðerine sahip olan kamera aktif olur
         activeCam = closeCam.m_Priority < topCam.m_Priority ? topCam : closeCam;
-        Debug.Log($"Aktif Kamera: {activeCam.name}");
     }
 
     private void AdjustCameraPriorities()

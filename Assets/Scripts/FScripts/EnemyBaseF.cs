@@ -251,6 +251,21 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         }
     }
 
+    public void AnimationHit()
+    {
+        IDamagable target = targetTransform.GetComponent<IDamagable>();
+        if (target != null)
+        {
+            target.TakeDamage(5);
+        }
+       
+        
+            
+        
+
+        Debug.Log("Enemy/Ally just Hit !");
+    }
+
     private void OnDrawGizmos()
     {
         if (targetTransform != null && distance > 0)
