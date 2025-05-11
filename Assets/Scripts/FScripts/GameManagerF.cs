@@ -126,7 +126,7 @@ public class GameManagerF : MonoBehaviour
 
         if (playerPrefab != null)
         {
-            GameObject player = Instantiate(playerPrefab, GetRandomPosition(), Quaternion.identity);
+            GameObject player = Instantiate(playerPrefab, GetRandomPositionForPlayer(), Quaternion.identity);
             Register(player);
         }
 
@@ -157,6 +157,15 @@ public class GameManagerF : MonoBehaviour
         float z = Random.Range(-10f, 10f);
         return new Vector3(x, 0f, z);
     }
+
+    private Vector3 GetRandomPositionForPlayer()
+    {
+        float x = Random.Range(-10f, 10f);
+        float z = Random.Range(-10f, 10f);
+        return new Vector3(x, 3f, z);
+    }
+
+
 
     // StateF SO'larýný oluþturur ve prefab'a atar
     // Burada SO olarak oluþturlan Stateler enemylere referans olarak veriliyor otomatik olarak
