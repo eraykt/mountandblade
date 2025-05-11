@@ -20,11 +20,11 @@ namespace MountAndBlade
         public Button engageCombatButton;
         public Button disengageCombatButton;
 
-        //public EnemyHandler enemyHandler; ileride asker sayýsýna göre uý'ý manipüle etmek için kullanýlabilir.
+        //public EnemyHandler enemyHandler; ileride asker sayï¿½sï¿½na gï¿½re uï¿½'ï¿½ manipï¿½le etmek iï¿½in kullanï¿½labilir.
         public GameObject player;
 
         private bool isInterractable = false;
-        private bool canBeOpenedAgain = true;// alanýn içindeyken sürekli açýk kalmamasý için.
+        private bool canBeOpenedAgain = true;// alanï¿½n iï¿½indeyken sï¿½rekli aï¿½ï¿½k kalmamasï¿½ iï¿½in.
 
         EnemyHandler enemyHandler;
 
@@ -56,7 +56,7 @@ namespace MountAndBlade
 
             if (isInterractable && CameraRay.instance.isItEnemy)
             {
-                Debug.Log("üzerine basýlarak açýldý");
+                Debug.Log("ï¿½zerine basï¿½larak aï¿½ï¿½ldï¿½");
                 GameManager.instance.getEnemyUnitAmount(this.GetComponent<EnemyHandler>().askerSayisi);
                 OpenInterractionUI();
             }
@@ -93,7 +93,7 @@ namespace MountAndBlade
             if (player == null)
                 return;
 
-            Debug.Log("carpistimve playe null deðil");
+            Debug.Log("carpistimve playe null deï¿½il");
 
 
             if(collision.gameObject == player && canBeOpenedAgain)
@@ -101,7 +101,7 @@ namespace MountAndBlade
                 GameManager.instance.getEnemyUnitAmount(this.GetComponent<EnemyHandler>().askerSayisi);
                 canBeOpenedAgain = false;
                 OpenInterractionUI();
-                Debug.Log("çarpýþarak açýldý");
+                Debug.Log("ï¿½arpï¿½ï¿½arak aï¿½ï¿½ldï¿½");
             }
         }
 
@@ -123,7 +123,8 @@ namespace MountAndBlade
             
             engageCombatButton.onClick.AddListener(() => {
                 Time.timeScale = 1;
-                StartCoroutine(GameManager.instance.loadWsScene());
+                int id = GetComponent<EnemyHandler>().id;
+                StartCoroutine(GameManager.instance.loadWsScene(id));
 
             });
 

@@ -107,6 +107,8 @@ public class GameManagerF : MonoBehaviour
 
     public IEnumerator AlliesWin()
     {
+        Cursor.lockState = CursorLockMode.None;
+        
         yield return new WaitForSeconds(3);
 
         WonPanel.SetActive(true);

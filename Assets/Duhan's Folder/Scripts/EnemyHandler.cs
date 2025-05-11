@@ -37,6 +37,8 @@ namespace MountAndBlade
 
         private Vector3 moveDir;
 
+        [HideInInspector] public int id;
+
         void Start()
         {
             defaultAgentSpeed = agent.speed;

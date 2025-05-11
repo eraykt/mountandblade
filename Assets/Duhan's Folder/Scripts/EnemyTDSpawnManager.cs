@@ -29,8 +29,11 @@ namespace MountAndBlade
         private int currentEnemyCount = 0;        // Mevcut d��man say�s�
         private float spawnTimer = 0f;            // Spawn zamanlay�c�
 
+        private static int id = 0;
+
         private void Start()
         {
+            id = 0;
             if (InterSceneManager.Instance.currentEnemies != null)
             {
                 foreach (var enemyData in InterSceneManager.Instance.currentEnemies)
@@ -51,6 +54,7 @@ namespace MountAndBlade
                         enemyHandler.askerSayisi = enemyData.enemyCount;
                         //enemyHandler.soldierCountText = soldierCountText;
                         enemyHandler.UpdateSoldierCountText();
+                        enemyHandler.id = enemyData.id;
                     }
                     
                     
@@ -100,6 +104,7 @@ namespace MountAndBlade
                 //enemyHandler.soldierCountText = soldierCountText;
                 enemyHandler.askerSayisi = Random.Range(minSoldiers, maxSoldiers + 1);
                 enemyHandler.UpdateSoldierCountText();
+                enemyHandler.id = id++;
             }
 
             // D��man say�s�n� g�ncelle

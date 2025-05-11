@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Object = UnityEngine.Object;
 
 namespace MountAndBlade
 {
@@ -49,23 +50,38 @@ namespace MountAndBlade
             foreach (var enemy in enemies)
             {
                 var e = enemy as EnemyHandler;
-                EnemyData enemyData = new EnemyData(e.askerSayisi, e.transform.position);
+                EnemyData enemyData = new EnemyData(e.askerSayisi, e.transform.position, e.id);
                 currentEnemies.Add(enemyData);
             }
-            
+
             playerData = new PlayerData(PlayerController.instance.playerManager.playerSoldierAmount, PlayerController.instance.transform.position);
             hasPlayerData = true;
+        }
+
+        public void DeleteCurrentEnemy(int id)
+        {
+            for (var i = 0; i < currentEnemies.Count; i++)
+            {
+                var enemy = currentEnemies[i];
+                if (enemy.id == id)
+                {
+                    currentEnemies.Remove(enemy);
+                    return;
+                }
+            }
         }
 
         [Serializable]
         public struct EnemyData
         {
+            public int id;
             public int enemyCount;
             public Vector3 enemyPosition;
 
-            public EnemyData(int enemyCount , Vector3 enemyPosition)
+            public EnemyData(int enemyCount , Vector3 enemyPosition, int id)
             {
                 this.enemyCount = enemyCount;
+                this.id = id;
                 this.enemyPosition = enemyPosition;
             }
         }

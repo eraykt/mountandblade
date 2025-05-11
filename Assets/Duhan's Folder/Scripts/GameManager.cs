@@ -28,9 +28,9 @@ namespace MountAndBlade
 
         #endregion
 
-        //top down sahnemizdeki enemy-ally sayý deðerlerini tut
-        //ws sahnesinde bu deðerlere göre spawn iþlemi gerçekleþtir.
-        //sahne deðiþikliðini buradan çaðýrabiliriz. 
+        //top down sahnemizdeki enemy-ally sayï¿½ deï¿½erlerini tut
+        //ws sahnesinde bu deï¿½erlere gï¿½re spawn iï¿½lemi gerï¿½ekleï¿½tir.
+        //sahne deï¿½iï¿½ikliï¿½ini buradan ï¿½aï¿½ï¿½rabiliriz. 
 
         private float currentAllyAmount;
         private float engagedEnemyAmount;
@@ -62,8 +62,10 @@ namespace MountAndBlade
             return Mathf.FloorToInt(currentAllyAmount);
         }
 
-        public IEnumerator loadWsScene()
+        public IEnumerator loadWsScene(int id)
         {
+            InterSceneManager.Instance.SaveData();
+            InterSceneManager.Instance.DeleteCurrentEnemy(id);
             AsyncOperation loadOperation = SceneManager.LoadSceneAsync(2);
             yield return null;
         }
