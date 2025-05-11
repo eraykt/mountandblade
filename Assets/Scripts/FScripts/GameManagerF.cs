@@ -1,7 +1,10 @@
+using JetBrains.Annotations;
 using MountAndBlade;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManagerF : MonoBehaviour
 {
@@ -22,6 +25,10 @@ public class GameManagerF : MonoBehaviour
     public List<GameObject> enemies = new List<GameObject>();
     public List<GameObject> allies = new List<GameObject>();
     private bool CanCheckLists = false;
+
+
+    public GameObject WonPanel;
+
 
     private void Awake()
     {
@@ -92,11 +99,18 @@ public class GameManagerF : MonoBehaviour
                     GameObject player = GameObject.FindGameObjectWithTag("Player");
                     Animator playerAnimator = player.GetComponentInChildren<Animator>();
                     playerAnimator.SetBool("IsVictory", true);
+                    StartCoroutine(AlliesWin());
                 }
             }
         }
     }
 
+    public IEnumerator AlliesWin()
+    {
+        yield return new WaitForSeconds(3);
+
+        WonPanel.SetActive(true);
+    }
 
     private void SpawnEnemiesAndAllies()
     {
@@ -196,4 +210,8 @@ public class GameManagerF : MonoBehaviour
         Debug.Log($"Runtime s�ras�nda {unit.name} i�in State SO'lar� olu�turuldu ve atand�.");
     }
 
+    public void GoBackMapScene()
+    {
+        SceneManager.LoadScene("MapScene");
+    }
 }

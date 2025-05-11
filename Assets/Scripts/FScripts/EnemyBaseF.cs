@@ -169,52 +169,15 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         entityCollider.enabled = false;
     }
 
-    public void FadeOut() { StartCoroutine(FadeOutAndDestroy()); }
 
-    private IEnumerator FadeOutAndDestroy()
+    public void FadeOutAndDestroy()
     {
-        SkinnedMeshRenderer skinnedRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        Material mat = new Material(skinnedRenderer.material); // Kopyasýný al
-        mat.SetFloat("_Mode", 3); // 3 = Transparent
-        mat.SetInt("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
-        mat.SetInt("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
-        mat.SetInt("_ZWrite", 0);
-        mat.DisableKeyword("_ALPHATEST_ON");
-        mat.EnableKeyword("_ALPHABLEND_ON");
-        mat.DisableKeyword("_ALPHAPREMULTIPLY_ON");
-        mat.renderQueue = 3000;
-
-        // Burasý materialýn alpha deðerini deðiþtirebilmek için bulduðumuz kodlar
-
-        skinnedRenderer.material = mat; // Yeni materyali atayalým
-        if (mat == null)
-        {
-            Debug.LogWarning("Material bulunamadý.");
-            yield break;
-        }
-        Debug.Log("DebugLog");
-        Color color = mat.color;
-
-        float duration = 3f;
-        float elapsed = 0f;
-
         // Collider ve Agent gibi bileþenleri kapat
         if (TryGetComponent<Collider>(out var col)) col.enabled = false;
         if (agent != null) agent.enabled = false;
 
-        while (elapsed < duration)
-        {
-            float alpha = Mathf.Lerp(1f, 0f, elapsed / duration);
-
-            // Sadece alpha deðerini deðiþtiriyoruz ama diðer renkleri mat.color'dan her seferinde çekiyoruz
-            color = mat.color; // Güncel rengi çek
-            color.a = alpha;   // Sadece alpha'yý deðiþtir
-            mat.color = color; // Deðiþikliði materyale uygula
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
         GameManagerF.Instance.Unregister(gameObject);
-        Destroy(gameObject, 6.5f);
+        Destroy(gameObject, 3f);
     }
 
     public bool IsEnemyExist()
@@ -258,10 +221,6 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         {
             target.TakeDamage(5);
         }
-       
-        
-            
-        
 
         Debug.Log("Enemy/Ally just Hit !");
     }

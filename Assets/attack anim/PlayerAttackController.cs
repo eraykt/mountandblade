@@ -53,7 +53,7 @@ public class PlayerAttackController : MonoBehaviour, IDamagable
     {
         // if (isAttacking) return;
 
-        if (isDead) return;
+        if (isDead || _animator.GetBool("IsVictory")) return;
         
         if (Input.GetMouseButton(0))
         {
