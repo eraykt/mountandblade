@@ -25,11 +25,14 @@ namespace MountAndBlade
         {
             if (!canAttack) return;
             canAttack = false;
+            Debug.Log("Trigger Enter");
             if (other.gameObject.TryGetComponent<IDamagable>(out var damagable))
             {
+                Debug.Log("IDamagable Enter");
+
                 EventManager.TriggerEvent(new EventManager.OnEnemyHit(swordDamage, damagable));
                 damagable.TakeDamage(swordDamage);
-                virtualCamera.GenerateImpulseWithForce(0.1f);
+                virtualCamera.GenerateImpulseWithForce(0.8f);
             }
             Debug.Log("sword attack is triggered by enter");
         }

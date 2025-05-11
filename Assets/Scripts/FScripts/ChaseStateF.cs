@@ -23,6 +23,7 @@ public class ChaseStateF : StateF
 
     public override void Exit(EnemyBaseF enemy)
     {
-        enemy.agent.isStopped = true;
+        
+
     }
 }

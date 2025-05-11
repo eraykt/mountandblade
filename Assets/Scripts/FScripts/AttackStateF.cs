@@ -1,9 +1,10 @@
-﻿using UnityEngine;
+﻿using MountAndBlade;
+using UnityEngine;
 
 [CreateAssetMenu(menuName = "Enemy States/Attack")]
 public class AttackStateF : StateF
 {
-    public float attackDamage = 10f; // Saldırı hasarı
+    public int attackDamage = 10; // Saldırı hasarı
 
     public override void Enter(EnemyBaseF enemy)
     {
@@ -19,7 +20,8 @@ public class AttackStateF : StateF
             // Düşmana saldırı yap
             if (enemy.AttackArea)
             {
-                enemy.targetTransform.GetComponent<EnemyBaseF>().Hurt(attackDamage);
+                enemy.targetTransform.GetComponent<IDamagable>().TakeDamage(attackDamage);
+                Debug.Log("Enemy Vurdu SERTTI");
             }
         }
     }

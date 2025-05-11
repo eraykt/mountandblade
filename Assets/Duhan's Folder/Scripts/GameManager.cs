@@ -40,10 +40,7 @@ namespace MountAndBlade
             GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             mainCamera.SetActive(true);
         }
-        private void Update()
-        {
-            Debug.Log($"Asker Sayisi : {currentAllyAmount} \nDüþman Sayisi : {engagedEnemyAmount}");
-        }
+ 
 
         public void getEnemyUnitAmount(float _enemyUnitAmount)
         {

@@ -8,7 +8,7 @@ using MountAndBlade;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
 
-public class PlayerAttackController : MonoBehaviour
+public class PlayerAttackController : MonoBehaviour, IDamagable
 {
     public CinemachineVirtualCamera virtualCamera;
     
@@ -32,6 +32,11 @@ public class PlayerAttackController : MonoBehaviour
     private Vector3 _shakeDirection = Vector3.right;
 
 
+    public int currentHealth;
+    public int MAX_HEALTH = 100;
+    public bool isDead = false;
+    public Transform deadCamTransform;
+
     private void Awake()
     {
         EventManager.RegisterEvent<EventManager.OnSwordChange>(OnSwordChange);
@@ -41,6 +46,7 @@ public class PlayerAttackController : MonoBehaviour
     void Start()
     {
         _animator = GetComponent<Animator>();
+        currentHealth = MAX_HEALTH;
     }
 
     void Update()
@@ -126,6 +132,33 @@ public class PlayerAttackController : MonoBehaviour
     private void OnSwordChange(EventManager.OnSwordChange obj)
     {
         swordController = obj.sword;
+    }
+
+    public void TakeDamage(int _takenDamage)
+    {
+        if (currentHealth >= _takenDamage)
+        {
+            currentHealth -= _takenDamage;
+
+            if (currentHealth <= 0)
+            {
+                Die();
+
+            }
+        }
+    }
+
+    public void Die()
+    {
+        if (isDead) return;
+        isDead = true;
+
+        _animator.SetBool("IsDead", true);
+
+        var camTransform = Camera.main.transform;
+        camTransform.DOMove(deadCamTransform.position, 1.5f).SetEase(Ease.InOutSine);
+        camTransform.DORotateQuaternion(deadCamTransform.rotation, 1.5f).SetEase(Ease.InOutSine);
+
     }
 }
 

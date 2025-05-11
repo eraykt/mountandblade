@@ -1,8 +1,9 @@
+using MountAndBlade;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyBaseF : MonoBehaviour
+public class EnemyBaseF : MonoBehaviour, IDamagable
 {
     public StateF currentState;
     public Animator animator;
@@ -65,9 +66,11 @@ public class EnemyBaseF : MonoBehaviour
         {
             Vector3 direction = (targetTransform.position - transform.position).normalized;
             direction.y = 0f; // sadece yatay düzlemde dönsün
-
-            Quaternion targetRotation = Quaternion.LookRotation(direction);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            if (!isDead)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(direction);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 5f);
+            }
         }
 
     }
@@ -82,17 +85,34 @@ public class EnemyBaseF : MonoBehaviour
     private void FindClosestEnemy()
     {
         GameObject[] enemies;
-        GameObject closestEnemy;
+        GameObject closestEnemy = null;
         string targetTag = gameObject.CompareTag("Enemy") ? "Allies" : "Enemy";
+
         float distance = Mathf.Infinity;
-        enemies = GameObject.FindGameObjectsWithTag(targetTag);
+
+        // Eðer kendi tag'ý "Enemy" ise, hem "Allies" hem "Player" taglýlarý al
+        if (gameObject.CompareTag("Enemy"))
+        {
+            GameObject[] allies = GameObject.FindGameObjectsWithTag("Allies");
+            GameObject[] players = GameObject.FindGameObjectsWithTag("Player");
+
+            enemies = new GameObject[allies.Length + players.Length];
+            allies.CopyTo(enemies, 0);
+            players.CopyTo(enemies, allies.Length);
+        }
+        else
+        {
+            enemies = GameObject.FindGameObjectsWithTag(targetTag);
+        }
+
         if (enemies.Length != 0)
         {
             foreach (var enemy in enemies)
             {
-                if (Vector3.Distance(gameObject.transform.position, enemy.transform.position) < distance)
+                float currentDistance = Vector3.Distance(transform.position, enemy.transform.position);
+                if (currentDistance < distance)
                 {
-                    distance = Vector3.Distance(gameObject.transform.position, enemy.transform.position);
+                    distance = currentDistance;
                     closestEnemy = enemy;
                     targetTransform = closestEnemy.transform;
                 }
@@ -103,6 +123,7 @@ public class EnemyBaseF : MonoBehaviour
             SwitchState(idleState);
         }
     }
+
 
     // Hasar alma metodu
     public void Hurt(float damage)
@@ -225,7 +246,7 @@ public class EnemyBaseF : MonoBehaviour
     {
         if (currentState == attackState)
         {
-            SwitchState(chaseState);
+            SwitchState(idleState);
             Debug.Log("OnAttackEnd Called");
         }
     }
@@ -236,6 +257,17 @@ public class EnemyBaseF : MonoBehaviour
         {
             Gizmos.color = Color.green;
             Gizmos.DrawWireSphere(targetTransform.position, distance);
+        }
+    }
+
+    public void TakeDamage(int _takenDamage)
+    {
+        health -= _takenDamage; // Saðlýk azaltma
+        Debug.Log($"Enemy took {_takenDamage} damage, remaining health: {health}");
+
+        if (health <= 0 && !isDead)
+        {
+            Die(); // Ölüm durumu
         }
     }
 }
