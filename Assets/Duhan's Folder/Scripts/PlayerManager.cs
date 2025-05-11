@@ -7,8 +7,8 @@ namespace MountAndBlade
 {
     public class PlayerManager : MonoBehaviour
     {
-        public float playerSoldierAmount; // Asker sayýsý
-        public TMP_Text playerSoldierAmountText; // UI Text referansý (TextMeshPro kullanýyorsanýz Text yerine TMP_Text)
+        public int playerSoldierAmount; // Asker sayï¿½sï¿½
+        public TMP_Text playerSoldierAmountText; // UI Text referansï¿½ (TextMeshPro kullanï¿½yorsanï¿½z Text yerine TMP_Text)
 
         private void Start()
         {

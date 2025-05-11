@@ -40,8 +40,8 @@ public class GameManagerF : MonoBehaviour
             enemyCount = GameManager.instance.GetEnemyCount();
         else Debug.Log($"Enemy Count �ekilirken : {GameManager.instance.GetEnemyCount()}");
 
-        if (GameManager.instance.GetAllyCount() != 0) 
-            allyCount = GameManager.instance.GetAllyCount();
+        if (InterSceneManager.Instance.playerData.troopCount != 0) 
+            allyCount = InterSceneManager.Instance.playerData.troopCount;
         else Debug.Log($"Ally Count �ekilirken : {GameManager.instance.GetAllyCount()}");
 
         SpawnEnemiesAndAllies();

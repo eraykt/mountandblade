@@ -8,7 +8,7 @@ using UnityEngine.AI;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController instance;
-    private PlayerManager playerManager;
+    public PlayerManager playerManager;
     
     public Camera cam;
 
@@ -29,6 +29,13 @@ public class PlayerController : MonoBehaviour
         defaultAgentSpeed = agent.speed;
         UptadeSpeedRelativeToUnitAmount();
         playerAnimator = GetComponentInChildren<Animator>();
+
+        if (InterSceneManager.Instance.hasPlayerData)
+        {
+            transform.position = InterSceneManager.Instance.playerData.playerPosition;
+            playerManager.playerSoldierAmount = InterSceneManager.Instance.playerData.troopCount;
+            playerManager.UpdateSoldierCountText();
+        }
     }
 
     private void Update()

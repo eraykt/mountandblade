@@ -11,6 +11,10 @@ namespace MountAndBlade
 
         public List<EnemyData> currentEnemies;
         public EnemyData currentEnemy;
+        
+        public PlayerData playerData;
+        public bool hasPlayerData;
+        
         private void Awake()
         {
             if (Instance == null)
@@ -48,6 +52,9 @@ namespace MountAndBlade
                 EnemyData enemyData = new EnemyData(e.askerSayisi, e.transform.position);
                 currentEnemies.Add(enemyData);
             }
+            
+            playerData = new PlayerData(PlayerController.instance.playerManager.playerSoldierAmount, PlayerController.instance.transform.position);
+            hasPlayerData = true;
         }
 
         [Serializable]
@@ -60,6 +67,19 @@ namespace MountAndBlade
             {
                 this.enemyCount = enemyCount;
                 this.enemyPosition = enemyPosition;
+            }
+        }
+
+        [Serializable]
+        public struct PlayerData
+        {
+            public int troopCount;
+            public Vector3 playerPosition;
+
+            public PlayerData(int troopCount, Vector3 playerPosition)
+            {
+                this.troopCount = troopCount;
+                this.playerPosition = playerPosition;
             }
         }
     }
