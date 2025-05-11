@@ -52,6 +52,8 @@ public class PlayerAttackController : MonoBehaviour, IDamagable
     void Update()
     {
         // if (isAttacking) return;
+
+        if (isDead) return;
         
         if (Input.GetMouseButton(0))
         {
