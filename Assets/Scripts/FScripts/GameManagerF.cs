@@ -13,7 +13,7 @@ public class GameManagerF : MonoBehaviour
     public GameObject allyPrefab;
     public GameObject playerPrefab;
 
-    // StateF SO'larý için referanslar
+    // StateF SO'larï¿½ iï¿½in referanslar
     private StateF attackStateSO;
     private StateF chaseStateSO;
     private StateF idleStateSO;
@@ -37,11 +37,11 @@ public class GameManagerF : MonoBehaviour
     {
         if (GameManager.instance.GetEnemyCount() != 0) 
             enemyCount = GameManager.instance.GetEnemyCount();
-        else Debug.Log($"Enemy Count Çekilirken : {GameManager.instance.GetEnemyCount()}");
+        else Debug.Log($"Enemy Count ï¿½ekilirken : {GameManager.instance.GetEnemyCount()}");
 
         if (GameManager.instance.GetAllyCount() != 0) 
             allyCount = GameManager.instance.GetAllyCount();
-        else Debug.Log($"Ally Count Çekilirken : {GameManager.instance.GetAllyCount()}");
+        else Debug.Log($"Ally Count ï¿½ekilirken : {GameManager.instance.GetAllyCount()}");
 
         SpawnEnemiesAndAllies();
     }
@@ -62,7 +62,7 @@ public class GameManagerF : MonoBehaviour
     {
         if (unit.CompareTag("Enemy"))
         {
-            enemies.Remove(unit); // Listeden siliyoruz ve liste 0 olursa Victory triggerlanýyor
+            enemies.Remove(unit); // Listeden siliyoruz ve liste 0 olursa Victory triggerlanï¿½yor
             if (enemies.Count == 0) TriggerVictory("Allies");
         }
         else if (unit.CompareTag("Allies"))
@@ -76,7 +76,7 @@ public class GameManagerF : MonoBehaviour
     {
         if (CanCheckLists)
         {
-            Debug.Log($"{winnerTag} kazandý!");
+            Debug.Log($"{winnerTag} kazandï¿½!");
 
             List<GameObject> winners = winnerTag == "Allies" ? allies : enemies;
 
@@ -92,22 +92,22 @@ public class GameManagerF : MonoBehaviour
 
     private void SpawnEnemiesAndAllies()
     {
-        // Eski düþman ve ally'leri sil
+        // Eski dï¿½ï¿½man ve ally'leri sil
         DestroyExistingUnits();
 
         if (enemyPrefab != null)
         {
-            // Düþmanlarý spawn et
+            // Dï¿½ï¿½manlarï¿½ spawn et
             for (int i = 0; i < enemyCount; i++)
             {
                 GameObject enemy = Instantiate(enemyPrefab, GetRandomPosition(), Quaternion.identity);
                 Register(enemy);
-                Debug.Log("Düþman " + i + " oluþturuldu");
-                // Düþman için StateF SO'larýný oluþtur ve ata
+                Debug.Log("Dï¿½ï¿½man " + i + " oluï¿½turuldu");
+                // Dï¿½ï¿½man iï¿½in StateF SO'larï¿½nï¿½ oluï¿½tur ve ata
                 CreateAndAssignStateSO(enemy);
             }
         }
-        else Debug.LogError("EnemyPrefab boþ");
+        else Debug.LogError("EnemyPrefab boï¿½");
 
         if (allyPrefab != null)
         {
@@ -116,13 +116,13 @@ public class GameManagerF : MonoBehaviour
             {
                 GameObject ally = Instantiate(allyPrefab, GetRandomPosition(), Quaternion.identity);
                 Register(ally);
-                Debug.Log("Ally " + i + " oluþturuldu");
+                Debug.Log("Ally " + i + " oluï¿½turuldu");
 
-                // Ally için StateF SO'larýný oluþtur ve ata
+                // Ally iï¿½in StateF SO'larï¿½nï¿½ oluï¿½tur ve ata
                 CreateAndAssignStateSO(ally);
             }
         }
-        else Debug.LogError("AllyPrefab boþ");
+        else Debug.LogError("AllyPrefab boï¿½");
 
         if (playerPrefab != null)
         {
@@ -134,7 +134,7 @@ public class GameManagerF : MonoBehaviour
         Debug.Log($"Spawned {enemyCount} enemies and {allyCount} allies.");
     }
 
-    // Sahnedeki eski düþman ve ally objelerini silmek
+    // Sahnedeki eski dï¿½ï¿½man ve ally objelerini silmek
     private void DestroyExistingUnits()
     {
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
@@ -150,7 +150,7 @@ public class GameManagerF : MonoBehaviour
         }
     }
 
-    // Düþman ve ally'ler rastgele bir pozisyonda spawn olsun
+    // Dï¿½ï¿½man ve ally'ler rastgele bir pozisyonda spawn olsun
     private Vector3 GetRandomPosition()
     {
         float x = Random.Range(-10f, 10f);
@@ -162,21 +162,21 @@ public class GameManagerF : MonoBehaviour
     {
         float x = Random.Range(-10f, 10f);
         float z = Random.Range(-10f, 10f);
-        return new Vector3(x, 3f, z);
+        return new Vector3(0, 3f, 0);
     }
 
 
 
-    // StateF SO'larýný oluþturur ve prefab'a atar
-    // Burada SO olarak oluþturlan Stateler enemylere referans olarak veriliyor otomatik olarak
+    // StateF SO'larï¿½nï¿½ oluï¿½turur ve prefab'a atar
+    // Burada SO olarak oluï¿½turlan Stateler enemylere referans olarak veriliyor otomatik olarak
     private void CreateAndAssignStateSO(GameObject unit)
     {
-        // Runtime sýrasýnda yeni StateF SO'larý oluþtur
+        // Runtime sï¿½rasï¿½nda yeni StateF SO'larï¿½ oluï¿½tur
         attackStateSO = ScriptableObject.CreateInstance<AttackStateF>();
         chaseStateSO = ScriptableObject.CreateInstance<ChaseStateF>();
         idleStateSO = ScriptableObject.CreateInstance<IdleStateF>();
 
-        // Prefab'a StateF SO'larýný atamak için
+        // Prefab'a StateF SO'larï¿½nï¿½ atamak iï¿½in
         EnemyBaseF enemyBase = unit.GetComponent<EnemyBaseF>();
         if (enemyBase != null)
         {
@@ -185,7 +185,7 @@ public class GameManagerF : MonoBehaviour
             enemyBase.idleState = idleStateSO;
         }
 
-        Debug.Log($"Runtime sýrasýnda {unit.name} için State SO'larý oluþturuldu ve atandý.");
+        Debug.Log($"Runtime sï¿½rasï¿½nda {unit.name} iï¿½in State SO'larï¿½ oluï¿½turuldu ve atandï¿½.");
     }
 
 }
