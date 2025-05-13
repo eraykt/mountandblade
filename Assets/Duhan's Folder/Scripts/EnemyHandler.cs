@@ -18,6 +18,8 @@ namespace MountAndBlade
         private Animator enemyAnim;
         private float currentSpeed;
 
+        private float trueSpeed;
+
         [SerializeField]private float SlowMultipler;
         
         public NavMeshAgent agent; // Karakterin NavMeshAgent'i
@@ -48,6 +50,7 @@ namespace MountAndBlade
             UpdateStrengthStatus();
             UpdateSoldierCountText();
             currentState = States.patrol;
+            GameManager.instance.ManageEntitySpeedAtPauses(agent, trueSpeed);
         }
 
         void Update()
@@ -157,6 +160,7 @@ namespace MountAndBlade
         {
             float SlowAmount = askerSayisi * SlowMultipler;
             agent.speed = defaultAgentSpeed / SlowAmount;
+            trueSpeed = agent.speed;
         }
         private IEnumerator GenerateRandomPosition()
         {

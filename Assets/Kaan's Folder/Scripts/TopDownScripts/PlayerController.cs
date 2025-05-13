@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     private float defaultAgentSpeed;
     [SerializeField]private float SlowMultipler;
 
+    private float trueSpeed;
     private Animator playerAnimator;
     private void Awake()
     {
@@ -29,6 +30,7 @@ public class PlayerController : MonoBehaviour
         defaultAgentSpeed = agent.speed;
         UptadeSpeedRelativeToUnitAmount();
         playerAnimator = GetComponentInChildren<Animator>();
+        
 
         if (InterSceneManager.Instance.hasPlayerData)
         {
@@ -49,12 +51,15 @@ public class PlayerController : MonoBehaviour
         }
 
         CastAgentDestinationRay();
+        GameManager.instance.ManageEntitySpeedAtPauses(agent,trueSpeed);
     }
 
     private void CastAgentDestinationRay() {
 
         if (Input.GetMouseButtonDown(0))
         {
+
+
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~0, QueryTriggerInteraction.Ignore))
@@ -71,6 +76,7 @@ public class PlayerController : MonoBehaviour
     {
         float SlowAmount = playerManager.playerSoldierAmount * SlowMultipler;
         agent.speed = defaultAgentSpeed / SlowAmount;
+        trueSpeed = agent.speed;
     }
     private void HandleAnimation()
     {

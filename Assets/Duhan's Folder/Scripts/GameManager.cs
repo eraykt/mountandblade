@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.Properties;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 namespace MountAndBlade
@@ -75,6 +76,23 @@ namespace MountAndBlade
             return engagedEnemyAmount;
         }
 
+        public void ManageEntitySpeedAtPauses(NavMeshAgent _agent,float _CurrentTrueSpeed)
+        {
 
+            if (isTimeActive)
+            {
+                _agent.speed = _CurrentTrueSpeed;
+            }
+            else {
+                _agent.speed = 0f;
+            }
+
+        }
+        public void getTimeInfo(bool _isTimeActive)
+        {
+            isTimeActive =_isTimeActive;
+        }
+
+        private static bool isTimeActive;
     }
 }

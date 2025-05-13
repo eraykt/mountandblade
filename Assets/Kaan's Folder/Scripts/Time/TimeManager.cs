@@ -62,11 +62,18 @@ public class TimeManager : MonoBehaviour
                 bool isSpacePressed = Input.GetKey(KeyCode.Space);
                 bool isAgentMoving = playerAgent.velocity.sqrMagnitude > 0.1f;
 
-                isTimeActive = isSpacePressed || isAgentMoving;
+                bool isAgentHasDestination = playerAgent.destination != null;
+
+                
+               // isTimeActive = isSpacePressed || isAgentMoving;
+                isTimeActive = isSpacePressed || isAgentHasDestination;
                 pauseText.text = isTimeActive ? " " : "PAUSED";
+
+                
             }
         }
     }
+    
     private void TimeHandler()
     {
         if (isTimeActive)
