@@ -7,6 +7,7 @@ using DG.Tweening;
 using MountAndBlade;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using System.Collections;
 
 public class PlayerAttackController : MonoBehaviour, IDamagable
 {
@@ -157,11 +158,23 @@ public class PlayerAttackController : MonoBehaviour, IDamagable
 
         _animator.SetBool("IsDead", true);
 
+        StartCoroutine(PlayerDestroyer());
+
         GameManagerF.Instance.Unregister(gameObject);
 
         // Cinemachine Virtual Camera'yı deadCamTransform'a taşımak
         virtualCamera.transform.DOMove(deadCamTransform.position, 1.5f).SetEase(Ease.InOutSine);
         virtualCamera.transform.DORotateQuaternion(deadCamTransform.rotation, 1.5f).SetEase(Ease.InOutSine);
+    }
+
+    private IEnumerator PlayerDestroyer()
+    {
+
+        yield return new WaitForSeconds(3);
+        Destroy(gameObject);
+        GameManagerF.Instance.EnemiesWin();
+
+
     }
 }
 

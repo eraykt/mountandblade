@@ -9,6 +9,7 @@ TagManager:
   - Enemy
   - DragVisual
   - Unclickable
+  - Allies
   layers:
   - Default
   - TransparentFX

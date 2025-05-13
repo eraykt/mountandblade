@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using MountAndBlade;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class InventoryManager : MonoBehaviour
@@ -28,16 +30,31 @@ public class InventoryManager : MonoBehaviour
     private List<InventorySlot> inventorySlots = new List<InventorySlot>();
     private List<InventorySlot> discardSlots = new List<InventorySlot>();
     private Dictionary<SlotType, InventorySlot> characterSlots = new Dictionary<SlotType, InventorySlot>();
+    
+    private void OnEnable()
+    {
+        if (InterSceneManager.Instance != null && InterSceneManager.Instance.hasInventoryData)
+        {
+            LoadInventoryData(InterSceneManager.Instance.inventoryData);
+        }
+    }
+
+    private void OnDisable()
+    {
+        if (InterSceneManager.Instance != null)
+        {
+            InterSceneManager.Instance.SaveInventory(GetInventoryData());
+        }
+    }
+    
     private void Start() 
     {
         charCoinText.text = charCoin.ToString();
-        /*if (inventoryCanvas != null)
-        {
-            inventoryCanvas.SetActive(false);
-        }*/
+
         PopulateInventory();
         AddDiscardSlots();
-        
+        AssignCharSlots();
+    
         if (SellButton != null)
         {
             SellButton.onClick.AddListener(OnSellButtonClick);
@@ -47,7 +64,15 @@ public class InventoryManager : MonoBehaviour
             Debug.LogError("SellButton is not assigned!");
         }
 
-        AssignCharSlots();
+        //kayıtlı veri varsa yükle
+        if (InterSceneManager.Instance != null && InterSceneManager.Instance.hasInventoryData)
+        {
+            LoadInventoryData(InterSceneManager.Instance.inventoryData);
+        }
+        else
+        {
+            PopulateInitialItems();
+        }
     }
     
     void Update()
@@ -77,12 +102,127 @@ public class InventoryManager : MonoBehaviour
                     {
                         slot.ResetAllItemsVisual();
                     }
-                    
+                    if (InterSceneManager.Instance != null)
+                    {
+                        foreach (InventorySlot slot in discardSlots)
+                        {
+                            if (slot.IsOccupied)
+                            {
+                                slot.ClearSlot();
+                            }
+                        }
+                        
+                        InterSceneManager.Instance.SaveInventory(GetInventoryData());
+                    }
                 }
             }
             else
             {
                 Debug.LogWarning("Inventory canvas is not assigned!");
+            }
+        }
+    }
+    
+
+    private void PopulateInitialItems()
+    {
+        // Sadece ilk açılışta itemleri yükle
+        for (int i = 0; i < items.Count && i < inventorySlots.Count; i++)
+        {
+            inventorySlots[i].SetSlot(items[i]);
+        }
+    }
+    
+    public InterSceneManager.InventoryData GetInventoryData()
+    {
+        InterSceneManager.InventoryData data = new InterSceneManager.InventoryData
+        {
+            slots = new List<InterSceneManager.InventorySlotData>(),
+            coinAmount = charCoin
+        };
+        
+        for (int i = 0; i < inventorySlots.Count; i++)
+        {
+            if (inventorySlots[i].IsOccupied)
+            {
+                data.slots.Add(new InterSceneManager.InventorySlotData
+                {
+                    itemName = inventorySlots[i].currentItem.Itemname,
+                    SlotType = SlotType.Inventory,
+                    slotIndex = i
+                });
+            }
+        }
+        
+        for (int i = 0; i < discardSlots.Count; i++)
+        {
+            if (discardSlots[i].IsOccupied)
+            {
+                data.slots.Add(new InterSceneManager.InventorySlotData
+                {
+                    itemName = discardSlots[i].currentItem.Itemname,
+                    SlotType = SlotType.Discard,
+                    slotIndex = i
+                });
+            }
+        }
+        
+        foreach (var kvp in characterSlots)
+        {
+            if (kvp.Value.IsOccupied)
+            {
+                data.slots.Add(new InterSceneManager.InventorySlotData
+                {
+                    itemName = kvp.Value.currentItem.Itemname,
+                    SlotType = kvp.Key,
+                    slotIndex = -1
+                });
+            }
+        }
+
+        return data;
+    }
+    
+    public void LoadInventoryData(InterSceneManager.InventoryData data)
+    {
+        charCoin = data.coinAmount;
+        charCoinText.text = charCoin.ToString();
+        
+        foreach (var slot in inventorySlots)
+        {
+            slot.ClearSlot();
+        }
+        foreach (var slot in discardSlots)
+        {
+            slot.ClearSlot();
+        }
+        foreach (var slot in characterSlots.Values)
+        {
+            slot.ClearSlot();
+        }
+        
+        foreach (var slotData in data.slots)
+        {
+            Item itemToPlace = items.Find(i => i.Itemname == slotData.itemName);
+            if (itemToPlace == null) continue;
+            
+            if (slotData.SlotType == SlotType.Inventory)
+            {
+                if (slotData.slotIndex < inventorySlots.Count)
+                {
+                    inventorySlots[slotData.slotIndex].SetSlot(itemToPlace);
+                }
+            }
+            else if (slotData.SlotType == SlotType.Discard)
+            {
+                if (slotData.slotIndex < discardSlots.Count)
+                {
+                    discardSlots[slotData.slotIndex].SetSlot(itemToPlace);
+                }
+            }
+            else if (characterSlots.ContainsKey(slotData.SlotType))
+            {
+                characterSlots[slotData.SlotType].SetSlot(itemToPlace);
             }
         }
     }
@@ -168,7 +308,6 @@ public class InventoryManager : MonoBehaviour
                 int itemValue = slot.currentItem.salePrice;
                 totalEarned += itemValue;
                 
-                //Debug.Log($"Item {slot.currentItem.name} sold for {itemValue} price.");
                 slot.ClearSlot();
                 soldItems.Add(slot);
             }
@@ -177,7 +316,6 @@ public class InventoryManager : MonoBehaviour
         if (totalEarned > 0)
         {
             charCoin += totalEarned;
-            //Debug.Log($"Total earned: {totalEarned} coins. Player now has {charCoin} coins.");
 
             if (charCoinText != null)
             {

@@ -15,6 +15,12 @@ namespace MountAndBlade
             UpdateSoldierCountText();
             GameManager.instance.getAllyUnitAmount(playerSoldierAmount);
         }
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.H))
+                AddSoldier(1);
+        }
         public void UpdateSoldierCountText()
         {
             if (playerSoldierAmountText != null)
