@@ -16,6 +16,8 @@ namespace MountAndBlade
         public PlayerData playerData;
         public bool hasPlayerData;
         
+        public InventoryData inventoryData;
+        public bool hasInventoryData;
         private void Awake()
         {
             if (Instance == null)
@@ -58,6 +60,13 @@ namespace MountAndBlade
             hasPlayerData = true;
         }
 
+        public void SaveInventory(InventoryData data)
+        {
+            inventoryData = data;
+            hasInventoryData = true;
+            Debug.Log("Inventory saved with " +data.slots.Count + " items and " +data.coinAmount + " coins. ");
+        }
+
         public void DeleteCurrentEnemy(int id)
         {
             for (var i = 0; i < currentEnemies.Count; i++)
@@ -70,7 +79,7 @@ namespace MountAndBlade
                 }
             }
         }
-
+        
         [Serializable]
         public struct EnemyData
         {
@@ -97,6 +106,21 @@ namespace MountAndBlade
                 this.troopCount = troopCount;
                 this.playerPosition = playerPosition;
             }
+        }
+
+        [Serializable]
+        public struct InventorySlotData
+        {
+            public string itemName;
+            public SlotType SlotType;
+            public int slotIndex;
+        }
+
+        [Serializable]
+        public struct InventoryData
+        {
+            public List<InventorySlotData> slots;
+            public int coinAmount;
         }
     }
 }

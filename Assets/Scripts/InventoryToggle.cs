@@ -9,7 +9,7 @@ namespace MountAndBlade
     {
         private bool isInventoryOpen = false;
         private string inventorySceneName = "Inventory";
-        private string gameSceneName = "MapScene";
+        //private string gameSceneName = "MapScene";
         public GameObject mainCam;
         
         void Update()
