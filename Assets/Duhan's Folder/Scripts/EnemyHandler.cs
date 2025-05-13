@@ -50,7 +50,7 @@ namespace MountAndBlade
             UpdateStrengthStatus();
             UpdateSoldierCountText();
             currentState = States.patrol;
-            GameManager.instance.ManageEntitySpeedAtPauses(agent, trueSpeed);
+            //GameManager.instance.ManageEntitySpeedAtPauses(agent, trueSpeed);
         }
 
         void Update()

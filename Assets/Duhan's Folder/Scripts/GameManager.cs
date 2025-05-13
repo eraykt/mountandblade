@@ -76,18 +76,18 @@ namespace MountAndBlade
             return engagedEnemyAmount;
         }
 
-        public void ManageEntitySpeedAtPauses(NavMeshAgent _agent,float _CurrentTrueSpeed)
-        {
+        //public void ManageEntitySpeedAtPauses(NavMeshAgent _agent,float _CurrentTrueSpeed)
+        //{
 
-            if (isTimeActive)
-            {
-                _agent.speed = _CurrentTrueSpeed;
-            }
-            else {
-                _agent.speed = 0f;
-            }
+        //    if (isTimeActive)
+        //    {
+        //        _agent.speed = _CurrentTrueSpeed;
+        //    }
+        //    else {
+        //        _agent.isStopped = true;
+        //    }
 
-        }
+        //}
         public void getTimeInfo(bool _isTimeActive)
         {
             isTimeActive =_isTimeActive;

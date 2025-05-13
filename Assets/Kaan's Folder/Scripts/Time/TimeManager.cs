@@ -1,4 +1,5 @@
-﻿using Oms;
+﻿using MountAndBlade;
+using Oms;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -14,7 +15,8 @@ public class TimeManager : MonoBehaviour
     public static Action OnDayChange;
     public static Action OnMinuteChange; // DK de�i�ti�inde triggerlan�yor
     public static Action OnHourChange;   // SAAT de�i�ti�inde triggerlan�yor
-
+    public PlayerController PlayerController;
+   
 
     public static int Minute { get; private set; }
     public static int Hour { get; private set; }
@@ -36,13 +38,18 @@ public class TimeManager : MonoBehaviour
     public TextMeshProUGUI pauseText;
     private NavMeshAgent playerAgent;
 
+    public float checkDelay;
+    public float speedTreshold;
 
+    private bool isPaused;
+    private Coroutine checkCoroutine;
 
     private void Awake() => TimeModifer();
     void Start()
     {
         LoadTime();
         playerAgent = Player.GetComponent<NavMeshAgent>();
+        PlayerController = Player.GetComponent<PlayerController>();
         timer = minuteToRealTime;
     }
 
@@ -51,8 +58,55 @@ public class TimeManager : MonoBehaviour
         InGameTime();
         TimeSpeedHandler();
         if(isTimeActive) TimeHandler();
+
+        if (isPaused)
+        {
+            if (PlayerController.thereIsPath)
+            {
+                ResumeGame();
+
+
+                if (checkCoroutine != null)
+                    StopCoroutine(checkCoroutine);
+
+                checkCoroutine = StartCoroutine(CheckVelocityAfterDelay());
+            }
+        }
+        else {
+
+            if (playerAgent.velocity.magnitude <= speedTreshold)
+            {
+
+                PauseGame();
+            }
+        
+        }
+
     }
    
+    IEnumerator CheckVelocityAfterDelay()
+    {
+        yield return new WaitForSeconds(checkDelay);
+
+        if (playerAgent.velocity.magnitude <= speedTreshold)
+        {
+            PauseGame();
+        }
+    }
+
+    void PauseGame()
+    {
+        isPaused = true;
+        Time.timeScale = 0f;
+        Debug.Log("Game Paused");
+    }
+
+    void ResumeGame()
+    {
+        isPaused = false;
+        Time.timeScale = 1f;
+        Debug.Log("Game Resumed");
+    }
     private void InGameTime()
     {
         if(Player != null)
@@ -60,13 +114,12 @@ public class TimeManager : MonoBehaviour
             if(playerAgent != null)
             {
                 bool isSpacePressed = Input.GetKey(KeyCode.Space);
-                bool isAgentMoving = playerAgent.velocity.sqrMagnitude > 0.1f;
+                bool isAgentMoving = playerAgent.velocity.sqrMagnitude > 0.05f;
 
-                bool isAgentHasDestination = playerAgent.destination != null;
 
-                
-               // isTimeActive = isSpacePressed || isAgentMoving;
-                isTimeActive = isSpacePressed || isAgentHasDestination;
+
+               //isTimeActive = isSpacePressed || isAgentMoving;
+                isTimeActive = isSpacePressed || !isPaused;
                 pauseText.text = isTimeActive ? " " : "PAUSED";
 
                 

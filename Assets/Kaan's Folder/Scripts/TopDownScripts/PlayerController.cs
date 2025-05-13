@@ -19,6 +19,8 @@ public class PlayerController : MonoBehaviour
 
     private float trueSpeed;
     private Animator playerAnimator;
+
+    public bool thereIsPath;
     private void Awake()
     {
         instance = this;
@@ -51,15 +53,14 @@ public class PlayerController : MonoBehaviour
         }
 
         CastAgentDestinationRay();
-        GameManager.instance.ManageEntitySpeedAtPauses(agent,trueSpeed);
+        //GameManager.instance.ManageEntitySpeedAtPauses(agent,trueSpeed);
     }
 
     private void CastAgentDestinationRay() {
 
+        thereIsPath = false;
         if (Input.GetMouseButtonDown(0))
         {
-
-
             Ray ray = cam.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, Mathf.Infinity, ~0, QueryTriggerInteraction.Ignore))
@@ -68,7 +69,7 @@ public class PlayerController : MonoBehaviour
                     return;
 
                 agent.SetDestination(hit.point);
-
+                thereIsPath=true;
             }
         }
     }
