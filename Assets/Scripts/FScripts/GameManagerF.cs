@@ -2,6 +2,7 @@ using JetBrains.Annotations;
 using MountAndBlade;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -27,7 +28,9 @@ public class GameManagerF : MonoBehaviour
     private bool CanCheckLists = false;
 
 
-    public GameObject WonPanel;
+    public GameObject AlliesWonPanel;
+    public GameObject EnemiesWonPanel;
+    public GameObject EndGameInfo;
 
 
     private void Awake()
@@ -78,6 +81,7 @@ public class GameManagerF : MonoBehaviour
             allies.Remove(unit);
             if (allies.Count == 0) TriggerVictory("Enemy");
         }
+        Debug.Log($"Unregistered : {unit.name}");
     }
 
     private void TriggerVictory(string winnerTag)
@@ -111,7 +115,26 @@ public class GameManagerF : MonoBehaviour
         
         yield return new WaitForSeconds(3);
 
-        WonPanel.SetActive(true);
+        AlliesWonPanel.SetActive(true);
+    }
+
+    public void EnemiesWin()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Debug.Log("Enemiler Kazandı Kardeşim");
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
+
+        foreach (var enemy in enemies)
+        {
+            EnemyBaseF enemyScript = enemy.GetComponent<EnemyBaseF>();
+            enemyScript.animator.SetBool("IsVictory", true);
+        }
+
+
+    
+
+        EndGameInfo.SetActive(true);
+        EnemiesWonPanel.SetActive(true);
     }
 
     private void SpawnEnemiesAndAllies()
