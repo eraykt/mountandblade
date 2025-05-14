@@ -15,7 +15,10 @@ namespace MountAndBlade
 
         [Header("Village Info")]
         public string villageName;
-        public int baseVolunteerAmount = 5;
+        public int baseVolunteerAmount;
+        public int recquiredUnitToEnterAmount = 5;
+
+        private TextMeshProUGUI villageRequirmentText;
 
         [Header("Text Fields")]
         public TextMeshProUGUI villageNameText;
@@ -39,7 +42,11 @@ namespace MountAndBlade
 
         void Start()
         {
+            
             originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
+            villageRequirmentText = GetComponentInChildren<TextMeshProUGUI>();
+            villageRequirmentText.text = recquiredUnitToEnterAmount.ToString();
+
         }
 
         void Update()
@@ -83,6 +90,7 @@ namespace MountAndBlade
             PlayerController.instance.SetCanMove(true);
             villageUICanvas.SetActive(false);
             Time.timeScale = 1f;
+            gatherVolunteerButton.onClick.RemoveAllListeners();
         }
         
         private void HandleButtonInteraction()
