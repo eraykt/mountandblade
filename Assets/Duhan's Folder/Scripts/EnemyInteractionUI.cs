@@ -56,7 +56,6 @@ namespace MountAndBlade
 
             if (isInterractable && CameraRay.instance.isItEnemy)
             {
-                Debug.Log("�zerine bas�larak a��ld�");
                 GameManager.instance.getEnemyUnitAmount(this.GetComponent<EnemyHandler>().askerSayisi);
                 OpenInterractionUI();
             }
