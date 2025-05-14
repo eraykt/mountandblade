@@ -34,6 +34,7 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
     #endregion
 
     public VisualEffect bloodVFX;
+    public SoldierSwordController soldierSwordController;
 
     void Start()
     {
@@ -128,6 +129,8 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         }
     }
 
+
+
     // Ölüm metodu
     public void Die()
     {
@@ -199,18 +202,11 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
             SwitchState(idleState);
             Debug.Log("OnAttackEnd Called");
         }
+        soldierSwordController = GetComponentInChildren<SoldierSwordController>();
+        SoldierSwordController.Instance.ResetAttack();
+
     }
 
-    public void AnimationHit()
-    {
-        IDamagable target = targetTransform.GetComponent<IDamagable>();
-        if (target != null)
-        {
-            target.TakeDamage(5);
-        }
-
-        Debug.Log("Enemy/Ally just Hit !");
-    }
 
     private void OnDrawGizmos()
     {
@@ -221,7 +217,7 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         }
     }
 
-    public void TakeDamage(int _takenDamage, Vector3 hitPoint = gameObject.transform.position)
+    public void TakeDamage(int _takenDamage)
     {
         health -= _takenDamage; // Saðlýk azaltma
         Debug.Log($"TakeDamage");

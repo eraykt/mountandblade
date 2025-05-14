@@ -25061,8 +25061,8 @@ GameObject:
   - component: {fileID: 3033163274055632366}
   - component: {fileID: 3058627107436630666}
   - component: {fileID: 3050636034584984234}
-  - component: {fileID: 2213602853839154477}
   - component: {fileID: 6568991846610846753}
+  - component: {fileID: 739947497817826138}
   - component: {fileID: 1272620120033865884}
   - component: {fileID: 4244486280274818809}
   m_Layer: 0
@@ -25137,21 +25137,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &2213602853839154477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3026993602712746936}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 582c9e0d944bc6d4ebb4b3ceee262eee, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  canAttack: 0
-  virtualCamera: {fileID: 4244486280274818809}
-  swordDamage: 20
 --- !u!65 &6568991846610846753
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -25173,6 +25158,21 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.021403056, y: 0.89945763, z: 0.07827915}
   m_Center: {x: 0.00057842105, y: 0.57098204, z: 0.0026937476}
+--- !u!114 &739947497817826138
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3026993602712746936}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 582c9e0d944bc6d4ebb4b3ceee262eee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  canAttack: 0
+  virtualCamera: {fileID: 4244486280274818809}
+  swordDamage: 10
 --- !u!54 &1272620120033865884
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -30544,8 +30544,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3895692815970895084}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.19999981, y: 0.44500005, z: -4}
+  m_LocalRotation: {x: 0.083304815, y: 0.00000003534857, z: -0.0000000029549772, w: 0.99652416}
+  m_LocalPosition: {x: 121.63565, y: 20.19, z: -91.62494}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -30582,9 +30582,9 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.2
+  near clip plane: 0.1
   far clip plane: 500
-  field of view: 40
+  field of view: 60
   orthographic: 0
   orthographic size: 10
   m_Depth: -1
@@ -46611,7 +46611,7 @@ MonoBehaviour:
     _indicator: {fileID: 1676455035619501631}
     _shakeDirection: {x: 0, y: 0, z: 1}
   _threshold: 5
-  swordController: {fileID: 2213602853839154477}
+  swordController: {fileID: 0}
   isAttacking: 0
   attackingTimer: 0.5
   currentHealth: 0
@@ -49939,7 +49939,7 @@ Transform:
   m_GameObject: {fileID: 6114475243309215135}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0.19999981, y: 0.44500005, z: -4}
+  m_LocalPosition: {x: 0.20000029, y: 0.44500002, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
