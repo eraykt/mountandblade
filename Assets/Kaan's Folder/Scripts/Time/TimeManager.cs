@@ -114,7 +114,7 @@ public class TimeManager : MonoBehaviour
             if(playerAgent != null)
             {
                 bool isSpacePressed = Input.GetKey(KeyCode.Space);
-                //bool isAgentMoving = playerAgent.velocity.sqrMagnitude > 0.05f;
+                bool isAgentMoving = playerAgent.velocity.sqrMagnitude > 0.05f;
 
 
 

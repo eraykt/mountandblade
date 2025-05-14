@@ -88,11 +88,11 @@ namespace MountAndBlade
         //    }
 
         //}
-        //public void getTimeInfo(bool _isTimeActive)
-        //{
-        //    isTimeActive = _isTimeActive;
-        //}
+        public void getTimeInfo(bool _isTimeActive)
+        {
+            isTimeActive =_isTimeActive;
+        }
 
-        //private static bool isTimeActive;
+        private static bool isTimeActive;
     }
 }
