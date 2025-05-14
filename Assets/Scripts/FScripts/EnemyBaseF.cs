@@ -2,6 +2,7 @@ using MountAndBlade;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VFX;
 
 public class EnemyBaseF : MonoBehaviour, IDamagable
 {
@@ -32,6 +33,8 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
     public StateF dieState;
     #endregion
 
+    public VisualEffect bloodVFX;
+
     void Start()
     {
         if (animator == null) animator = GetComponent<Animator>();
@@ -39,6 +42,7 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         if (player == null) player = GameObject.FindGameObjectWithTag("Player")?.transform;
         if (rigidBody == null) rigidBody = GetComponent<Rigidbody>();
         if (entityCollider == null) entityCollider = GetComponent<Collider>();
+        if (bloodVFX == null) bloodVFX = GetComponentInChildren<VisualEffect>();
         currentState = idleState;
         currentState?.Enter(this);
         randomAttackTimer = Random.Range(0f, 6f);
@@ -121,23 +125,6 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         else
         {
             SwitchState(idleState);
-        }
-    }
-
-
-    // Hasar alma metodu
-    public void Hurt(float damage)
-    {
-        if (canAttack) // Eðer cooldown dolmuþsa hasar al
-        {
-            health -= damage; // Saðlýk azaltma
-            canAttack = false; // Bir sonraki hasar için cooldown baþlat
-            Debug.Log($"Enemy took {damage} damage, remaining health: {health}");
-
-            if (health <= 0 && !isDead)
-            {
-                Die(); // Ölüm durumu
-            }
         }
     }
 
@@ -234,10 +221,10 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         }
     }
 
-    public void TakeDamage(int _takenDamage)
+    public void TakeDamage(int _takenDamage, Vector3 hitPoint = gameObject.transform.position)
     {
         health -= _takenDamage; // Saðlýk azaltma
-        Debug.Log($"Enemy took {_takenDamage} damage, remaining health: {health}");
+        Debug.Log($"TakeDamage");
 
         if (health <= 0 && !isDead)
         {
