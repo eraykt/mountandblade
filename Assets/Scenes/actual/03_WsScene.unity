@@ -3222,7 +3222,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1849997368}
         m_TargetAssemblyTypeName: GameManagerF, Assembly-CSharp
-        m_MethodName: GoBackMapScene
+        m_MethodName: LostGame
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

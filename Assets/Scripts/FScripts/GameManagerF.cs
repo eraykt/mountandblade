@@ -237,6 +237,9 @@ public class GameManagerF : MonoBehaviour
 
     public void GoBackMapScene()
     {
-        SceneManager.LoadScene("MapScene 1");
+        SceneManager.LoadScene("02_MapScene");
     }
+
+    public void LostGame() => SceneManager.LoadScene("00_Credits");
+    
 }
