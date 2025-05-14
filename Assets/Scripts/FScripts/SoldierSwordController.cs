@@ -2,12 +2,18 @@ using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace MountAndBlade
 {
     public class SoldierSwordController : MonoBehaviour
     {
         public static SoldierSwordController Instance;
+
+        //public Transform selfVFXPoint; // Karakterin kendi üstündeki efekt noktasý
+        //public VisualEffect selfHitVFX; // Çalýþtýrýlacak efekt
+
+
         public bool canAttack;
 
         public int swordDamage = 10;
@@ -41,6 +47,13 @@ namespace MountAndBlade
             {
                 Debug.Log("IDamagable hit");
 
+                //if (selfHitVFX != null && selfVFXPoint != null)
+                //{
+                //    VisualEffect effect = Instantiate(selfHitVFX, selfVFXPoint.position, selfVFXPoint.rotation);
+                //    effect.Play();
+                //    Destroy(effect.gameObject, 2f); // sahneden sil
+                //}
+
                 EventManager.TriggerEvent(new EventManager.OnEnemyHit(swordDamage, damagable));
                 damagable.TakeDamage(swordDamage);
 
@@ -53,7 +66,5 @@ namespace MountAndBlade
             canAttack = true;
             Debug.Log("Reset Attack");
         }
-
-
     }
 }

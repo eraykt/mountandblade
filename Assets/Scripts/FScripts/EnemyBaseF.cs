@@ -33,8 +33,8 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
     public StateF dieState;
     #endregion
 
-    public VisualEffect bloodVFX;
     public SoldierSwordController soldierSwordController;
+    public ParticleSystem bloodVFX;
 
     void Start()
     {
@@ -43,7 +43,7 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         if (player == null) player = GameObject.FindGameObjectWithTag("Player")?.transform;
         if (rigidBody == null) rigidBody = GetComponent<Rigidbody>();
         if (entityCollider == null) entityCollider = GetComponent<Collider>();
-        if (bloodVFX == null) bloodVFX = GetComponentInChildren<VisualEffect>();
+        if (bloodVFX == null) bloodVFX = GetComponentInChildren<ParticleSystem>();
         currentState = idleState;
         currentState?.Enter(this);
         randomAttackTimer = Random.Range(0f, 6f);
