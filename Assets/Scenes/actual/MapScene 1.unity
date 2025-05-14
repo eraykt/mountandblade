@@ -3856,6 +3856,10 @@ MonoBehaviour:
     troopCount: 0
     playerPosition: {x: 0, y: 0, z: 0}
   hasPlayerData: 0
+  inventoryData:
+    slots: []
+    coinAmount: 0
+  hasInventoryData: 0
 --- !u!4 &941163049
 Transform:
   m_ObjectHideFlags: 0
@@ -5065,7 +5069,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195802538}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16018224, y: 0.00000003288976, z: -0.000000005337273, w: 0.9870875}
+  m_LocalRotation: {x: 0.16018225, y: -2.8159822e-15, z: 4.9986194e-16, w: 0.9870875}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5144,7 +5148,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206534157}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.26206926, y: -0.000000016605004, z: 0.000000004509264, w: 0.9650491}
+  m_LocalRotation: {x: 0.26206926, y: 0.000000016605004, z: -0.000000004509264, w: 0.9650491}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6401,7 +6405,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1481494661}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.08330483, y: -0.00000001767428, z: 0.0000000014774884, w: 0.99652416}
+  m_LocalRotation: {x: 0.08330483, y: 0.000000017674287, z: -0.0000000014774889, w: 0.99652416}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7072,7 +7076,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1594801652}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.083304815, y: -0.000000035348567, z: 0.000000002954977, w: 0.99652416}
+  m_LocalRotation: {x: 0.083304815, y: 0.00000003534857, z: -0.0000000029549772, w: 0.99652416}
   m_LocalPosition: {x: 127.6, y: 20.470001, z: -89.491455}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -9673,10 +9677,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96dbf4bbac38af647a9ea5f9f5066b73, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerController: {fileID: 0}
   desiredTimeScale: 3
   minuteToRealTime: 0.5
   Player: {fileID: 66589879}
   pauseText: {fileID: 1667809840}
+  checkDelay: 0
+  speedTreshold: 0
 --- !u!4 &2147390603
 Transform:
   m_ObjectHideFlags: 0
