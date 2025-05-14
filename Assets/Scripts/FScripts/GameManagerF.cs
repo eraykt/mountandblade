@@ -116,6 +116,8 @@ public class GameManagerF : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         AlliesWonPanel.SetActive(true);
+
+        GameManager.extraUnitAmount++;
     }
 
     public void EnemiesWin()
@@ -130,6 +132,7 @@ public class GameManagerF : MonoBehaviour
             enemyScript.animator.SetBool("IsVictory", true);
         }
 
+        GameManager.extraUnitAmount--;
 
     
 
@@ -237,6 +240,6 @@ public class GameManagerF : MonoBehaviour
 
     public void GoBackMapScene()
     {
-        SceneManager.LoadScene("MapScene 1");
+        SceneManager.LoadScene("MapScene2");
     }
 }

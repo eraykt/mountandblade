@@ -731,7 +731,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 008555bb420e2484cb3e8524ace5719e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 66589887}
   villageName: "Tuz K\xF6y\xFC"
+  baseVolunteerAmount: 5
   villageNameText: {fileID: 1035799769}
   recruitableInfoText: {fileID: 761592054}
   villageUICanvas: {fileID: 1593411887}
@@ -2138,7 +2140,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 400875133}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.28978413, y: 0.00000001646809, z: -0.000000004986136, w: 0.95709205}
+  m_LocalRotation: {x: 0.28978413, y: -0.000000016468093, z: 0.0000000049861373, w: 0.95709205}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -6275,7 +6277,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206534157}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.26206926, y: 0.000000016605004, z: -0.000000004509264, w: 0.9650491}
+  m_LocalRotation: {x: 0.26206926, y: -0.000000016605004, z: 0.000000004509264, w: 0.9650491}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7978,7 +7980,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1560789614}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.031233849, y: 0.93002784, z: -0.35700428, w: 0.081366986}
+  m_LocalRotation: {x: 0.031061664, y: 0.9249009, z: -0.3550362, w: 0.13244961}
   m_LocalPosition: {x: 126.9, y: 61, z: 3.4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15766,7 +15768,6 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents:
-    - {fileID: 1592537705089901353, guid: 9074b9e65da5f344284ac15654e7a7ce, type: 3}
     - {fileID: 1856527074886877122, guid: 9074b9e65da5f344284ac15654e7a7ce, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

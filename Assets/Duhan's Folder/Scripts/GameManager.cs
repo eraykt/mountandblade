@@ -36,13 +36,17 @@ namespace MountAndBlade
         private float currentAllyAmount;
         private float engagedEnemyAmount;
 
+        public static int extraUnitAmount;
         private void Start()
         {
             GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             mainCamera.SetActive(true);
         }
  
-
+        public int GetExtraUnitAmountCanBeAdded()//playerin asker sayısını kontrol etmek için kullancıaz.
+        {
+            return extraUnitAmount; 
+        }
         public void getEnemyUnitAmount(float _enemyUnitAmount)
         {
             engagedEnemyAmount = _enemyUnitAmount;

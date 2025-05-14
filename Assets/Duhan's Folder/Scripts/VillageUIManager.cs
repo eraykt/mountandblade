@@ -10,9 +10,12 @@ namespace MountAndBlade
     public class VillageUIManager : MonoBehaviour
     {
 
+        public PlayerManager playerManager;
+
+
         [Header("Village Info")]
         public string villageName;
-        public static float currentRecruitableSoldierAmount = 5;
+        public int baseVolunteerAmount = 5;
 
         [Header("Text Fields")]
         public TextMeshProUGUI villageNameText;
@@ -37,7 +40,6 @@ namespace MountAndBlade
         void Start()
         {
             originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
-            HandleButtonInteraction();
         }
 
         void Update()
@@ -68,8 +70,11 @@ namespace MountAndBlade
                 villageNameText.text = villageName + " merkezine giriþ yaptýn burada ne yapmak istediðini seç .." ;
 
             if (recruitableInfoText != null)
-                recruitableInfoText.text = " burada sana katýlmak isteyen " + currentRecruitableSoldierAmount +" kiþi var seçimini yap";
+                recruitableInfoText.text = "Burada þanýný duyup sana katýlmak isteyen " + (baseVolunteerAmount + GameManager.instance.GetExtraUnitAmountCanBeAdded()) +" savaþçý var seçimini yap";
+           
 
+            // Bu köy açýldýðýnda sadece bu köy listener'ý eklesin
+            HandleButtonInteraction();
 
         }
         
@@ -82,6 +87,10 @@ namespace MountAndBlade
         
         private void HandleButtonInteraction()
         {
+            gatherVolunteerButton.onClick.RemoveAllListeners();
+
+  
+
             enterVolunteerMenuButton.onClick.AddListener(() => //gönüllü toplama menüsüne geçiþ buttonu
             {
                 if (GatherVolunteersPanel != null)
@@ -124,14 +133,14 @@ namespace MountAndBlade
 
             gatherVolunteerButton.onClick.AddListener(() =>//oyuna geri dönmek için
             {
-
                 if (GatherVolunteersPanel != null)
                 {
 
+                    playerManager.AddSoldier((GameManager.instance.GetExtraUnitAmountCanBeAdded()+baseVolunteerAmount));
                     Debug.Log("ASKER TOPLANDI");
+                    CloseVillageInterractionuUI();
                     //villageUICanvas.SetActive(false);
                     //PlayerController.instance.SetCanMove(true);
-                    
 
                 }
             });
