@@ -23,4 +23,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/actual/03_WsScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/actual/000_Lore.unity
+    guid: 59c7c2fb4c821184da50432db635e1c9
   m_configObjects: {}

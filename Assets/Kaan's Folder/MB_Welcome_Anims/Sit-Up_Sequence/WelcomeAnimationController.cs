@@ -43,7 +43,7 @@ namespace MountAndBlade
         {
             ButtonClicked = true;
 
-            // SceneToLoad = LORE SAHNESI
+            SceneToLoad = "000_Lore";
         }
 
         private void Func_Credits()
