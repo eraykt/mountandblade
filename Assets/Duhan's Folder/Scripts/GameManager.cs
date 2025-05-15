@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace MountAndBlade
@@ -36,13 +37,34 @@ namespace MountAndBlade
         private float currentAllyAmount;
         private float engagedEnemyAmount;
 
+        
+        public List<VillageUIManager> allVillages;
+
         public static int extraUnitAmount;
         private void Start()
         {
             GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             mainCamera.SetActive(true);
         }
- 
+
+
+        private void Update()
+        {
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+
+                Debug.Log("tüm villageları resetledim gı ");
+                OnBattleWon();
+
+            }
+        }
+        public void OnBattleWon()
+        {
+            foreach (var village in allVillages)
+            {
+                village.ResetVolunteerAvailability();
+            }
+        }
         public int GetExtraUnitAmountCanBeAdded()//playerin asker sayısını kontrol etmek için kullancıaz.
         {
             return extraUnitAmount; 

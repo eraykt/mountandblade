@@ -36,26 +36,53 @@ namespace MountAndBlade
         public bool isInterractable;
         public bool canBeOpenedAgain;
 
+        public static VillageUIManager currentOpenVillage;
+
         [Header("Materials")]
         public Material glowMaterial;
         private Material originalMaterial;
+
+        //her maç sonunda 1 her köyden bir kere tekrar asker alýnabilir hale gelsin
+
+
+        private bool canGetVolunteers = true;
 
         void Start()
         {
             
             originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
             villageRequirmentText = GetComponentInChildren<TextMeshProUGUI>();
+
             villageRequirmentText.text = recquiredUnitToEnterAmount.ToString();
 
         }
-
+        
         void Update()
         {
+        }
+
+        private bool isRequirmentsSatisfiedToEnterVillage()
+        {
+
+            if (playerManager.playerSoldierAmount < recquiredUnitToEnterAmount)
+            {
+
+                return true;
+            }
+            else 
+            {
+                return false;   
+            }
+
+
         }
 
         private void OnMouseDown()
         {
 
+            if (isRequirmentsSatisfiedToEnterVillage())
+                return;
+            
             CameraRay.instance.IgnoreTriggersVillageCheck();
 
             if (isInterractable && CameraRay.instance.isItVillage)
@@ -68,6 +95,9 @@ namespace MountAndBlade
 
         private void OpenVillageInterractionuUI()
         {
+            currentOpenVillage = this;
+
+
             PlayerController.instance.SetCanMove(false);
             villageUICanvas.SetActive(true);
             Time.timeScale = 0f;
@@ -83,6 +113,7 @@ namespace MountAndBlade
             // Bu köy açýldýðýnda sadece bu köy listener'ý eklesin
             HandleButtonInteraction();
 
+
         }
         
         private void CloseVillageInterractionuUI()
@@ -95,7 +126,7 @@ namespace MountAndBlade
         
         private void HandleButtonInteraction()
         {
-            gatherVolunteerButton.onClick.RemoveAllListeners();
+           // gatherVolunteerButton.onClick.RemoveAllListeners();
 
   
 
@@ -137,30 +168,49 @@ namespace MountAndBlade
                 }
             });
 
-            
-
-            gatherVolunteerButton.onClick.AddListener(() =>//oyuna geri dönmek için
-            {
-                if (GatherVolunteersPanel != null)
-                {
-
-                    playerManager.AddSoldier((GameManager.instance.GetExtraUnitAmountCanBeAdded()+baseVolunteerAmount));
-                    Debug.Log("ASKER TOPLANDI");
-                    CloseVillageInterractionuUI();
-                    //villageUICanvas.SetActive(false);
-                    //PlayerController.instance.SetCanMove(true);
-
-                }
-            });
+            SetupGatherVolunteerButton();
 
         }
 
+        private void SetupGatherVolunteerButton()
+        {
+            gatherVolunteerButton.onClick.RemoveAllListeners();
+
+            // Butonu sadece bu köyün durumuna göre aktif/pasif yap
+            gatherVolunteerButton.interactable = canGetVolunteers;
+
+            gatherVolunteerButton.onClick.AddListener(() =>
+            {
+                if (!canGetVolunteers)
+                {
+                    Debug.Log("Bu köyden tekrar asker alýnamaz.");
+                    return;
+                }
+
+                playerManager.AddSoldier(GameManager.instance.GetExtraUnitAmountCanBeAdded() + baseVolunteerAmount);
+                Debug.Log($"ASKER TOPLANDI: {villageName}");
+
+                canGetVolunteers = false;
+                gatherVolunteerButton.interactable = false;
+
+                GatherVolunteersPanel.gameObject.SetActive(false);  
+                MainPanel.SetActive(true);
+                CloseVillageInterractionuUI();
+            });
+        }
+
+        public void ResetVolunteerAvailability()
+        {
+            canGetVolunteers = true;
+            gatherVolunteerButton.interactable = true;
+        }
         private void HandleGlow(bool enable)
         {
             Renderer renderer = GetComponent<Renderer>();
             if (enable)
             {
                 renderer.material = glowMaterial;
+                
             }
             else
             {

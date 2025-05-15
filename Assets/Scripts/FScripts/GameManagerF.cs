@@ -118,6 +118,8 @@ public class GameManagerF : MonoBehaviour
         AlliesWonPanel.SetActive(true);
 
         GameManager.extraUnitAmount++;
+
+        GameManager.instance.OnBattleWon();
     }
 
     public void EnemiesWin()
