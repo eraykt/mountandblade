@@ -89,11 +89,11 @@ namespace MountAndBlade
             return Mathf.FloorToInt(currentAllyAmount);
         }
 
-        public IEnumerator loadWsScene(int id)
+        public IEnumerator loadWsScene()
         {
             InterSceneManager.Instance.SaveData();
-            InterSceneManager.Instance.DeleteCurrentEnemy(id);
-            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(2);
+            InterSceneManager.Instance.DeleteCurrentEnemy();
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync("03_WsScene");
             yield return null;
         }
 

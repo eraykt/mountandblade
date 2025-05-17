@@ -47,6 +47,7 @@ public class PlayerAttackController : MonoBehaviour, IDamagable
     void Start()
     {
         _animator = GetComponent<Animator>();
+        if (swordController == null) swordController = GetComponentInChildren<SwordController>();
         currentHealth = MAX_HEALTH;
     }
 

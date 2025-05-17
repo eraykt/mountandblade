@@ -2,6 +2,7 @@ using MountAndBlade;
 using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.VFX;
 
 public class EnemyBaseF : MonoBehaviour, IDamagable
 {
@@ -32,6 +33,9 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
     public StateF dieState;
     #endregion
 
+    public SoldierSwordController soldierSwordController;
+    public ParticleSystem bloodVFX;
+
     void Start()
     {
         if (animator == null) animator = GetComponent<Animator>();
@@ -39,6 +43,7 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         if (player == null) player = GameObject.FindGameObjectWithTag("Player")?.transform;
         if (rigidBody == null) rigidBody = GetComponent<Rigidbody>();
         if (entityCollider == null) entityCollider = GetComponent<Collider>();
+        if (bloodVFX == null) bloodVFX = GetComponentInChildren<ParticleSystem>();
         currentState = idleState;
         currentState?.Enter(this);
         randomAttackTimer = Random.Range(0f, 6f);
@@ -125,21 +130,6 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
     }
 
 
-    // Hasar alma metodu
-    public void Hurt(float damage)
-    {
-        if (canAttack) // Eðer cooldown dolmuþsa hasar al
-        {
-            health -= damage; // Saðlýk azaltma
-            canAttack = false; // Bir sonraki hasar için cooldown baþlat
-            Debug.Log($"Enemy took {damage} damage, remaining health: {health}");
-
-            if (health <= 0 && !isDead)
-            {
-                Die(); // Ölüm durumu
-            }
-        }
-    }
 
     // Ölüm metodu
     public void Die()
@@ -212,18 +202,11 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
             SwitchState(idleState);
             Debug.Log("OnAttackEnd Called");
         }
+        soldierSwordController = GetComponentInChildren<SoldierSwordController>();
+        SoldierSwordController.Instance.ResetAttack();
+
     }
 
-    public void AnimationHit()
-    {
-        IDamagable target = targetTransform.GetComponent<IDamagable>();
-        if (target != null)
-        {
-            target.TakeDamage(5);
-        }
-
-        Debug.Log("Enemy/Ally just Hit !");
-    }
 
     private void OnDrawGizmos()
     {
@@ -237,7 +220,7 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
     public void TakeDamage(int _takenDamage)
     {
         health -= _takenDamage; // Saðlýk azaltma
-        Debug.Log($"Enemy took {_takenDamage} damage, remaining health: {health}");
+        Debug.Log($"TakeDamage");
 
         if (health <= 0 && !isDead)
         {

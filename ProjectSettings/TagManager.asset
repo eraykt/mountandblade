@@ -10,6 +10,7 @@ TagManager:
   - DragVisual
   - Unclickable
   - Allies
+  - VFX
   layers:
   - Default
   - TransparentFX

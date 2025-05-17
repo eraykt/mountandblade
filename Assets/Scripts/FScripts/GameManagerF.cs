@@ -1,11 +1,9 @@
-using JetBrains.Annotations;
 using MountAndBlade;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class GameManagerF : MonoBehaviour
 {
@@ -42,6 +40,17 @@ public class GameManagerF : MonoBehaviour
     private void Start()
     {
         UpdateEnemyAndAllyCount();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            foreach (var enemy in enemies)   
+            {
+                enemy.GetComponent<EnemyBaseF>().TakeDamage(1000);
+            }
+        }
     }
 
     public void UpdateEnemyAndAllyCount()
@@ -242,6 +251,9 @@ public class GameManagerF : MonoBehaviour
 
     public void GoBackMapScene()
     {
-        SceneManager.LoadScene("MapScene2");
+        SceneManager.LoadScene("02_MapScene");
     }
+
+    public void LostGame() => SceneManager.LoadScene("00_Credits");
+    
 }
