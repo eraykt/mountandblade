@@ -20,6 +20,7 @@ namespace MountAndBlade
         [Header("Bools")]
         public bool StartGame = false;
         public bool ButtonClicked = false;
+        public int IsFirstClicked = 0;
         // Start is called before the first frame update
         void Start()
         {
@@ -34,28 +35,31 @@ namespace MountAndBlade
 
         private void Func_StartGame()
         {
+            IsFirstClicked++;
             ButtonClicked = true;
-
-            SceneToLoad = "02_MapScene";
+            if (IsFirstClicked == 1)
+                SceneToLoad = "02_MapScene";
         }
 
         private void Func_Lore()
         {
             ButtonClicked = true;
-
-            SceneToLoad = "000_Lore";
+            IsFirstClicked++;
+            if (IsFirstClicked == 1)
+                SceneToLoad = "000_Lore";
         }
 
         private void Func_Credits()
         {
             ButtonClicked = true;
-
-            SceneToLoad = "00_Credits";
+            IsFirstClicked++;
+            if (IsFirstClicked == 1)
+                SceneToLoad = "00_Credits";
         }
 
         private IEnumerator InitCoroutine()
         {
-            yield return new WaitForSeconds(3);
+            yield return new WaitForSeconds(1);
             AnimParameterReseter();
             _animator.SetBool("IdleToSitup", true);
         }
