@@ -6,20 +6,20 @@ using UnityEngine;
 public class Armor : Item
 {
     public int defense;
-    public int health;
+    //public int health;
     public ArmorType armorType;
 
     public enum ArmorType 
     {
         Helmet,
-        Boots,
-        Shields,
+        Boot,
+        Shield,
         Gloves,
         BodyArmor
     }
 
     public override string GetItemDetails()
     {
-        return base.GetItemDetails() + $"\nDefense: {defense}\nHealth: {health}\nArmor Type: {armorType}";
+        return base.GetItemDetails() + $"\nDefense: {defense}\nArmor Type: {armorType}";
     }
 }

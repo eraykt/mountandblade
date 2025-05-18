@@ -6,7 +6,7 @@ using UnityEngine;
 public class WeaponSO : Item
 {
     public int attackDamage;
-    public float attackSpeed;
+    //public float attackSpeed;
     public WeaponType weaponType;
 
     public enum WeaponType
@@ -24,7 +24,7 @@ public class WeaponSO : Item
 
     public override string GetItemDetails()
     {
-        return base.GetItemDetails() + $"\nAttack Damage: {attackDamage}\nAttack Speed: {attackSpeed} seconds\nWeapon Type: {weaponType}";
+        return base.GetItemDetails() + $"\nAttack Damage: {attackDamage}\nWeapon Type: {weaponType}";
     }
     
 

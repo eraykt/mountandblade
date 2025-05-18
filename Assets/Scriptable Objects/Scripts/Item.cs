@@ -13,9 +13,9 @@ public enum ItemType
 public class Item : ScriptableObject
 {   
     public string Itemname;
-    public string description;
+    //public string description;
     public Sprite Itemicon;
-    public float weight;
+    //public float weight;
     public int salePrice;
     public GameObject itemPrefab;
     
@@ -23,7 +23,7 @@ public class Item : ScriptableObject
     public ItemType itemType;
     public virtual string GetItemDetails()
     {
-        return $"Name: {Itemname}\nDescription: {description}\nWeight: {weight} kg\nSale Price: {salePrice} gold";
+        return $"Name: {Itemname}\nSale Price: {salePrice} gold";
     }
 }
 
