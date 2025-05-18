@@ -37,6 +37,7 @@ namespace MountAndBlade
         {
             ClickCounter++;
             ButtonClicked = true;
+            MainMenuSFX.Instance.Play_ButtonSFX();
             if (ClickCounter == 1)
                 SceneToLoad = "02_MapScene";
             StartCoroutine(TransitionCoroutine());
@@ -46,6 +47,7 @@ namespace MountAndBlade
         {
             ButtonClicked = true;
             ClickCounter++;
+            MainMenuSFX.Instance.Play_ButtonSFX();
             if (ClickCounter == 1)
                 SceneToLoad = "000_Lore";
             StartCoroutine(TransitionCoroutine());
@@ -54,6 +56,7 @@ namespace MountAndBlade
         private void Func_Credits()
         {
             ButtonClicked = true;
+            MainMenuSFX.Instance.Play_ButtonSFX();
             ClickCounter++;
             if (ClickCounter == 1)
                 SceneToLoad = "00_Credits";
@@ -99,6 +102,11 @@ namespace MountAndBlade
             _animator.SetBool("Situp", false);
             _animator.SetBool("SitupToIdle", false);
 
+        }
+
+        public void WorkSFX()
+        {
+            MainMenuSFX.Instance.Play_AH_SFX();
         }
 
         private IEnumerator TransitionCoroutine()
