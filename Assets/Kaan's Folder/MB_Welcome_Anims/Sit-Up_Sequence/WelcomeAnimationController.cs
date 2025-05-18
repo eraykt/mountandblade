@@ -20,7 +20,7 @@ namespace MountAndBlade
         [Header("Bools")]
         public bool StartGame = false;
         public bool ButtonClicked = false;
-        public int IsFirstClicked = 0;
+        public int ClickCounter = 0;
         // Start is called before the first frame update
         void Start()
         {
@@ -35,26 +35,29 @@ namespace MountAndBlade
 
         private void Func_StartGame()
         {
-            IsFirstClicked++;
+            ClickCounter++;
             ButtonClicked = true;
-            if (IsFirstClicked == 1)
+            if (ClickCounter == 1)
                 SceneToLoad = "02_MapScene";
+            StartCoroutine(TransitionCoroutine());
         }
 
         private void Func_Lore()
         {
             ButtonClicked = true;
-            IsFirstClicked++;
-            if (IsFirstClicked == 1)
+            ClickCounter++;
+            if (ClickCounter == 1)
                 SceneToLoad = "000_Lore";
+            StartCoroutine(TransitionCoroutine());
         }
 
         private void Func_Credits()
         {
             ButtonClicked = true;
-            IsFirstClicked++;
-            if (IsFirstClicked == 1)
+            ClickCounter++;
+            if (ClickCounter == 1)
                 SceneToLoad = "00_Credits";
+            StartCoroutine(TransitionCoroutine());
         }
 
         private IEnumerator InitCoroutine()
@@ -62,6 +65,9 @@ namespace MountAndBlade
             yield return new WaitForSeconds(1);
             AnimParameterReseter();
             _animator.SetBool("IdleToSitup", true);
+            Button_StartGame.onClick.AddListener(Func_StartGame);
+            Button_Lore.onClick.AddListener(Func_Lore);
+            Button_Credits.onClick.AddListener(Func_Credits);
         }
 
         public void EndIdleToSitup()

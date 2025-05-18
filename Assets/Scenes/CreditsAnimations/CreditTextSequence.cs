@@ -2,86 +2,66 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.SceneManagement; // TextMeshPro kullanýyorsan
 
 public class CreditTextSequence : MonoBehaviour
 {
-    public TextMeshProUGUI creditsText;
-    public TextMeshProUGUI namesText;
-    public float fadeDuration = 1f;
-    public float displayDuration = 2f;
+    public TMP_Text textDisplay; // UI Text yerine TMP_Text
+    [TextArea(3, 10)]
+    public List<string> loreTexts = new List<string>();
 
-    private string[] messages = new string[]
-    {
-        "Ýyi savaþtýn evlat… Adýn tarih kitaplarýnda yaþayacak.",
-        "Topraðýn bol, anýlarýn onurlu olsun. Cesaretin unutulmayacak.",
-        "Mücadele ettin, düþtün… Ama asla teslim olmadýn.",
-        "Savaþ bitti, kahraman huzura erdi.",
-        "Kýlýcýn pas tuttu, yüreðin hiç solmadý.",
-        "Son nefesine kadar savaþtýn… Artýk dinlenme vakti."
-    };
+    public float typingSpeed = 0.02f;
 
-    private string[] names = new string[]
-    {
-        "Kaan Avdan",
-        "Duhan Avci",
-        "Elanur Aydogdu",
-        "Ali Eray Karatas"
-    };
+    private int currentTextIndex = 0;
+    private bool isTyping = false;
+    private Coroutine typingCoroutine;
 
-    private void Start()
+    void Start()
     {
-        creditsText.alpha = 0f;
-        namesText.alpha = 0f;
-        StartCoroutine(ShowMessages());
+        DisplayNextText();
     }
 
-    private IEnumerator ShowMessages()
+    void Update()
     {
-        foreach (string message in messages)
+        if (Input.GetMouseButtonDown(0))
         {
-            creditsText.text = message;
-
-            // Fade In
-            yield return StartCoroutine(FadeTextToAlpha(creditsText, 1f));
-
-            yield return new WaitForSeconds(displayDuration);
-
-            // Fade Out
-            yield return StartCoroutine(FadeTextToAlpha(creditsText, 0f));
-
-            yield return new WaitForSeconds(0.5f);
+            if (isTyping)
+            {
+                // Eðer yazý yazýlýyorsa ve týklanýrsa, tamamýný birden yazdýr
+                StopCoroutine(typingCoroutine);
+                textDisplay.text = loreTexts[currentTextIndex];
+                isTyping = false;
+            }
+            else
+            {
+                // Bir sonraki metne geç
+                currentTextIndex++;
+                if (currentTextIndex < loreTexts.Count)
+                {
+                    DisplayNextText();
+                }
+                else
+                {
+                    SceneManager.LoadScene("01_MainMenu");
+                }
+            }
         }
-
-        // Tüm mesajlar bitti, isimleri göster
-        ShowShuffledNames();
-        yield return StartCoroutine(FadeTextToAlpha(namesText, 1f));
-        // Fade out istersen ekleyebilirsin
     }
 
-    private IEnumerator FadeTextToAlpha(TextMeshProUGUI textObj, float targetAlpha)
+    void DisplayNextText()
     {
-        float startAlpha = textObj.alpha;
-        float elapsed = 0f;
-
-        while (elapsed < fadeDuration)
-        {
-            elapsed += Time.deltaTime;
-            textObj.alpha = Mathf.Lerp(startAlpha, targetAlpha, elapsed / fadeDuration);
-            yield return null;
-        }
-
-        textObj.alpha = targetAlpha;
+        typingCoroutine = StartCoroutine(TypeText(loreTexts[currentTextIndex]));
     }
 
-    private void ShowShuffledNames()
+    IEnumerator TypeText(string text)
     {
-        List<string> shuffled = new List<string>(names);
-        for (int i = 0; i < shuffled.Count; i++)
+        isTyping = true;
+        textDisplay.text = "";
+        foreach (char letter in text)
         {
-            int randIndex = Random.Range(i, shuffled.Count);
-            (shuffled[i], shuffled[randIndex]) = (shuffled[randIndex], shuffled[i]);
+            textDisplay.text += letter;
+            yield return new WaitForSeconds(typingSpeed);
         }
-
-        namesText.text = string.Join("\n", shuffled);
+        isTyping = false;
     }
 }
