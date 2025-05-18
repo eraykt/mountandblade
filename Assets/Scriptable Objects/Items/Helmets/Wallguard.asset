@@ -18,5 +18,6 @@ MonoBehaviour:
   itemPrefab: {fileID: 0}
   allowedSlotType: 0
   itemType: 2
+  dropRate: 12
   defense: 28
   armorType: 0
