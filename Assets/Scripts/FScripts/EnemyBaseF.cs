@@ -247,11 +247,12 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
             Gizmos.DrawWireSphere(targetTransform.position, distance);
         }
     }
-
+    public void TakeDamageSFX() => EnemySFX.Instance.PlayHurtSFX();
     public void TakeDamage(int _takenDamage)
     {
         health -= _takenDamage; // Sa�l�k azaltma
         animator.SetTrigger("IsTakeDamage");
+        
         Debug.Log($"TakeDamage");
 
         if (health <= 0 && !isDead)
