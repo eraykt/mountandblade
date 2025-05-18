@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 2100000, guid: 47cd86021c335854592b2fcf105c3e2c, type: 2}
+  m_SkyboxMaterial: {fileID: 2100000, guid: fd727ca28b5b830478ab0e9cf0841135, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.16853899, g: 0.204762, b: 0.27668932, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -4116,10 +4116,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentEnemies: []
-  currentEnemy:
-    id: 0
-    enemyCount: 0
-    enemyPosition: {x: 0, y: 0, z: 0}
+  currentEnemy: 0
   playerData:
     troopCount: 0
     playerPosition: {x: 0, y: 0, z: 0}
@@ -5447,7 +5444,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1195802538}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.16018225, y: 6.2310725e-15, z: -1.7630178e-15, w: 0.9870875}
+  m_LocalRotation: {x: 0.16018224, y: -0.00000003288976, z: 0.000000005337273, w: 0.9870875}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -5526,7 +5523,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1206534157}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.26206926, y: -0.000000016605004, z: 0.000000004509264, w: 0.9650491}
+  m_LocalRotation: {x: 0.26206926, y: 0.000000016605004, z: -0.000000004509264, w: 0.9650491}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -7219,7 +7216,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1560789614}
   serializedVersion: 2
-  m_LocalRotation: {x: 0.02744272, y: 0.8171421, z: -0.3136715, w: 0.48284143}
+  m_LocalRotation: {x: 0.031233847, y: 0.9300278, z: -0.35700428, w: 0.08136772}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -8635,6 +8632,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93d1a553156ccce4d9add3deb4f14419, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  allVillages: []
 --- !u!1 &1745306523
 GameObject:
   m_ObjectHideFlags: 0
@@ -10094,6 +10092,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 4294967295
   isItEnemy: 0
+  isItVillage: 0
 --- !u!1 &2069002193
 GameObject:
   m_ObjectHideFlags: 0
@@ -10799,6 +10798,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 008555bb420e2484cb3e8524ace5719e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerManager: {fileID: 0}
+  villageName: 
+  baseVolunteerAmount: 0
+  recquiredUnitToEnterAmount: 5
+  villageNameText: {fileID: 0}
+  recruitableInfoText: {fileID: 0}
+  villageUICanvas: {fileID: 0}
+  exitMainButton: {fileID: 0}
+  enterVolunteerMenuButton: {fileID: 0}
+  gatherVolunteerButton: {fileID: 0}
+  backToMainMenuButton: {fileID: 0}
+  GatherVolunteersPanel: {fileID: 0}
+  MainPanel: {fileID: 0}
+  player: {fileID: 0}
+  isInterractable: 0
+  canBeOpenedAgain: 0
 --- !u!1001 &3950391848135001895
 PrefabInstance:
   m_ObjectHideFlags: 0

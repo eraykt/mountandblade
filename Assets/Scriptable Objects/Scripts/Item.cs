@@ -21,6 +21,10 @@ public class Item : ScriptableObject
     
     public SlotType allowedSlotType;
     public ItemType itemType;
+    
+    [Range(0f, 100f)]
+    public float dropRate = 100f; // %100 varsayılan
+
     public virtual string GetItemDetails()
     {
         return $"Name: {Itemname}\nSale Price: {salePrice} gold";
