@@ -44,7 +44,13 @@ public class TimeManager : MonoBehaviour
     private bool isPaused;
     private Coroutine checkCoroutine;
 
-    private void Awake() => TimeModifer();
+    private void Awake() { 
+    
+        TimeModifer();
+        PlayerController = Player.GetComponent<PlayerController>();
+    }
+    
+    
     void Start()
     {
         LoadTime();

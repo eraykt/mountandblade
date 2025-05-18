@@ -33,8 +33,6 @@ namespace MountAndBlade
             playerSoldierAmount += count;
             UpdateSoldierCountText();
         }
-
-        
     }
     
 }

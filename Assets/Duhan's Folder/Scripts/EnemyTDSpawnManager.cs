@@ -33,7 +33,6 @@ namespace MountAndBlade
 
         private void Start()
         {
-            id = 0;
             if (InterSceneManager.Instance.currentEnemies != null)
             {
                 foreach (var enemyData in InterSceneManager.Instance.currentEnemies)

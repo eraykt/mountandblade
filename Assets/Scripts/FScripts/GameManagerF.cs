@@ -1,11 +1,9 @@
-using JetBrains.Annotations;
 using MountAndBlade;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Random = UnityEngine.Random;
 
 public class GameManagerF : MonoBehaviour
 {
@@ -42,6 +40,17 @@ public class GameManagerF : MonoBehaviour
     private void Start()
     {
         UpdateEnemyAndAllyCount();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.L))
+        {
+            foreach (var enemy in enemies)   
+            {
+                enemy.GetComponent<EnemyBaseF>().TakeDamage(1000);
+            }
+        }
     }
 
     public void UpdateEnemyAndAllyCount()
@@ -116,6 +125,10 @@ public class GameManagerF : MonoBehaviour
         yield return new WaitForSeconds(3);
 
         AlliesWonPanel.SetActive(true);
+
+        GameManager.extraUnitAmount++;
+
+        GameManager.instance.OnBattleWon();
     }
 
     public void EnemiesWin()
@@ -130,6 +143,7 @@ public class GameManagerF : MonoBehaviour
             enemyScript.animator.SetBool("IsVictory", true);
         }
 
+        GameManager.extraUnitAmount--;
 
     
 

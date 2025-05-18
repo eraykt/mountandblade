@@ -9,7 +9,6 @@ namespace MountAndBlade
     public class VillageInteraction : MonoBehaviour
     {
 
-
         [Header("Buttons")]
         public Button openVolunteerPanel;
         public Button closeVolunteerPanel;

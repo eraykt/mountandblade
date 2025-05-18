@@ -31,6 +31,8 @@ namespace MountAndBlade
       
         private void Start()
         {
+            engageCombatButton.onClick.RemoveAllListeners();
+            disengageCombatButton.onClick.RemoveAllListeners();
             HandleButtonInterraction();
             originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
         }
@@ -41,6 +43,7 @@ namespace MountAndBlade
         {
             enemyInterractionUI.SetActive(true);
             Time.timeScale = 0;
+            InterSceneManager.Instance.currentEnemy = GetComponent<EnemyHandler>().id;
         }
 
         private void CloseInterractionUI()
@@ -56,7 +59,6 @@ namespace MountAndBlade
 
             if (isInterractable && CameraRay.instance.isItEnemy)
             {
-                Debug.Log("�zerine bas�larak a��ld�");
                 GameManager.instance.getEnemyUnitAmount(this.GetComponent<EnemyHandler>().askerSayisi);
                 OpenInterractionUI();
             }
@@ -120,11 +122,9 @@ namespace MountAndBlade
 
         private void HandleButtonInterraction()
         {
-            
             engageCombatButton.onClick.AddListener(() => {
                 Time.timeScale = 1;
-                int id = GetComponent<EnemyHandler>().id;
-                StartCoroutine(GameManager.instance.loadWsScene(id));
+                StartCoroutine(GameManager.instance.loadWsScene());
 
             });
 

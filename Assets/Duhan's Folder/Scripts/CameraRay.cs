@@ -17,6 +17,8 @@ namespace MountAndBlade
         private Ray ray;
         [SerializeField] LayerMask layerMask;
         public bool isItEnemy = false;
+        public bool isItVillage = false;
+
 
         //aktif kameranun bilgisini al
         //herzaman aktif kameradan transform forward yönünde ray at.
@@ -33,7 +35,32 @@ namespace MountAndBlade
             }
         }
 
+        public void IgnoreTriggersVillageCheck()
+        {
 
+            if (Input.GetMouseButtonDown(0))// daha sonra event sistemiyle onClicked yap.
+            {
+                // Create a ray from the camera to the mouse position
+                ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+
+                // Perform the raycast
+                if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask, QueryTriggerInteraction.Ignore))
+                {
+
+                    if (hit.collider.GetComponent<VillageUIManager>() != null)
+                    {
+                        isItVillage=true;
+                    }
+                    else
+                    {   
+                        isItVillage=false;
+                    }
+                }
+
+            }
+
+
+        }
         public void ignoreTriggersEnemyCheck()
         {
             if (Input.GetMouseButtonDown(0))// daha sonra event sistemiyle onClicked yap.

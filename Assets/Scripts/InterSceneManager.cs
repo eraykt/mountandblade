@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using Object = UnityEngine.Object;
 
 namespace MountAndBlade
 {
@@ -11,7 +10,7 @@ namespace MountAndBlade
         public static InterSceneManager Instance { get; private set; }
 
         public List<EnemyData> currentEnemies;
-        public EnemyData currentEnemy;
+        public int currentEnemy;
         
         public PlayerData playerData;
         public bool hasPlayerData;
@@ -28,19 +27,6 @@ namespace MountAndBlade
             else
             {
                 Destroy(gameObject);
-            }
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(KeyCode.L))
-            {
-                SaveData();
-            }
-
-            if (Input.GetKeyDown(KeyCode.N))
-            {
-                SceneManager.LoadScene(0);
             }
         }
 
@@ -67,12 +53,12 @@ namespace MountAndBlade
             Debug.Log("Inventory saved with " +data.slots.Count + " items and " +data.coinAmount + " coins. ");
         }
 
-        public void DeleteCurrentEnemy(int id)
+        public void DeleteCurrentEnemy()
         {
             for (var i = 0; i < currentEnemies.Count; i++)
             {
                 var enemy = currentEnemies[i];
-                if (enemy.id == id)
+                if (enemy.id == currentEnemy)
                 {
                     currentEnemies.Remove(enemy);
                     return;
