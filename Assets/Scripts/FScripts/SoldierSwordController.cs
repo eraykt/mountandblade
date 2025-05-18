@@ -45,7 +45,6 @@ namespace MountAndBlade
 
             if (other.gameObject.TryGetComponent<IDamagable>(out var damagable))
             {
-                Debug.Log("IDamagable hit");
 
                 //if (selfHitVFX != null && selfVFXPoint != null)
                 //{
@@ -64,7 +63,6 @@ namespace MountAndBlade
         public void ResetAttack()
         {
             canAttack = true;
-            Debug.Log("Reset Attack");
         }
     }
 }

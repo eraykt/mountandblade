@@ -1,8 +1,7 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Properties;
 using UnityEngine;
+using Unity.Properties;
 using UnityEngine.AI;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -41,6 +40,9 @@ namespace MountAndBlade
         public List<VillageUIManager> allVillages;
 
         public static int extraUnitAmount;
+
+        
+
         private void Start()
         {
 
@@ -94,12 +96,28 @@ namespace MountAndBlade
             return Mathf.FloorToInt(currentAllyAmount);
         }
 
+
         public IEnumerator loadWsScene()
         {
             InterSceneManager.Instance.SaveData();
             InterSceneManager.Instance.DeleteCurrentEnemy();
-            AsyncOperation loadOperation = SceneManager.LoadSceneAsync("03_WsScene");
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(SceneNameRandomizer());
             yield return null;
+        }
+        public string SceneNameRandomizer()
+        {
+            List<string> list = new List<string>();
+            list.Add("99_FightTerrain");
+            list.Add("99_SandTerrain");
+            list.Add("99_ForestTerrain");
+
+            Debug.Log("Sahne listesi boyutu: " + list.Count); // Kontrol ettin, 3 geliyor
+
+            int random = Random.Range(0, list.Count);
+
+            Debug.Log("Seçilen rastgele indeks (random değeri): " + random); // BU LOGU EKLE!
+
+            return list[random];
         }
 
         public float ReturnEnemyAmount()
