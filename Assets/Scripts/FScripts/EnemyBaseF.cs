@@ -231,7 +231,6 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         if (currentState == attackState)
         {
             SwitchState(idleState);
-            Debug.Log("OnAttackEnd Called");
         }
         soldierSwordController = GetComponentInChildren<SoldierSwordController>();
         SoldierSwordController.Instance.ResetAttack();
@@ -253,7 +252,6 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         health -= _takenDamage; // Sa�l�k azaltma
         animator.SetTrigger("IsTakeDamage");
         
-        Debug.Log($"TakeDamage");
 
         if (health <= 0 && !isDead)
         {
