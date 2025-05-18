@@ -38,9 +38,6 @@ namespace MountAndBlade
 
         public static VillageUIManager currentOpenVillage;
 
-        [Header("Materials")]
-        public Material glowMaterial;
-        private Material originalMaterial;
 
         //her maç sonunda 1 her köyden bir kere tekrar asker alýnabilir hale gelsin
 
@@ -50,17 +47,15 @@ namespace MountAndBlade
         void Start()
         {
             
-            originalMaterial = GetComponent<Renderer>().material; // Orijinal malzemeyi kaydet
             villageRequirmentText = GetComponentInChildren<TextMeshProUGUI>();
 
             villageRequirmentText.text = recquiredUnitToEnterAmount.ToString();
 
+            gatherVolunteerButton.onClick.RemoveAllListeners();
+
         }
         
-        void Update()
-        {
-        }
-
+        
         private bool isRequirmentsSatisfiedToEnterVillage()
         {
 
@@ -126,7 +121,6 @@ namespace MountAndBlade
         
         private void HandleButtonInteraction()
         {
-           // gatherVolunteerButton.onClick.RemoveAllListeners();
 
   
 
@@ -183,7 +177,9 @@ namespace MountAndBlade
             {
                 if (!canGetVolunteers)
                 {
-                    Debug.Log("Bu köyden tekrar asker alýnamaz.");
+                    
+
+
                     return;
                 }
 
@@ -204,25 +200,11 @@ namespace MountAndBlade
             canGetVolunteers = true;
             gatherVolunteerButton.interactable = true;
         }
-        private void HandleGlow(bool enable)
-        {
-            Renderer renderer = GetComponent<Renderer>();
-            if (enable)
-            {
-                renderer.material = glowMaterial;
-                
-            }
-            else
-            {
-                renderer.material = originalMaterial;
-            }
-        }
 
         private void OnTriggerEnter(Collider other)
         {
             if (other.gameObject == player.gameObject && player.gameObject != null)
             {
-                HandleGlow(true);
                 isInterractable = true;
             }
         }
@@ -235,7 +217,6 @@ namespace MountAndBlade
 
             if (other.gameObject == player && player.gameObject != null)
             {
-                HandleGlow(false);
                 isInterractable = false;
                 canBeOpenedAgain = true;
             }

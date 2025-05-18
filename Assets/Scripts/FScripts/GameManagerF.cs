@@ -83,7 +83,12 @@ public class GameManagerF : MonoBehaviour
         if (unit.CompareTag("Enemy"))
         {
             enemies.Remove(unit); // Listeden siliyoruz ve liste 0 olursa Victory triggerlan�yor
-            if (enemies.Count == 0) TriggerVictory("Allies");
+            if (enemies.Count == 0)
+            {
+                TriggerVictory("Allies");
+                GameManager.extraUnitAmount++;
+
+            }
         }
         else if (unit.CompareTag("Allies") || unit.CompareTag("Player"))
         {
@@ -100,7 +105,7 @@ public class GameManagerF : MonoBehaviour
             Debug.Log($"{winnerTag} kazand�!");
 
             List<GameObject> winners = winnerTag == "Allies" ? allies : enemies;
-            
+
 
             foreach (var unit in winners)
             {
@@ -126,7 +131,6 @@ public class GameManagerF : MonoBehaviour
 
         AlliesWonPanel.SetActive(true);
 
-        GameManager.extraUnitAmount++;
 
         GameManager.instance.OnBattleWon();
     }

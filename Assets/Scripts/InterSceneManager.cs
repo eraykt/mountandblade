@@ -23,6 +23,7 @@ namespace MountAndBlade
             {
                 Instance = this;
                 DontDestroyOnLoad(this);
+                GameManager.extraUnitAmount = 0;
             }
             else
             {
