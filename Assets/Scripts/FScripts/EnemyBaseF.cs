@@ -220,6 +220,7 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
     public void TakeDamage(int _takenDamage)
     {
         health -= _takenDamage; // Saðlýk azaltma
+        animator.SetTrigger("IsTakeDamage");
         Debug.Log($"TakeDamage");
 
         if (health <= 0 && !isDead)
