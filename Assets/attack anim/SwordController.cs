@@ -26,7 +26,7 @@ namespace MountAndBlade
             if (!canAttack) return;
             canAttack = false;
             Debug.Log("Trigger Enter");
-            if (Input.GetMouseButton(0) && other.gameObject.TryGetComponent<IDamagable>(out var damagable))
+            if (other.gameObject.TryGetComponent<IDamagable>(out var damagable))
             {
                 Debug.Log("IDamagable Enter");
 
@@ -41,7 +41,7 @@ namespace MountAndBlade
         {
             if (!canAttack) return;
             canAttack = false;
-            if (Input.GetMouseButton(0) && other.gameObject.TryGetComponent<IDamagable>(out var damagable))
+            if (other.gameObject.TryGetComponent<IDamagable>(out var damagable))
             {
                 EventManager.TriggerEvent(new EventManager.OnEnemyHit(swordDamage, damagable));
                 damagable.TakeDamage(swordDamage);
