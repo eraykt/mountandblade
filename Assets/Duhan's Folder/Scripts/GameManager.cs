@@ -25,7 +25,7 @@ namespace MountAndBlade
                 Destroy(gameObject);    
             }
 
-            DontDestroyOnLoad(gameObject);  
+            //DontDestroyOnLoad(gameObject);  
         }
 
         #endregion
@@ -43,6 +43,14 @@ namespace MountAndBlade
         public static int extraUnitAmount;
         private void Start()
         {
+
+            //var villages = FindObjectsOfType<VillageUIManager>();
+            //allVillages = new List<VillageUIManager>();
+            //foreach (var village in villages)
+            //{
+            //    allVillages.Add(village);
+            //}
+
             GameObject mainCamera = GameObject.FindGameObjectWithTag("MainCamera");
             mainCamera.SetActive(true);
         }
@@ -60,10 +68,7 @@ namespace MountAndBlade
         }
         public void OnBattleWon()
         {
-            foreach (var village in allVillages)
-            {
-                village.ResetVolunteerAvailability();
-            }
+
         }
         public int GetExtraUnitAmountCanBeAdded()//playerin asker sayısını kontrol etmek için kullancıaz.
         {
