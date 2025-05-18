@@ -37,7 +37,7 @@ namespace MountAndBlade
         {
             ClickCounter++;
             ButtonClicked = true;
-            MainMenuSFX.Instance.Play_ButtonSFX();
+            MainMenuSFX.Instance.Play_StartButtonSFX();
             if (ClickCounter == 1)
                 SceneToLoad = "02_MapScene";
             StartCoroutine(TransitionCoroutine());
@@ -47,7 +47,7 @@ namespace MountAndBlade
         {
             ButtonClicked = true;
             ClickCounter++;
-            MainMenuSFX.Instance.Play_ButtonSFX();
+            MainMenuSFX.Instance.Play_LoreButtonSFX();
             if (ClickCounter == 1)
                 SceneToLoad = "000_Lore";
             StartCoroutine(TransitionCoroutine());
@@ -56,7 +56,7 @@ namespace MountAndBlade
         private void Func_Credits()
         {
             ButtonClicked = true;
-            MainMenuSFX.Instance.Play_ButtonSFX();
+            MainMenuSFX.Instance.Play_CreditsButtonSFX();
             ClickCounter++;
             if (ClickCounter == 1)
                 SceneToLoad = "00_Credits";
