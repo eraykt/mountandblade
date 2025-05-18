@@ -873,12 +873,10 @@ MonoBehaviour:
   slotPrefab: {fileID: 1075491028}
   discardSlotPrefab: {fileID: 1737946748}
   items:
-  - {fileID: 11400000, guid: 41659179d520f104d9843220e1085549, type: 2}
-  - {fileID: 11400000, guid: 07109103378efee459c060261f40dd84, type: 2}
-  - {fileID: 11400000, guid: f82fd4ab0ac2be945a74136e549172fb, type: 2}
-  - {fileID: 11400000, guid: f82fd4ab0ac2be945a74136e549172fb, type: 2}
-  - {fileID: 11400000, guid: b5400b6193cb41549a496687f2f50e57, type: 2}
-  - {fileID: 11400000, guid: 07109103378efee459c060261f40dd84, type: 2}
+  - {fileID: 11400000, guid: 96816f7bf773f8a4c8dac4398679f595, type: 2}
+  - {fileID: 11400000, guid: fcda88e329615f84eb908aaceb4b57db, type: 2}
+  - {fileID: 11400000, guid: c12b787cce4de74498ac5cf4affbc2da, type: 2}
+  - {fileID: 11400000, guid: b2b291790937e3e468cef0bdee6c9c2f, type: 2}
   charContent: {fileID: 505853372}
   tooltip: {fileID: 240462418}
   inventoryCanvas: {fileID: 1852280088}
