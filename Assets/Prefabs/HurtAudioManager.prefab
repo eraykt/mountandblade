@@ -53,6 +53,12 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 77a58f57dba0d00479f1e3fb523b5aad, type: 3}
   - {fileID: 8300000, guid: 6b8f190fc4ccb8e4e8e0cfe824d31f32, type: 3}
   - {fileID: 8300000, guid: 330a4fabc6ba3a14e9c7399001498cc8, type: 3}
+  swordClips:
+  - {fileID: 8300000, guid: 96d981b46832de8468724ca332fe0cb5, type: 3}
+  - {fileID: 8300000, guid: dfbc6defc2fc7ef4cb0e2a7a507a00d7, type: 3}
+  - {fileID: 8300000, guid: 2d18bef38fcf48d45adac6d725bc9c7d, type: 3}
+  - {fileID: 8300000, guid: 7956ff1e51950914eb5300fe87c60df3, type: 3}
+  - {fileID: 8300000, guid: 0a7e27e3384829b4aa3cb0ad9b6572f3, type: 3}
   audioSource: {fileID: 0}
 --- !u!82 &5188077383049064000
 AudioSource:

@@ -43,6 +43,11 @@ namespace MountAndBlade
         {
             if (!canAttack) return;
 
+            if (other.gameObject.TryGetComponent<SwordController>(out var sword))
+            {
+                EnemySFX.Instance.SwordSFX();
+            }
+
             if (other.gameObject.TryGetComponent<IDamagable>(out var damagable))
             {
 
@@ -57,6 +62,7 @@ namespace MountAndBlade
                 damagable.TakeDamage(swordDamage);
 
                 canAttack = false; // Sonra tekrar aktif yapýlmalý
+
             }
         }
 

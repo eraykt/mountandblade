@@ -38,6 +38,7 @@ public class PlayerAttackController : MonoBehaviour, IDamagable
     public bool isDead = false;
     public Transform deadCamTransform;
 
+
     private void Awake()
     {
         EventManager.RegisterEvent<EventManager.OnSwordChange>(OnSwordChange);
@@ -151,6 +152,8 @@ public class PlayerAttackController : MonoBehaviour, IDamagable
             }
         }
     }
+
+
 
     public void Die()
     {
