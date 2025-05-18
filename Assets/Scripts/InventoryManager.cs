@@ -31,8 +31,6 @@ public class InventoryManager : MonoBehaviour
     private List<InventorySlot> discardSlots = new List<InventorySlot>();
     private Dictionary<SlotType, InventorySlot> characterSlots = new Dictionary<SlotType, InventorySlot>();
     
-    public static InventoryManager Instance { get; private set; }
-
     private void OnEnable()
     {
         if (InterSceneManager.Instance != null && InterSceneManager.Instance.hasInventoryData)
@@ -75,41 +73,7 @@ public class InventoryManager : MonoBehaviour
         {
             PopulateInitialItems();
         }
-        
-        if (InterSceneManager.Instance != null &&
-            InterSceneManager.Instance.pendingDroppedItems.Count > 0 &&
-            InterSceneManager.Instance.playerWonLastBattle)
-        {
-            foreach (var item in InterSceneManager.Instance.pendingDroppedItems)
-            {
-                DropItemToDiscard(item);
-            }
-
-            InterSceneManager.Instance.pendingDroppedItems.Clear();
-        }
-        else if (InterSceneManager.Instance != null)
-        {
-            // Kazanmadıysa da temizle, kalmasın!
-            InterSceneManager.Instance.pendingDroppedItems.Clear();
-        }
-
-
     }
-    
-    private void Awake()
-    {
-        if (Instance == null)
-        {
-            Instance = this;
-            // Eğer sahneler arasında kalıcı olmasını istersen:
-            // DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Destroy(gameObject); // Sahneye iki kere eklenmişse fazlasını sil
-        }
-    }
-
     
     void Update()
     {
@@ -398,25 +362,4 @@ public class InventoryManager : MonoBehaviour
             }
         }
     }
-    
-    public void DropItemToDiscard(Item droppedItem)
-    {
-        if (!items.Contains(droppedItem))
-        {
-            items.Add(droppedItem);
-        }
-
-        if (droppedItem == null) return;
-
-        InventorySlot emptySlot = discardSlots.Find(slot => !slot.IsOccupied);
-        if (emptySlot != null)
-        {
-            emptySlot.SetSlot(droppedItem);
-        }
-        else
-        {
-            Debug.LogWarning("No available discard slot for dropped item.");
-        }
-    }
-
 }

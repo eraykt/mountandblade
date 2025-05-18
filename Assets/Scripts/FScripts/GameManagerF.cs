@@ -105,8 +105,7 @@ public class GameManagerF : MonoBehaviour
             Debug.Log($"{winnerTag} kazand�!");
 
             List<GameObject> winners = winnerTag == "Allies" ? allies : enemies;
-            InterSceneManager.Instance.playerWonLastBattle = true;
-            
+
 
             foreach (var unit in winners)
             {
@@ -140,8 +139,6 @@ public class GameManagerF : MonoBehaviour
     {
         Cursor.lockState = CursorLockMode.None;
         Debug.Log("Enemiler Kazandı Kardeşim");
-        InterSceneManager.Instance.playerWonLastBattle = false;
-
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (var enemy in enemies)
