@@ -179,7 +179,7 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
                 Debug.Log($"[DROP] {item.Itemname} - roll: {roll} <= dropRate: {item.dropRate}");
                 InterSceneManager.Instance.pendingDroppedItems.Add(item);
                 
-                //break; //birden fazla düşmesini istiyorsanız kaldırın
+                break; //birden fazla düşmesini istiyorsanız kaldırın
             }
         }
 
