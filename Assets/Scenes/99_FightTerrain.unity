@@ -898,6 +898,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: SpawnPoints
       objectReference: {fileID: 0}
+    - target: {fileID: 2959503336700729899, guid: 4c9270f561052444686d23beb3d614ef,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.44
+      objectReference: {fileID: 0}
     - target: {fileID: 3352344276481636042, guid: 4c9270f561052444686d23beb3d614ef,
         type: 3}
       propertyPath: m_LocalPosition.x

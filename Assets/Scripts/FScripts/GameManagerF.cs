@@ -39,7 +39,7 @@ public class GameManagerF : MonoBehaviour
 
     public GameObject PlayerSpawnPoint;
 
-
+    private bool hasFightEnded;
 
     private void Awake()
     {
@@ -50,6 +50,8 @@ public class GameManagerF : MonoBehaviour
     private void Start()
     {
         UpdateEnemyAndAllyCount();
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
@@ -117,6 +119,8 @@ public class GameManagerF : MonoBehaviour
             List<GameObject> winners = winnerTag == "Allies" ? allies : enemies;
             InterSceneManager.Instance.playerWonLastBattle = true;
 
+            Cursor.visible = true;
+            Cursor.lockState = CursorLockMode.None;
 
             foreach (var unit in winners)
             {
@@ -279,5 +283,10 @@ public class GameManagerF : MonoBehaviour
     }
 
     public void LostGame() => SceneManager.LoadScene("00_Credits");
+    
+    private void OnApplicationFocus(bool hasFocus)
+    {
+        Cursor.visible = hasFocus && hasFightEnded;
+    }
     
 }
