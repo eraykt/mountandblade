@@ -220,14 +220,14 @@ public class GameManagerF : MonoBehaviour
     {
         float x = Random.Range(-10f, 10f);
         float z = Random.Range(-10f, 10f);
-        return new Vector3(x, 0f, z);
+        return new Vector3(gameObject.transform.position.x + 100f, 0f, gameObject.transform.position.z + 100f);
     }
 
     private Vector3 GetRandomPositionForPlayer()
     {
         float x = Random.Range(-10f, 10f);
         float z = Random.Range(-10f, 10f);
-        return new Vector3(0, 3f, 0);
+        return new Vector3(gameObject.transform.position.x + 100f, 3f, gameObject.transform.position.z + 100f);
     }
 
 

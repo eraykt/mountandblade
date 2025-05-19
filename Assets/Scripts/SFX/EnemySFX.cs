@@ -11,6 +11,8 @@ namespace MountAndBlade
         public List<AudioClip> swordClips;
         public AudioSource audioSource;
 
+        public bool ASDASD = false;
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
@@ -31,6 +33,7 @@ namespace MountAndBlade
         {
             int random = Random.Range(0, gruntClips.Count);
             audioSource.PlayOneShot(swordClips[random]);
+            ASDASD = true;
         }
     }
 }

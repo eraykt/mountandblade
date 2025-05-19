@@ -1,10 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.Properties;
 using UnityEngine;
-using UnityEngine.AI;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 namespace MountAndBlade
@@ -94,11 +91,23 @@ namespace MountAndBlade
             return Mathf.FloorToInt(currentAllyAmount);
         }
 
+        public string RandomMapGenerator()
+        {
+            List<string> list = new List<string>();
+            list.Add("99_ForestTerrain");
+            list.Add("99_SandTerrain");
+            list.Add("99_FightTerrain");
+
+            int random = UnityEngine.Random.Range(0, list.Count);
+
+            return list[random];
+        }
+
         public IEnumerator loadWsScene()
         {
             InterSceneManager.Instance.SaveData();
             InterSceneManager.Instance.DeleteCurrentEnemy();
-            AsyncOperation loadOperation = SceneManager.LoadSceneAsync("03_WsScene");
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(RandomMapGenerator());
             yield return null;
         }
 
