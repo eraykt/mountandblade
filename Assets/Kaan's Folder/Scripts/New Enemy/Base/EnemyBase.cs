@@ -1,13 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.AI;
 
 /*
- * Yere Düþüyor 
- * Speed salaklaþýyor
+ * Yere Dï¿½ï¿½ï¿½yor 
+ * Speed salaklaï¿½ï¿½yor
  */
 
 
@@ -70,11 +67,11 @@ namespace MountAndBlade
             Vector3 targetPosition = GetTargetPosition();
             if (Vector3.Distance(transform.position, targetPosition) < 10f)
             {
-                // Player'ýn pozisyonunu ChaseState'e ilet
+                // Player'ï¿½n pozisyonunu ChaseState'e ilet
                 StateMachine.ChangeState(new EnemyChaseState(this, StateMachine, targetPosition));
             }
 
-            // Speed ayarlarý
+            // Speed ayarlarï¿½
             float currentSpeed = agent.velocity.magnitude;
             float maxSpeed = agent.speed;
             float normalizedSpeed = Mathf.Clamp01(currentSpeed / maxSpeed);
@@ -82,7 +79,7 @@ namespace MountAndBlade
             MoveEnemy(targetTransform.position);
 
 
-            //Debug.Log($"Clamplenmiþ Agent Speed :  {animator.GetFloat("Velocity")} , Enemy Speed : {normalizedSpeed}");
+            //Debug.Log($"Clamplenmiï¿½ Agent Speed :  {animator.GetFloat("Velocity")} , Enemy Speed : {normalizedSpeed}");
 
         }
        
@@ -128,7 +125,7 @@ namespace MountAndBlade
 
         public Vector3 GetTargetPosition()
         {
-            // Hedefi her frame'de doðru þekilde almak için
+            // Hedefi her frame'de doï¿½ru ï¿½ekilde almak iï¿½in
             TagChecker();
             GameObject[] enemies = GameObject.FindGameObjectsWithTag(oppositeTag);
             float closestDistance = Mathf.Infinity;
@@ -144,16 +141,16 @@ namespace MountAndBlade
                 }
             }
 
-            // Eðer en yakýn düþmaný bulmuþsan
+            // Eï¿½er en yakï¿½n dï¿½ï¿½manï¿½ bulmuï¿½san
             if (closestEnemy != null)
             {
                 target = closestEnemy;
-                targetTransform = target.transform; // Hedef transformunu her frame'de güncelleyerek doðru deðer al
+                targetTransform = target.transform; // Hedef transformunu her frame'de gï¿½ncelleyerek doï¿½ru deï¿½er al
             }
 
-            Debug.Log("Target Pos : " + targetTransform.position); // Debug ile hedefin doðru pozisyonunu kontrol et
+            Debug.Log("Target Pos : " + targetTransform.position); // Debug ile hedefin doï¿½ru pozisyonunu kontrol et
 
-            // Hedef varsa, hedefin pozisyonunu döndür
+            // Hedef varsa, hedefin pozisyonunu dï¿½ndï¿½r
             return target != null ? targetTransform.position : transform.position;
         }
         private void TargetSetter()
@@ -177,13 +174,13 @@ namespace MountAndBlade
             if (targetTransform != null)
             {
                 Gizmos.color = Color.blue;  // Hedef rengini mavi yap
-                Gizmos.DrawSphere(targetTransform.position, 1.5f);  // Hedefin etrafýnda küçük bir küre çizer
+                Gizmos.DrawSphere(targetTransform.position, 1.5f);  // Hedefin etrafï¿½nda kï¿½ï¿½ï¿½k bir kï¿½re ï¿½izer
             }
 
             if (agent != null && agent.destination != Vector3.zero)
             {
-                Gizmos.color = Color.green;  // Hedef çizgi rengini yeþil yap
-                Gizmos.DrawLine(transform.position, agent.destination);  // Mevcut konumdan hedefe çizgi çizer
+                Gizmos.color = Color.green;  // Hedef ï¿½izgi rengini yeï¿½il yap
+                Gizmos.DrawLine(transform.position, agent.destination);  // Mevcut konumdan hedefe ï¿½izgi ï¿½izer
             }
         }
     }

@@ -1,9 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.Mathematics;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 namespace MountAndBlade
 {
@@ -21,8 +16,8 @@ namespace MountAndBlade
 
 
         //aktif kameranun bilgisini al
-        //herzaman aktif kameradan transform forward yönünde ray at.
-        //neye çarptýðý bilgisine eriþ.
+        //herzaman aktif kameradan transform forward yï¿½nï¿½nde ray at.
+        //neye ï¿½arptï¿½ï¿½ï¿½ bilgisine eriï¿½.
         private void Awake()
         {
             if (instance == null)
