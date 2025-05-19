@@ -1,4 +1,3 @@
-using System;
 using MountAndBlade;
 using System.Collections;
 using System.Collections.Generic;
@@ -31,8 +30,6 @@ public class GameManagerF : MonoBehaviour
     public GameObject EnemiesWonPanel;
     public GameObject EndGameInfo;
 
-    private bool hasFightEnded;
-
 
     private void Awake()
     {
@@ -43,7 +40,6 @@ public class GameManagerF : MonoBehaviour
     private void Start()
     {
         UpdateEnemyAndAllyCount();
-        Cursor.visible = false;
     }
 
     private void Update()
@@ -111,9 +107,7 @@ public class GameManagerF : MonoBehaviour
             List<GameObject> winners = winnerTag == "Allies" ? allies : enemies;
             InterSceneManager.Instance.playerWonLastBattle = true;
 
-            Cursor.visible = true;
-            
-            
+
             foreach (var unit in winners)
             {
                 var enemyBase = unit.GetComponent<EnemyBaseF>();
@@ -268,9 +262,5 @@ public class GameManagerF : MonoBehaviour
     }
 
     public void LostGame() => SceneManager.LoadScene("00_Credits");
-
-    private void OnApplicationFocus(bool hasFocus)
-    {
-        Cursor.visible = hasFocus && hasFightEnded;
-    }
+    
 }

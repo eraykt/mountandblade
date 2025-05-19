@@ -144,7 +144,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1436310706135902, guid: d490d5805a8f22c449470acc5c2bbf6f, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4231715115917856, guid: d490d5805a8f22c449470acc5c2bbf6f, type: 3}
       propertyPath: m_LocalScale.x
@@ -225,7 +225,7 @@ GameObject:
   m_Component:
   - component: {fileID: 914170915}
   - component: {fileID: 914170916}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -293,7 +293,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1218948445974146, guid: 7f4082e70edb70e4b83b1d67eb74deb5, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4964460128341298, guid: 7f4082e70edb70e4b83b1d67eb74deb5, type: 3}
       propertyPath: m_LocalScale.x
@@ -366,7 +366,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1976401696516608, guid: 7aec7d7b6b4e5f24f832c33028ee90d9, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4687956973215160, guid: 7aec7d7b6b4e5f24f832c33028ee90d9, type: 3}
       propertyPath: m_LocalScale.x
@@ -622,7 +622,7 @@ GameObject:
   - component: {fileID: 1586372388}
   - component: {fileID: 1586372390}
   - component: {fileID: 1586372389}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Terrain
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -721,7 +721,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1976401696516608, guid: 7aec7d7b6b4e5f24f832c33028ee90d9, type: 3}
       propertyPath: m_Layer
-      value: 0
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4687956973215160, guid: 7aec7d7b6b4e5f24f832c33028ee90d9, type: 3}
       propertyPath: m_LocalScale.x
