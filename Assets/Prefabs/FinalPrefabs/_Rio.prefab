@@ -139,12 +139,34 @@ MonoBehaviour:
   distance: 0
   health: 100
   maxHealth: 100
-  idleState: {fileID: 11400000, guid: 58254068997e87a468b9a8a65683ec9d, type: 2}
-  chaseState: {fileID: 11400000, guid: 11e912c733ee91940bc8c20a28ae2001, type: 2}
-  attackState: {fileID: 11400000, guid: ac6ec413777ff1246ade7b2673a14b53, type: 2}
+  idleState: {fileID: 0}
+  chaseState: {fileID: 0}
+  attackState: {fileID: 0}
   dieState: {fileID: 0}
   soldierSwordController: {fileID: 0}
   bloodVFX: {fileID: 0}
+  possibleDrops:
+  - {fileID: 11400000, guid: b8496126c6632bb41a9c4b1a8f0c9b32, type: 2}
+  - {fileID: 11400000, guid: 9ef836f4548356242b8b3ab9b3612528, type: 2}
+  - {fileID: 11400000, guid: fcda88e329615f84eb908aaceb4b57db, type: 2}
+  - {fileID: 11400000, guid: 485196cbbf544c84f9791b745e015284, type: 2}
+  - {fileID: 11400000, guid: 79cdf0a5eacf32d43a12f4d007df5e33, type: 2}
+  - {fileID: 11400000, guid: 73c6cfa86a75fe14282432207269572e, type: 2}
+  - {fileID: 11400000, guid: 758c49e5799468f4488f1c790dc30ae2, type: 2}
+  - {fileID: 11400000, guid: c12b787cce4de74498ac5cf4affbc2da, type: 2}
+  - {fileID: 11400000, guid: 4f90f605e1364854b92e42d9f62303ba, type: 2}
+  - {fileID: 11400000, guid: c37d598211e2b0d4fab346c89cc3683f, type: 2}
+  - {fileID: 11400000, guid: e011365dc8243f047942fa062f246de0, type: 2}
+  - {fileID: 11400000, guid: 6a3ebd0f5d9239a4ba04543c5da91d83, type: 2}
+  - {fileID: 11400000, guid: ccf6dc93e31e90e4587a3125ec7fe7f6, type: 2}
+  - {fileID: 11400000, guid: b2b291790937e3e468cef0bdee6c9c2f, type: 2}
+  - {fileID: 11400000, guid: d64d164ea04728c4cb2906f7e5dfbc5a, type: 2}
+  - {fileID: 11400000, guid: 4b0d73d8caac95d4ba6933e4034a3ccb, type: 2}
+  - {fileID: 11400000, guid: 96816f7bf773f8a4c8dac4398679f595, type: 2}
+  - {fileID: 11400000, guid: 3e495d68443be604eaac5eb5daf2574b, type: 2}
+  - {fileID: 11400000, guid: a2854a5d431dcd5439a6ed69a9e005e4, type: 2}
+  - {fileID: 11400000, guid: f8a59343b8cee014fa72f056d74040a2, type: 2}
+  - {fileID: 11400000, guid: 45c11938ce31cec4abea8e2e1542573c, type: 2}
 --- !u!54 &5711615709601118207
 Rigidbody:
   m_ObjectHideFlags: 0
