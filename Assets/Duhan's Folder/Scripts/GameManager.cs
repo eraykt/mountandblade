@@ -107,8 +107,8 @@ namespace MountAndBlade
         {
             InterSceneManager.Instance.SaveData();
             InterSceneManager.Instance.DeleteCurrentEnemy();
-            AsyncOperation loadOperation = SceneManager.LoadSceneAsync("03_WsScene");
-            //AsyncOperation loadOperation = SceneManager.LoadSceneAsync(RandomMapGenerator());
+            //AsyncOperation loadOperation = SceneManager.LoadSceneAsync("03_WsScene");
+            AsyncOperation loadOperation = SceneManager.LoadSceneAsync(RandomMapGenerator());
             yield return null;
         }
 
