@@ -17,6 +17,9 @@ namespace MountAndBlade
         
         public InventoryData inventoryData;
         public bool hasInventoryData;
+        
+        public List<Item> pendingDroppedItems = new List<Item>();
+        public bool playerWonLastBattle = false;
         private void Awake()
         {
             if (Instance == null)

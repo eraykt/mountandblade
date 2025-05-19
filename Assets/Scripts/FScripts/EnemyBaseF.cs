@@ -1,5 +1,6 @@
 using MountAndBlade;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.VFX;
@@ -19,8 +20,8 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
     [HideInInspector] public bool canAttack = false;
 
     public float distance = 1.0f;
-    public float health = 100f;  // Düþman saðlýðý
-    public float maxHealth = 100f;  // Maksimum saðlýk
+    public float health = 100f;  // Dï¿½ï¿½man saï¿½lï¿½ï¿½ï¿½
+    public float maxHealth = 100f;  // Maksimum saï¿½lï¿½k
     private bool isDead = false;
 
 
@@ -35,6 +36,9 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
 
     public SoldierSwordController soldierSwordController;
     public ParticleSystem bloodVFX;
+    
+    [Header("Enemy Item Drop Settings")]
+    public List<Item> possibleDrops = new List<Item>();
 
     void Start()
     {
@@ -56,21 +60,21 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         animator.SetFloat("Speed", speed);
         if (targetTransform == null) FindClosestEnemy();
 
-        // Attack timer'ý kontrol et
+        // Attack timer'ï¿½ kontrol et
         if (!canAttack)
         {
-            attackTimer -= Time.deltaTime; // Timer'ý azalt
+            attackTimer -= Time.deltaTime; // Timer'ï¿½ azalt
             if (attackTimer <= 0)
             {
-                canAttack = true; // Timer sýfýrlandýðýnda tekrar hasar alýnabilir hale getir
-                attackTimer = randomAttackTimer; // Timer'ý baþa al
+                canAttack = true; // Timer sï¿½fï¿½rlandï¿½ï¿½ï¿½nda tekrar hasar alï¿½nabilir hale getir
+                attackTimer = randomAttackTimer; // Timer'ï¿½ baï¿½a al
             }
         }
 
         if (targetTransform != null)
         {
             Vector3 direction = (targetTransform.position - transform.position).normalized;
-            direction.y = 0f; // sadece yatay düzlemde dönsün
+            direction.y = 0f; // sadece yatay dï¿½zlemde dï¿½nsï¿½n
             if (!isDead)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(direction);
@@ -95,7 +99,7 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
 
         float distance = Mathf.Infinity;
 
-        // Eðer kendi tag'ý "Enemy" ise, hem "Allies" hem "Player" taglýlarý al
+        // Eï¿½er kendi tag'ï¿½ "Enemy" ise, hem "Allies" hem "Player" taglï¿½larï¿½ al
         if (gameObject.CompareTag("Enemy"))
         {
             GameObject[] allies = GameObject.FindGameObjectsWithTag("Allies");
@@ -131,12 +135,12 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
 
 
 
-    // Ölüm metodu
+    // ï¿½lï¿½m metodu
     public void Die()
     {
-        if (isDead) return; // Koruma katmaný
+        if (isDead) return; // Koruma katmanï¿½
         isDead = true;
-        // Ölüm animasyonu baþlat
+        // ï¿½lï¿½m animasyonu baï¿½lat
         animator.SetBool("IsDead", true);
         if(agent.isOnNavMesh) agent.isStopped = true; // Hareketi durdur
 
@@ -154,15 +158,37 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
         }
 
 
-        SwitchState(dieState); // Ölüm durumuna geçiþ
+        SwitchState(dieState); // ï¿½lï¿½m durumuna geï¿½iï¿½
         rigidBody.isKinematic = true;
         entityCollider.enabled = false;
+        
+        List<Item> shuffled = new List<Item>(possibleDrops);
+        for (int i = 0; i < shuffled.Count; i++)
+        {
+            Item temp = shuffled[i];
+            int randomIndex = Random.Range(i, shuffled.Count);
+            shuffled[i] = shuffled[randomIndex];
+            shuffled[randomIndex] = temp;
+        }
+
+        foreach (var item in shuffled)
+        {
+            float roll = Random.Range(0f, 100f);
+            if (roll <= item.dropRate)
+            {
+                Debug.Log($"[DROP] {item.Itemname} - roll: {roll} <= dropRate: {item.dropRate}");
+                InterSceneManager.Instance.pendingDroppedItems.Add(item);
+                
+                //break; //birden fazla dÃ¼ÅŸmesini istiyorsanÄ±z kaldÄ±rÄ±n
+            }
+        }
+
     }
 
 
     public void FadeOutAndDestroy()
     {
-        // Collider ve Agent gibi bileþenleri kapat
+        // Collider ve Agent gibi bileï¿½enleri kapat
         if (TryGetComponent<Collider>(out var col)) col.enabled = false;
         if (agent != null) agent.enabled = false;
 
@@ -219,14 +245,14 @@ public class EnemyBaseF : MonoBehaviour, IDamagable
     public void TakeDamageSFX() => EnemySFX.Instance.PlayHurtSFX();
     public void TakeDamage(int _takenDamage)
     {
-        health -= _takenDamage; // Saðlýk azaltma
+        health -= _takenDamage; // Saï¿½lï¿½k azaltma
         animator.SetTrigger("IsTakeDamage");
         
         Debug.Log($"TakeDamage");
 
         if (health <= 0 && !isDead)
         {
-            Die(); // Ölüm durumu
+            Die(); // ï¿½lï¿½m durumu
         }
     }
 }

@@ -105,6 +105,7 @@ public class GameManagerF : MonoBehaviour
             Debug.Log($"{winnerTag} kazand�!");
 
             List<GameObject> winners = winnerTag == "Allies" ? allies : enemies;
+            InterSceneManager.Instance.playerWonLastBattle = true;
 
 
             foreach (var unit in winners)
