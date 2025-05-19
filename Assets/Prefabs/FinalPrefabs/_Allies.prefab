@@ -386,6 +386,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 805142301588825576}
     m_Modifications:
+    - target: {fileID: 7117440594003407938, guid: 869588334bcffaf4ebc56f4c7906391e,
+        type: 3}
+      propertyPath: selfHitVFX
+      value: 
+      objectReference: {fileID: 6289238347236387370, guid: 3bee5921e769c9149ac3ada81e5c7ca8,
+        type: 3}
+    - target: {fileID: 7117440594003407938, guid: 869588334bcffaf4ebc56f4c7906391e,
+        type: 3}
+      propertyPath: selfVFXPoint
+      value: 
+      objectReference: {fileID: 5977136582145909864}
     - target: {fileID: 7359782311301602391, guid: 869588334bcffaf4ebc56f4c7906391e,
         type: 3}
       propertyPath: m_LocalPosition.x
