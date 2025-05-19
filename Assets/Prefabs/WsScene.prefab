@@ -1433,10 +1433,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyCount: 3
   allyCount: 2
-  enemyPrefab: {fileID: 6582285153050776875, guid: e1640c1e4ebff184ca49beccbb807417,
-    type: 3}
-  allyPrefab: {fileID: 6382914376757586149, guid: 70295972a33bfb34b89655019003b14e,
-    type: 3}
+  enemyPrefab:
+  - {fileID: 6382914376757586149, guid: 70295972a33bfb34b89655019003b14e, type: 3}
+  allyPrefab:
+  - {fileID: 6382914376757586149, guid: 927e0876a0d39814daff233b16800534, type: 3}
+  - {fileID: 6382914376757586149, guid: bf186e10797ac60419effc17f92e417c, type: 3}
+  - {fileID: 6382914376757586149, guid: 919fe5011f846e04a9f275bff110b532, type: 3}
+  - {fileID: 6382914376757586149, guid: 4582cd8319e01fe489eb78ff9e7b5fa3, type: 3}
   playerPrefab: {fileID: 342068934729205273, guid: 53520964befd79e409e8ad896b88080c,
     type: 3}
   enemies: []

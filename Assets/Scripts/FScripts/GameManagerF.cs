@@ -12,8 +12,8 @@ public class GameManagerF : MonoBehaviour
     public int allyCount;
     
 
-    public GameObject enemyPrefab;
-    public GameObject allyPrefab;
+    public GameObject[] enemyPrefab;
+    public GameObject[] allyPrefab;
     public GameObject playerPrefab;
 
     // StateF SO'lar� i�in referanslar
@@ -166,7 +166,8 @@ public class GameManagerF : MonoBehaviour
             // D��manlar� spawn et
             for (int i = 0; i < enemyCount; i++)
             {
-                GameObject enemy = Instantiate(enemyPrefab, GetRandomPosition(), Quaternion.identity);
+                int random = Random.Range(0, enemyPrefab.Length);
+                GameObject enemy = Instantiate(enemyPrefab[random], GetRandomPosition(), Quaternion.identity);
                 Register(enemy);
                 Debug.Log("D��man " + i + " olu�turuldu");
                 // D��man i�in StateF SO'lar�n� olu�tur ve ata
@@ -180,7 +181,8 @@ public class GameManagerF : MonoBehaviour
             // Ally'leri spawn et
             for (int i = 1; i < allyCount; i++)
             {
-                GameObject ally = Instantiate(allyPrefab, GetRandomPosition(), Quaternion.identity);
+                int random = Random.Range(0, allyPrefab.Length);
+                GameObject ally = Instantiate(allyPrefab[random], GetRandomPosition(), Quaternion.identity);
                 Register(ally);
                 Debug.Log("Ally " + i + " olu�turuldu");
 
