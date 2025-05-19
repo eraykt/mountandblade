@@ -95,7 +95,7 @@ namespace MountAndBlade
         {
             List<string> list = new List<string>();
             list.Add("99_ForestTerrain");
-            list.Add("99_SandTerrain");
+           // list.Add("99_SandTerrain");
             list.Add("99_FightTerrain");
 
             int random = UnityEngine.Random.Range(0, list.Count);

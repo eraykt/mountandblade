@@ -31,6 +31,16 @@ public class GameManagerF : MonoBehaviour
     public GameObject EndGameInfo;
 
 
+    public GameObject enemySpawnPointL;
+    public GameObject enemySpawnPointR;
+
+    public GameObject allySpawnPointL;
+    public GameObject allySpawnPointR;
+
+    public GameObject PlayerSpawnPoint;
+
+
+
     private void Awake()
     {
         if (Instance == null) Instance = this;
@@ -55,7 +65,7 @@ public class GameManagerF : MonoBehaviour
 
     public void UpdateEnemyAndAllyCount()
     {
-        if (GameManager.instance.GetEnemyCount() != 0) 
+        if (GameManager.instance.GetEnemyCount() != 0)
             enemyCount = GameManager.instance.GetEnemyCount();
         else Debug.Log($"Enemy Count �ekilirken : {GameManager.instance.GetEnemyCount()}");
 
@@ -163,36 +173,60 @@ public class GameManagerF : MonoBehaviour
 
         if (enemyPrefab != null)
         {
-            // D��manlar� spawn et
+            float spacing = 2f; // Her düşman arasındaki boşluk
+            int halfCount = enemyCount / 2;
+
             for (int i = 0; i < enemyCount; i++)
             {
-                GameObject enemy = Instantiate(enemyPrefab, GetRandomPosition(), Quaternion.identity);
+                Vector3 spawnPos;
+                if (i % 2 == 0) // Sol spawn hattı (Left)
+                {
+                    spawnPos = enemySpawnPointL.transform.position + new Vector3(i / 2 * spacing, 0f, 0f);
+                }
+                else // Sağ spawn hattı (Right)
+                {
+                    spawnPos = enemySpawnPointR.transform.position + new Vector3(i / 2 * spacing, 0f, 0f);
+                }
+
+                GameObject enemy = Instantiate(enemyPrefab, spawnPos, Quaternion.identity);
                 Register(enemy);
-                Debug.Log("D��man " + i + " olu�turuldu");
-                // D��man i�in StateF SO'lar�n� olu�tur ve ata
+                Debug.Log("Düşman " + i + " oluşturuldu");
+
                 CreateAndAssignStateSO(enemy);
             }
         }
-        else Debug.LogError("EnemyPrefab bo�");
+        else Debug.LogError("EnemyPrefab boş");
 
-        if (allyPrefab != null)
+
+        if (enemyPrefab != null)
         {
-            // Ally'leri spawn et
-            for (int i = 1; i < allyCount; i++)
-            {
-                GameObject ally = Instantiate(allyPrefab, GetRandomPosition(), Quaternion.identity);
-                Register(ally);
-                Debug.Log("Ally " + i + " olu�turuldu");
+            float spacing = 2f; // Her düşman arasındaki boşluk
+            int halfCount = enemyCount / 2;
 
-                // Ally i�in StateF SO'lar�n� olu�tur ve ata
-                CreateAndAssignStateSO(ally);
+            for (int i = 0; i < enemyCount; i++)
+            {
+                Vector3 spawnPos;
+                if (i % 2 == 0) // Sol spawn hattı (Left)
+                {
+                    spawnPos = allySpawnPointL.transform.position + new Vector3(i / 2 * spacing, 0f, 0f);
+                }
+                else // Sağ spawn hattı (Right)
+                {
+                    spawnPos = allySpawnPointR.transform.position + new Vector3(i / 2 * spacing, 0f, 0f);
+                }
+
+                GameObject enemy = Instantiate(allyPrefab, spawnPos, Quaternion.identity);
+                Register(enemy);
+                Debug.Log("Düşman " + i + " oluşturuldu");
+
+                CreateAndAssignStateSO(enemy);
             }
         }
-        else Debug.LogError("AllyPrefab bo�");
+        else Debug.LogError("EnemyPrefab boş");
 
         if (playerPrefab != null)
         {
-            GameObject player = Instantiate(playerPrefab, GetRandomPositionForPlayer(), Quaternion.identity);
+            GameObject player = Instantiate(playerPrefab, PlayerSpawnPoint.transform.position, Quaternion.identity);
             Register(player);
         }
 
@@ -214,21 +248,6 @@ public class GameManagerF : MonoBehaviour
         {
             Destroy(ally);
         }
-    }
-
-    // D��man ve ally'ler rastgele bir pozisyonda spawn olsun
-    private Vector3 GetRandomPosition()
-    {
-        float x = Random.Range(-10f, 10f);
-        float z = Random.Range(-10f, 10f);
-        return new Vector3(gameObject.transform.position.x + 100f, 0f, gameObject.transform.position.z + 100f);
-    }
-
-    private Vector3 GetRandomPositionForPlayer()
-    {
-        float x = Random.Range(-10f, 10f);
-        float z = Random.Range(-10f, 10f);
-        return new Vector3(gameObject.transform.position.x + 100f, 3f, gameObject.transform.position.z + 100f);
     }
 
 
