@@ -40,6 +40,7 @@ public class GameManagerF : MonoBehaviour
     public GameObject PlayerSpawnPoint;
 
     private bool hasFightEnded;
+    private GameObject playerReference;
 
     private void Awake()
     {
@@ -129,8 +130,7 @@ public class GameManagerF : MonoBehaviour
                     enemyBase.animator.SetBool("IsVictory", true);
                 if (winnerTag == "Allies")
                 {
-                    GameObject player = GameObject.FindGameObjectWithTag("Player");
-                    Animator playerAnimator = player.GetComponentInChildren<Animator>();
+                    Animator playerAnimator = playerReference.GetComponentInChildren<Animator>();
                     playerAnimator.SetBool("IsVictory", true);
                     StartCoroutine(AlliesWin());
                 }
@@ -140,19 +140,21 @@ public class GameManagerF : MonoBehaviour
 
     public IEnumerator AlliesWin()
     {
+        
         Cursor.lockState = CursorLockMode.None;
         
         yield return new WaitForSeconds(3);
 
         AlliesWonPanel.SetActive(true);
-
-
-        GameManager.instance.OnBattleWon();
+        
+        // GameManager.instance.OnBattleWon();
     }
 
     public void EnemiesWin()
     {
         Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        hasFightEnded = true;
         Debug.Log("Enemiler Kazandı Kardeşim");
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
@@ -231,6 +233,7 @@ public class GameManagerF : MonoBehaviour
         if (playerPrefab != null)
         {
             GameObject player = Instantiate(playerPrefab, PlayerSpawnPoint.transform.position, Quaternion.identity);
+            playerReference = player;
             Register(player);
         }
 

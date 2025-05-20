@@ -1431,8 +1431,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b853500992aa9dc42b2557d8d85060b3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyCount: 3
-  allyCount: 2
+  enemyCount: 0
+  allyCount: 0
   enemyPrefab: {fileID: 6582285153050776875, guid: e1640c1e4ebff184ca49beccbb807417,
     type: 3}
   allyPrefab: {fileID: 6382914376757586149, guid: 70295972a33bfb34b89655019003b14e,
@@ -1444,6 +1444,11 @@ MonoBehaviour:
   AlliesWonPanel: {fileID: 4124460347094580614}
   EnemiesWonPanel: {fileID: 4161693104952899313}
   EndGameInfo: {fileID: 5691559008542237727}
+  enemySpawnPointL: {fileID: 0}
+  enemySpawnPointR: {fileID: 0}
+  allySpawnPointL: {fileID: 0}
+  allySpawnPointR: {fileID: 0}
+  PlayerSpawnPoint: {fileID: 0}
 --- !u!1 &8310379687993996696
 GameObject:
   m_ObjectHideFlags: 0

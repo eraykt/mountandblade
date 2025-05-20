@@ -227,6 +227,16 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2034585022852333351, guid: 45af0ce2263ca3f428ba17ded1afc009,
         type: 3}
+      propertyPath: allyCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2034585022852333351, guid: 45af0ce2263ca3f428ba17ded1afc009,
+        type: 3}
+      propertyPath: enemyCount
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2034585022852333351, guid: 45af0ce2263ca3f428ba17ded1afc009,
+        type: 3}
       propertyPath: allySpawnPointL
       value: 
       objectReference: {fileID: 583469251}
